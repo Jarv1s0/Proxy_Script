@@ -30,6 +30,6 @@
         "9 0 * * * https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_redPacket.js, tag=京东全民开红包, img-url=https://raw.githubusercontent.com/Orz-3/task/master/jd.png",
         "11 1-23/2 * * * https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_superMarket.js, tag=京小超, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jxc.png",
         "1 0 * * * https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_blueCoin.js, tag=京小超领蓝币(收小费), img-url=https://raw.githubusercontent.com/58xinian/icon/master/jxc.png",
-        "5 0 * * * https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_club_lottery.js, tag=摇京豆, img-url = https：//raw.githubusercontent.com/Orz-3/ task / master / jd.png，enabled = false”=", 
+        "5 0 * * * https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_club_lottery.js, tag=摇京豆, img-url = https：//raw.githubusercontent.com/Orz-3/ task / master / jd.png，enabled = false", 
     ]
 }
