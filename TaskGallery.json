@@ -1,6 +1,6 @@
 {
     "name":"Jarvis",
-    "description":"Crontab Task Gallery",
+    "description":"Crontab Task by Jarvis",
     "task":[
         "0 9 * * * https://raw.githubusercontent.com/zZPiglet/Task/master/MovieCalendar/MovieCalendar.js, tag=豆瓣·电影日历, img-url=https://raw.githubusercontent.com/HotKids/Rules/master/Quantumult/X/Images/Task/douban.png", 
         "0 1,6 * * * https://raw.githubusercontent.com/NobyDa/Script/master/JD-DailyBonus/JD_DailyBonus.js, tag=京东, img-url=https://raw.githubusercontent.com/HotKids/Rules/master/Quantumult/X/Images/Task/jd.png",
