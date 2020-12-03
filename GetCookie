@@ -1,0 +1,15 @@
+#京东获取Cookie
+#https:\/\/api\.m\.jd\.com\/client\.action.*functionId=signBean url script-request-header https://raw.githubusercontent.com/NobyDa/Script/master/JD-DailyBonus/JD_DailyBonus.js
+
+#京东赚赚获取cookie
+#^https\:\/\/api\.m\.jd\.com\/client\.action\?functionId\=interactIndex url script-request-header https://raw.githubusercontent.com/whyour/hundun/master/quanx/jdzz.cookie.js
+
+# 京东价格提醒(By toulanboy)
+^https:\/\/apapia-history\.manmanbuy\.com\/ChromeWidgetServices\/WidgetServices\.ashx url script-request-body https://raw.githubusercontent.com/toulanboy/scripts/master/jd_price_detect/jd_price_detect.js
+
+#Bilibili获取Cookie
+^https:\/\/(www|live)\.bilibili\.com\/?.? url script-request-header https://raw.githubusercontent.com/chavyleung/scripts/master/bilibili/bilibili.cookie.js
+
+#中国移动Cookie
+^http:\/\/wx.10086.cn\/website\/taskCenter\/index\? url script-request-header https://raw.githubusercontent.com/chavyleung/scripts/master/10086/10086.cookie.js
+^http:\/\/wx.10086.cn\/website\/taskCenter\/sign\? url script-request-header https://raw.githubusercontent.com/chavyleung/scripts/master/10086/10086.cookie.js
