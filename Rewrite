@@ -1,4 +1,4 @@
-hostname = www.google.cn
+hostname = www.google.cn,api.abema.io,app.biliintl.com
 
 # Redirect Google Search Service
 ^(http|https):\/\/(www.)?(g|google)\.cn url 302 https://www.google.com
@@ -16,3 +16,11 @@ hostname = www.google.cn
 
 # Weibo Short URL
 ^http:\/\/t\.cn url 302 https://sinaurl.cn
+
+# Redirect False to True
+# > IGN China to IGN Global
+^https?:\/\/(www.)?ign\.xn--fiqs8s\/ url 302 http://cn.ign.com/ccpref/us
+
+# bilibili Intl
+# (^https?:\/\/app\.biliintl\.com\/intl\/.+)(&s_locale=zh-Hans_[A-Z]{2})(.+) url 302 $1&s_locale=en-US_US$3
+(^https?:\/\/app\.biliintl\.com\/intl\/.+)(&sim_code=\d+)(.+) url 302 $1$3
