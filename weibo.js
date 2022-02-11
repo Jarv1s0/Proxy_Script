@@ -1,15 +1,11 @@
-const version = 'v0106.1';
-
-let $ = new nobyda();
+const version = 'v0211.1';
 let storeMainConfig = $.read('mainConfig');
-let storeItemMenusConfig = $.read('itemMenusConfig');
 const mainConfig = storeMainConfig ? JSON.parse(storeMainConfig) : {
 	isDebug: false,						//开启调试，会打印运行中部分日志
 	//个人中心配置，其中多数是可以直接在更多功能里直接移除
 	removeHomeVip: true,				//个人中心头像旁边的vip样式
 	removeHomeCreatorTask: true,		//个人中心创作者中心下方的轮播图
 }
-
 const path1 = "/groups/timeline";
 const path2 = "/statuses/unread";
 const path3 = "/statuses/extend";
