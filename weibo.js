@@ -1,12 +1,13 @@
-const version = 'v0211.1';
+const version = 'v0211.2';
 
 let $ = new nobyda();
 let storeMainConfig = $.read('mainConfig');
 let storeItemMenusConfig = $.read('itemMenusConfig');
 
 //主要的选项配置
-const mainConfig = storeMainConfig ? JSON.parse(storeMainConfig) : {
+const mainConfig = {
 	isDebug: true,						//开启调试，会打印运行中部分日志
+
 	//个人中心配置，其中多数是可以直接在更多功能里直接移除
 	removeHomeVip: true,				//个人中心头像旁边的vip样式
 	removeHomeCreatorTask: true,		//个人中心创作者中心下方的轮播图
@@ -16,15 +17,15 @@ const mainConfig = storeMainConfig ? JSON.parse(storeMainConfig) : {
 	removeGood: true,			//微博主好物种草
 	removeFollow: true,			//关注博主
 	modifyMenus: true,			//编辑上下文菜单
-	removeRelateItem: true,	//评论区相关内容
+	removeRelateItem: true,		//评论区相关内容
 	removeRecommendItem: true,	//评论区推荐内容
-	removeRewardItem: true,	//微博详情页打赏模块
+	removeRewardItem: true,		//微博详情页打赏模块
 
 	removeLiveMedia: true,		//首页顶部直播
-	removeNextVideo: true,					//关闭自动播放下一个视频
+	removeNextVideo: true,		//关闭自动播放下一个视频
 
 	removeInterestFriendInTopic: true,		//超话：超话里的好友
-	removeInterestTopic: true,				//超话：可能感兴趣的超话 + 好友关注
+	removeInterestTopic: true,				//超话：可能感兴趣的超话
 	removeInterestUser: true,				//用户页：可能感兴趣的人
 
 	removeLvZhou: true,					//绿洲模块
@@ -39,15 +40,14 @@ const mainConfig = storeMainConfig ? JSON.parse(storeMainConfig) : {
 	tabIconPath: "http://r1j12u5w9.hn-bkt.clouddn.com/skin-hebe1.zip",	//配置图标路径
 }
 
-
 //菜单配置
-const itemMenusConfig = storeItemMenusConfig ? JSON.parse(storeItemMenusConfig) : {
-	creator_task:true,					//转发任务
-	mblog_menus_custom:true,				//寄微博
+const itemMenusConfig = {
+	creator_task:false,					//转发任务
+	mblog_menus_custom:false,				//寄微博
 	mblog_menus_video_later:true,			//可能是稍后再看？没出现过
 	mblog_menus_comment_manager:true,		//评论管理
-	mblog_menus_avatar_widget:true,		//头像挂件
-	mblog_menus_card_bg: true,			//卡片背景
+	mblog_menus_avatar_widget:false,		//头像挂件
+	mblog_menus_card_bg: false,			//卡片背景
 	mblog_menus_long_picture:true,		//生成长图
 	mblog_menus_delete:true,				//删除
 	mblog_menus_edit:true,				//编辑
@@ -55,7 +55,7 @@ const itemMenusConfig = storeItemMenusConfig ? JSON.parse(storeItemMenusConfig) 
 	mblog_menus_edit_video:true,			//编辑视频
 	mblog_menus_sticking:true,			//置顶
 	mblog_menus_open_reward:true,			//赞赏
-	mblog_menus_novelty:true,			//新鲜事投稿
+	mblog_menus_novelty:false,			//新鲜事投稿
 	mblog_menus_favorite:true,			//收藏
 	mblog_menus_promote:true,				//推广
 	mblog_menus_modify_visible:true,		//设置分享范围
@@ -109,11 +109,11 @@ function getModifyMethod(url) {
 
 function isAd(data) {
 	if(!data) {
-		return true;
+		return false;
 	}
 	if(data.mblogtypename == '广告' || data.mblogtypename == '热推') {return true};
 	if(data.promotion && data.promotion.type == 'ad') {return true};
-	return true;
+	return false;
 }
 
 
@@ -201,7 +201,7 @@ function removeHomeVip(data) {
 //移除tab2的假通知
 function removeVideoRemind(data) {
 	data.bubble_dismiss_time = 0;
-	data.exist_remind = true;
+	data.exist_remind = false;
 	data.image_dismiss_time = 0;
 	data.image = '';
 	data.tag_image_english = '';
