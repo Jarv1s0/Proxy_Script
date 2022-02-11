@@ -1,4 +1,4 @@
-const version = 'v0106.1';
+const version = 'v0211.1';
 
 let $ = new nobyda();
 let storeMainConfig = $.read('mainConfig');
@@ -6,7 +6,7 @@ let storeItemMenusConfig = $.read('itemMenusConfig');
 
 //主要的选项配置
 const mainConfig = storeMainConfig ? JSON.parse(storeMainConfig) : {
-	isDebug: false,						//开启调试，会打印运行中部分日志
+	isDebug: true,						//开启调试，会打印运行中部分日志
 	//个人中心配置，其中多数是可以直接在更多功能里直接移除
 	removeHomeVip: true,				//个人中心头像旁边的vip样式
 	removeHomeCreatorTask: true,		//个人中心创作者中心下方的轮播图
@@ -35,7 +35,7 @@ const mainConfig = storeMainConfig ? JSON.parse(storeMainConfig) : {
 	profileSkin1: ["http://ww4.sinaimg.cn/mw690/acf865f8ly1geywm0xiz9g2074074tbk.gif","http://ww4.sinaimg.cn/mw690/acf865f8ly1geywm0l1jsg2074074ab7.gif","http://ww4.sinaimg.cn/mw690/acf865f8ly1geywm0f40qg2074074myw.gif","http://ww4.sinaimg.cn/mw690/acf865f8ly1geywm08lc7g2074074q5v.gif","http://ww4.sinaimg.cn/mw690/acf865f8ly1geywlzuuo5g2074074n01.gif","http://ww4.sinaimg.cn/mw690/acf865f8ly1geywlzl7oqg207407476m.gif","http://ww4.sinaimg.cn/mw690/acf865f8ly1geywlzawwmg207407441d.gif","http://ww4.sinaimg.cn/mw690/acf865f8ly1geywlyvqu3g2074074goe.gif"],
 	profileSkin2: ["http://ww4.sinaimg.cn/mw690/acf865f8ly1geywluvq88g2074074gol.gif","http://ww4.sinaimg.cn/mw690/acf865f8ly1geywlu5xujg2074074gok.gif","http://ww4.sinaimg.cn/mw690/acf865f8ly1geywltdtcgg207407477b.gif","http://ww4.sinaimg.cn/mw690/acf865f8ly1geywlt2k73g2074074dhg.gif"],
 
-	tabIconVersion: 10,	//配置大于100的数
+	tabIconVersion: 0,	//配置大于100的数
 	tabIconPath: "http://r1j12u5w9.hn-bkt.clouddn.com/skin-hebe1.zip",	//配置图标路径
 }
 
