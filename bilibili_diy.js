@@ -153,11 +153,6 @@ if (magicJS.read(blackKey)) {
             delete obj["data"]["sections_v2"][index].be_up_title;
             delete obj["data"]["sections_v2"][index].tip_icon;
             delete obj["data"]["sections_v2"][index].tip_title;
-            //2022-02-16 add by ddgksf2013
-            
-            if(obj.data.sections_v2.length=0)
-            {obj.data.sections_v2[2].items[0].title='公眾號';
-            obj.data.sections_v2[2].items[1].title='墨魚手記';}
             delete obj.data.vip_section_v2;
             delete obj.data.vip_section;
             obj["data"]["sections_v2"][index]["items"] = items;
