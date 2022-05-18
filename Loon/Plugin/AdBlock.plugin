@@ -1,5 +1,27 @@
-[Rule]
+#!name=Stick Rules for Rewrite
+#!desc=常用重写规则与一些广告屏蔽，适合大部分用户，更多需求可配合其他重写规则共同使用
+#!homepage=https://github.com/GeQ1an/Rules/tree/master
+#!icon=https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Reject.png
+# 修改于 DivineEngine 的 Surge 重写 Advertising.sgmodule
+# 现已添加更多用于屏蔽广告的重写规则并将继续添加
+# 建议使用的 Loon 版本大于 2.1.19(382)
+# 2022年05月12日 03:00 UTC/GMT +8
 
+[Rewrite]
+# Redirect Google Search Service
+^https?:\/\/(www.)?(g|google)\.cn https://www.google.com 302
+^https?:\/\/(ditu|maps)\.google\.cn https://maps.google.com 302
+^https?:\/\/translate\.google\.cn https://translate.google.com 302
+
+# Redirect HTTP to HTTPS
+^https?:\/\/(www.)?taobao\.com\/ https://taobao.com/ 302
+^https?:\/\/(www.)?jd\.com\/ https://www.jd.com/ 302
+^https?:\/\/(www.)?mi\.com\/ https://www.mi.com/ 302
+^https?:\/\/you\.163\.com\/ https://you.163.com/ 302
+^https?:\/\/(www.)?suning\.com/ https://suning.com/ 302
+^https?:\/\/(www.)?yhd\.com https://yhd.com/ 302
+
+[Rule]
 #百度移动广告联盟，可能误杀
 DOMAIN-SUFFIX,mobads.baidu.com,REJECT
 #腾讯广告联盟，可能误杀
