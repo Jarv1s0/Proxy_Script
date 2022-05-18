@@ -1,11 +1,35 @@
-#!name=Stick Rules for Rewrite
-#!desc=常用重写规则与一些广告屏蔽，适合大部分用户，更多需求可配合其他重写规则共同使用
-#!homepage=https://github.com/GeQ1an/Rules/tree/master
-#!icon=https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Reject.png
-# 修改于 DivineEngine 的 Surge 重写 Advertising.sgmodule
-# 现已添加更多用于屏蔽广告的重写规则并将继续添加
+#!name=Jarvis for Rewrite
+#!desc=常用重写规则与一些广告屏蔽
 # 建议使用的 Loon 版本大于 2.1.19(382)
 # 2022年05月12日 03:00 UTC/GMT +8
+
+[Rule]
+#百度移动广告联盟，可能误杀
+DOMAIN-SUFFIX,mobads.baidu.com,REJECT
+#腾讯广告联盟，可能误杀
+DOMAIN-SUFFIX,mi.gdt.qq.com,REJECT
+DOMAIN-SUFFIX,jcollection.shuqireader.com,REJECT
+DOMAIN-SUFFIX,stats.jpush.cn,REJECT
+DOMAIN-SUFFIX,sdk.kaijiawan.com,REJECT
+#抖音
+DOMAIN-SUFFIX,amemv.com,DIRECT
+#qq群公告小程序
+DOMAIN,cdn.ark.qq.com,DIRECT
+#高德地图
+DOMAIN,optimus-ads.amap.com,REJECT
+# 下厨房
+DOMAIN,ulogs.umengcloud.com,REJECT
+DOMAIN,ulogs.umeng.com,REJECT
+DOMAIN,sdk.e.qq.com,REJECT
+DOMAIN,mi.gdt.qq.com,REJECT
+DOMAIN,open.e.kuaishou.com,REJECT
+DOMAIN,api-access.pangolin-sdk-toutiao.com,REJECT
+DOMAIN,sdk.open.talk.getui.net,REJECT
+DOMAIN,sdk.open.talk.getui.com,REJECT
+DOMAIN,errlog.umeng.com,REJECT
+DOMAIN,tnc3-aliec2.snssdk.com,REJECT
+DOMAIN,sf3-fe-tos.pglstatp-toutiao.com,REJECT
+DOMAIN,qzs.gdtimg.com,REJECT
 
 [Rewrite]
 # Redirect Google Search Service
@@ -21,11 +45,24 @@
 ^https?:\/\/(www.)?suning\.com/ https://suning.com/ 302
 ^https?:\/\/(www.)?yhd\.com https://yhd.com/ 302
 
+# > Keep
+^https?:\/\/api\.gotokeep\.com\/ads - reject-200
+
+# >> 高德地图
+^https?:\/\/m\d\.amap\.com\/ws\/valueadded\/alimama\/splash_screen\/ - reject-200
+^https?:\/\/optimus-ads\.amap\.com\/uploadimg\/ - reject-200
+^https?:\/\/render-oss-cdn\.amap\.com\/render\/studio-dev\/image\/ - reject-200
+
 #网易云广告
 #hostname=m.ads.8le8le.com,iadmusicmat.music.com
 ^https?:\/\/iadmusicmat\.music\.126\.net\/.+\.jpg _ reject
 ^http:\/\/interface\.music\.163\.com\/eapi\/ad\/config\/get _ reject
 ^https?:\//m\.ads\.8le8le\.com\/adShow _ reject
+
+# > 什么值得买
+^https?:\/\/api\.smzdm\.com\/v\d\/util\/loading - reject-200
+^https?:\/\/app-api\.smzdm\.com\/util\/loading - reject-200
+^https?:\/\/s\d\.zdmimg\.com\/www\/api\/v\d\/api\/thirdAd\.php - reject-200
 
 #高德地图广告
 ^http:\/\/ems\.youku\.com\/imp\? _ reject
@@ -39,9 +76,9 @@
 #hostname=mbd.baidu.com
 ^https:\/\/mbd\.baidu\.com\/newspage\/api\/getmobads\?page\=landingshare _ reject
 
-#京东开屏广告屏蔽(改写自surge)
-^https?:\/\/api\.m\.jd\.com\/client\.action\?functionId=start$ _ reject-array
-
+# > 京东
+^https?:\/\/api\.m\.jd.com\/client\.action\?functionId=(start|queryMaterialAdverts) - reject-200
+^https?:\/\/(bdsp-x|dsp-x)\.jd\.com\/adx\/ - reject-200
 #搬运淘宝(by gitee-木剑)
 #hostname=gw.alicdn.com,heic.alicdn.com
 ^https?:\/\/(gw|heic)\.alicdn\.com\/\w{2}s\/.+\.jpg_(9\d{2}|\d{4}) _ reject-dict
@@ -54,35 +91,6 @@
 #微信公众号广告屏蔽(By Choler)
 http-response ^https?:\/\/mp\.weixin\.qq\.com\/mp\/getappmsgad script-path=https://raw.githubusercontent.com/NobyDa/Script/master/QuantumultX/File/Wechat.js, requires-body=true, timeout=10, tag=微信公众号广告屏蔽
 
-[Rule]
-#百度移动广告联盟，可能误杀
-DOMAIN-SUFFIX,mobads.baidu.com,REJECT
-#腾讯广告联盟，可能误杀
-DOMAIN-SUFFIX,mi.gdt.qq.com,REJECT
-DOMAIN-SUFFIX,jcollection.shuqireader.com,REJECT
-DOMAIN-SUFFIX,stats.jpush.cn,REJECT
-DOMAIN-SUFFIX,sdk.kaijiawan.com,REJECT
-#抖音
-DOMAIN-SUFFIX,amemv.com,DIRECT
-#qq群公告小程序
-DOMAIN,cdn.ark.qq.com,DIRECT
-
-#高德地图
-DOMAIN,optimus-ads.amap.com,REJECT
-
-# 下厨房
-DOMAIN,ulogs.umengcloud.com,REJECT
-DOMAIN,ulogs.umeng.com,REJECT
-DOMAIN,sdk.e.qq.com,REJECT
-DOMAIN,mi.gdt.qq.com,REJECT
-DOMAIN,open.e.kuaishou.com,REJECT
-DOMAIN,api-access.pangolin-sdk-toutiao.com,REJECT
-DOMAIN,sdk.open.talk.getui.net,REJECT
-DOMAIN,sdk.open.talk.getui.com,REJECT
-DOMAIN,errlog.umeng.com,REJECT
-DOMAIN,tnc3-aliec2.snssdk.com,REJECT
-DOMAIN,sf3-fe-tos.pglstatp-toutiao.com,REJECT
-DOMAIN,qzs.gdtimg.com,REJECT
 
 [MITM]
-hostname = appconf.mail.163.com,analytics.163.com,mbd.baidu.com,m.ads.8le8le.com,iadmusicmat.music.com,ma-adx.ctrip.com,m.ctrip.com,api.m.jd.com,mp.weixin.qq.com,mi.gdt.qq.com,mobads.baidu.com, gw.alicdn.com, heic.alicdn.com,
+hostname = appconf.mail.163.com,analytics.163.com,mbd.baidu.com,m.ads.8le8le.com,iadmusicmat.music.com,ma-adx.ctrip.com,m.ctrip.com,api.m.jd.com,mp.weixin.qq.com,mi.gdt.qq.com,mobads.baidu.com, gw.alicdn.com, heic.alicdn.com, *.google.cn, api.gotokeep.com, m*.amap.com,optimus-ads.amap.com,render-oss-cdn.amap.com, ap*.smzdm.com,
