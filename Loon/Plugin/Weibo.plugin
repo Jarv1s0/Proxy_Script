@@ -4,7 +4,7 @@
 
 [Script]
 # > 微博个人信息
-#http-response ^https?:\/\/api\.weibo\.cn\/2\/profile\?gsid= script-path=https://hub.nan.ge/Script/Weibo/Profile.js, requires-body=true, timeout=10, tag=主页
+http-response ^https?:\/\/api\.weibo\.cn\/2\/profile\?gsid= script-path=https://hub.nan.ge/Script/Weibo/Profile.js, requires-body=true, timeout=10, tag=主页
 
 http-response ^https?:\/\/api\.weibo\.cn\/2\/users\/(show|relation) script-path=https://hub.nan.ge/Script/Weibo/UserShow.js, requires-body=true, timeout=10, tag=个人信息
 
