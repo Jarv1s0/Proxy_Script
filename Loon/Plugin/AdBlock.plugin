@@ -31,6 +31,7 @@ DOMAIN,tnc3-aliec2.snssdk.com,REJECT
 DOMAIN,sf3-fe-tos.pglstatp-toutiao.com,REJECT
 DOMAIN,qzs.gdtimg.com,REJECT
 
+[Rewrite]
 # > Keep
 ^https?:\/\/api\.gotokeep\.com\/ads - reject-200
 
