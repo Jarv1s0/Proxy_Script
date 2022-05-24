@@ -3,19 +3,6 @@
 #!icon=https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Reject.png
 # 建议使用的 Loon 版本大于 2.1.19(382)
 # 2022年05月12日 03:00 UTC/GMT +8
-[URL Rewrite]
-# Redirect Google Search Service
-^https?:\/\/(www.)?(g|google)\.cn https://www.google.com 302
-^https:\/\/www\.google\.co\.jp https://www.google.com 302
-^https:\/\/www\.google\.com\.hk\/ https://www.google.com/ncr 302
-
-# Redirect HTTP to HTTPS
-^https?:\/\/(www.)?taobao\.com\/ https://taobao.com/ 302
-^https?:\/\/(www.)?jd\.com\/ https://www.jd.com/ 302
-^https?:\/\/(www.)?mi\.com\/ https://www.mi.com/ 302
-^https?:\/\/you\.163\.com\/ https://you.163.com/ 302
-^https?:\/\/(www.)?suning\.com/ https://suning.com/ 302
-^https?:\/\/(www.)?yhd\.com https://yhd.com/ 302
 
 [Rule]
 #百度移动广告联盟，可能误杀
@@ -46,6 +33,19 @@ DOMAIN,sf3-fe-tos.pglstatp-toutiao.com,REJECT
 DOMAIN,qzs.gdtimg.com,REJECT
 
 [Rewrite]
+# Redirect Google Search Service
+^https?:\/\/(www.)?(g|google)\.cn https://www.google.com 302
+^https:\/\/www\.google\.co\.jp https://www.google.com 302
+^https:\/\/www\.google\.com\.hk\/ https://www.google.com/ncr 302
+
+# Redirect HTTP to HTTPS
+^https?:\/\/(www.)?taobao\.com\/ https://taobao.com/ 302
+^https?:\/\/(www.)?jd\.com\/ https://www.jd.com/ 302
+^https?:\/\/(www.)?mi\.com\/ https://www.mi.com/ 302
+^https?:\/\/you\.163\.com\/ https://you.163.com/ 302
+^https?:\/\/(www.)?suning\.com/ https://suning.com/ 302
+^https?:\/\/(www.)?yhd\.com https://yhd.com/ 302
+
 # > Keep
 ^https?:\/\/api\.gotokeep\.com\/ads - reject-200
 
