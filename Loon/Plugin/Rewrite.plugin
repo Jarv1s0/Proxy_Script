@@ -1,6 +1,6 @@
-#!name=Jarvis for Rewrite
-#!desc=常用重写
-#!icon=https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Google_Search.png
+#!name=Jarvis 
+#!desc=重写和广告屏蔽
+#!icon=https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Reject.png
 # 建议使用的 Loon 版本大于 2.1.19(382)
 # 2022年05月12日 03:00 UTC/GMT +8
 [URL Rewrite]
@@ -17,5 +17,96 @@
 ^https?:\/\/(www.)?suning\.com/ https://suning.com/ 302
 ^https?:\/\/(www.)?yhd\.com https://yhd.com/ 302
 
+[Rule]
+#百度移动广告联盟，可能误杀
+DOMAIN-SUFFIX,mobads.baidu.com,REJECT
+#腾讯广告联盟，可能误杀
+DOMAIN-SUFFIX,mi.gdt.qq.com,REJECT
+DOMAIN-SUFFIX,jcollection.shuqireader.com,REJECT
+DOMAIN-SUFFIX,stats.jpush.cn,REJECT
+DOMAIN-SUFFIX,sdk.kaijiawan.com,REJECT
+#抖音
+DOMAIN-SUFFIX,amemv.com,DIRECT
+#qq群公告小程序
+DOMAIN,cdn.ark.qq.com,DIRECT
+#高德地图
+#DOMAIN,optimus-ads.amap.com,REJECT
+#下厨房
+DOMAIN,ulogs.umengcloud.com,REJECT
+DOMAIN,ulogs.umeng.com,REJECT
+DOMAIN,sdk.e.qq.com,REJECT
+DOMAIN,mi.gdt.qq.com,REJECT
+DOMAIN,open.e.kuaishou.com,REJECT
+DOMAIN,api-access.pangolin-sdk-toutiao.com,REJECT
+DOMAIN,sdk.open.talk.getui.net,REJECT
+DOMAIN,sdk.open.talk.getui.com,REJECT
+DOMAIN,errlog.umeng.com,REJECT
+DOMAIN,tnc3-aliec2.snssdk.com,REJECT
+DOMAIN,sf3-fe-tos.pglstatp-toutiao.com,REJECT
+DOMAIN,qzs.gdtimg.com,REJECT
+
+[Rewrite]
+# > Keep
+^https?:\/\/api\.gotokeep\.com\/ads - reject-200
+
+# >> 高德地图
+^https?:\/\/m\d\.amap\.com\/ws\/valueadded\/alimama\/splash_screen\/ - reject-200
+^https?:\/\/optimus-ads\.amap\.com\/uploadimg\/ - reject-200
+^https?:\/\/render-oss-cdn\.amap\.com\/render\/studio-dev\/image\/ - reject-200
+
+#网易云广告
+#hostname=m.ads.8le8le.com,iadmusicmat.music.com
+^https?:\/\/iadmusicmat\.music\.126\.net\/.+\.jpg _ reject
+^http:\/\/interface\.music\.163\.com\/eapi\/ad\/config\/get _ reject
+^https?:\//m\.ads\.8le8le\.com\/adShow _ reject
+
+# > 什么值得买
+^https?:\/\/api\.smzdm\.com\/v\d\/util\/loading - reject-200
+^https?:\/\/app-api\.smzdm\.com\/util\/loading - reject-200
+^https?:\/\/s\d\.zdmimg\.com\/www\/api\/v\d\/api\/thirdAd\.php - reject-200
+
+#高德地图广告
+^https?:\/\/m\d\.amap\.com\/ws\/valueadded\/alimama\/splash_screen\/ - reject-200
+^https?:\/\/optimus-ads\.amap\.com\/uploadimg\/ - reject-200
+^https?:\/\/render-oss-cdn\.amap\.com\/render\/studio-dev\/image\/ - reject-200
+#携程广告
+#hostname=ma-adx.ctrip.com,m.ctrip.com
+^https:\/\/ma-adx\.ctrip\.com\/_ma\.gif _ reject
+^https:\/\/m\.ctrip\.com\/restapi\/.+\/json\/tripAds _ reject
+^https:\/\/m\.ctrip\.com\/html5\/webresource\/js\/iscroll\.js$ _ reject
+#
+#hostname=mbd.baidu.com
+^https:\/\/mbd\.baidu\.com\/newspage\/api\/getmobads\?page\=landingshare _ reject
+
+# > 美团
+^https?:\/\/img\.meituan\.net\/(adunion|display|midas)\/.+\.(gif|jpg|jpg\.webp)$ - reject-200
+^https?:\/\/p\d\.meituan\.net\/wmbanner\/[A-Za-z0-9]+\.jpg - reject-200
+^https?:\/\/p\d\.meituan\.net\/movie\/[A-Za-z0-9]+\.jpg\?may_covertWebp - reject-200
+^https?:\/\/s3plus\.meituan\.net\/.+\/linglong\/.+\.(gif|jpg|mp4) - reject-200
+# > 拼多多
+^https?:\/\/api\.yangkeduo\.com\/api\/cappuccino\/splash - reject-200
+# > 京东
+^https?:\/\/api\.m\.jd.com\/client\.action\?functionId=(start|queryMaterialAdverts) - reject-200
+^https?:\/\/(bdsp-x|dsp-x)\.jd\.com\/adx\/ - reject-200
+#搬运淘宝(by gitee-木剑)
+#hostname=gw.alicdn.com,heic.alicdn.com
+^https?:\/\/(gw|heic)\.alicdn\.com\/\w{2}s\/.+\.jpg_(9\d{2}|\d{4}) _ reject-dict
+^https?:\/\/(gw|heic)\.alicdn\.com\/imgextra\/.+\d{4}-\d{4}\.jpg_(9\d{2}|\d{4}) _ reject-dict
+
+# > 下厨房
+^https?:\/\/api\.xiachufang\.com\/v\d\/ad/ - reject-200
+
+#backiee
+^https:\/\/www\.google\.com\.hk\/ads _ reject
+
+
+[Script]
+#微信公众号广告屏蔽(By Choler)
+http-response ^https?:\/\/mp\.weixin\.qq\.com\/mp\/getappmsgad script-path=https://raw.githubusercontent.com/NobyDa/Script/master/QuantumultX/File/Wechat.js, requires-body=true, timeout=10, tag=微信公众号广告屏蔽
+# 微信打不开的链接会进行跳转，包括抖音淘宝等链接甚至可扫描支付宝二维码
+http-response ^https?:\/\/weixin110\.qq\.com\/cgi-bin\/mmspamsupport-bin\/newredirectconfirmcgi,requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/HotKids/Rules/master/Script/weixin110.js
+
+
+
 [MITM]
-hostname = *.google.com.hk ,*.g.cn,*.google.cn ,*.google.co.jp
+hostname = appconf.mail.163.com,analytics.163.com,mbd.baidu.com,m.ads.8le8le.com,iadmusicmat.music.com,ma-adx.ctrip.com,m.ctrip.com,api.m.jd.com,mp.weixin.qq.com,mi.gdt.qq.com,mobads.baidu.com, gw.alicdn.com, heic.alicdn.com, api.gotokeep.com, m*.amap.com,optimus-ads.amap.com,render-oss-cdn.amap.com, ap*.smzdm.com, flowplus.meituan.net, api.pinduoduo.com, api.xiachufang.com, weixin110.qq.com, *.google.com.hk ,*.g.cn,*.google.cn ,*.google.co.jp
