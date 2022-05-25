@@ -32,7 +32,7 @@ DOMAIN,tnc3-aliec2.snssdk.com,REJECT
 DOMAIN,sf3-fe-tos.pglstatp-toutiao.com,REJECT
 DOMAIN,qzs.gdtimg.com,REJECT
 
-[Rewrite]
+[Url Rewrite]
 # Redirect Google Search Service
 ^https?:\/\/(www.)?(g|google)\.cn https://www.google.com 302
 ^https:\/\/www\.google\.co\.jp https://www.google.com 302
@@ -105,8 +105,6 @@ DOMAIN,qzs.gdtimg.com,REJECT
 http-response ^https?:\/\/mp\.weixin\.qq\.com\/mp\/getappmsgad script-path=https://raw.githubusercontent.com/NobyDa/Script/master/QuantumultX/File/Wechat.js, requires-body=true, timeout=10, tag=微信公众号广告屏蔽
 # 微信打不开的链接会进行跳转，包括抖音淘宝等链接甚至可扫描支付宝二维码
 http-response ^https?:\/\/weixin110\.qq\.com\/cgi-bin\/mmspamsupport-bin\/newredirectconfirmcgi,requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/HotKids/Rules/master/Script/weixin110.js
-
-
 
 [MITM]
 hostname = appconf.mail.163.com,analytics.163.com,mbd.baidu.com,m.ads.8le8le.com,iadmusicmat.music.com,ma-adx.ctrip.com,m.ctrip.com,api.m.jd.com,mp.weixin.qq.com,mi.gdt.qq.com,mobads.baidu.com, gw.alicdn.com, heic.alicdn.com, api.gotokeep.com, m*.amap.com,optimus-ads.amap.com,render-oss-cdn.amap.com, ap*.smzdm.com, flowplus.meituan.net, api.pinduoduo.com, api.xiachufang.com, weixin110.qq.com, *.google.com.hk ,*.g.cn,*.google.cn ,*.google.co.jp
