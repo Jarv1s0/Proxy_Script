@@ -23,7 +23,7 @@ http-response ^https?://m?api\.weibo\.c(n|om)/2/(statuses/(unread|extend|positiv
  
 http-response (^https?:\/\/js\.t\.sinajs\.cn\/c2p\/sam\/frontend\/assets\/walletcache\.json|^https?:\/\/pay\.sc\.weibo\.com\/api\/client\/sdk\/app\/indexnew\/(index|person)|^https?:\/\/shop\.sc\.weibo\.com\/aj\/h5\/order\/center) script-path=https://hub.nan.ge/Script/Weibo/Wallet.js, requires-body=true, timeout=10, tag=微博钱包
 
-cron "0 0 1 ? * MON"" script-path=https://hub.nan.ge/Script/Weibo/Config.js, tag=微博去广告配置
+cron "0 0 1 ? * MON" script-path=https://hub.nan.ge/Script/Weibo/Config.js, tag=微博去广告配置
 
 [MITM]
 hostname = %APPEND% *.uve.weibo.com, api.weibo.cn, api.weibo.com, mapi.weibo.com, mapi.weibo.cn, h5.sinaimg.cn, new.vip.weibo.cn, *.sc.weibo.com, captcha.weibo.com, wx*.sinaimg.cn, js.t.sinajs.cn
