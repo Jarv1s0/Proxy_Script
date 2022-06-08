@@ -1,6 +1,9 @@
 #!name=微博去广告
-#!desc=微博官方APP净化.
-#!icon=https://raw.githubusercontent.com/Tartarus2014/For-own-use/master/Color/WeiBo.png
+#!desc=微博官方APP净化
+#!icon=https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Weibo.png
+#参考https://github.com/xOS/Config/blob/Her/Module/General/Weibo.sgmodule
+#参考https://github.com/Tartarus2014/For-own-use/blob/master/Loon/Plugin/WeiboAds.plugin
+
 [Rule]
 # > 微博其它
 URL-REGEX,^https?:\/\/.+\/wbts\.png$,REJECT
