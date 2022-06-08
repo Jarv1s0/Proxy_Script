@@ -4,27 +4,6 @@
 #参考https://github.com/xOS/Config/blob/Her/Module/General/Weibo.sgmodule
 #参考https://github.com/Tartarus2014/For-own-use/blob/master/Loon/Plugin/WeiboAds.plugin
 
-[Rule]
-# > 微博其它
-URL-REGEX,^https?:\/\/.+\/wbts\.png$,REJECT
-URL-REGEX,^https?:\/\/.+\/licai\.png$,REJECT
-URL-REGEX,^https?:\/\/.+\/3fc\.png$,REJECT
-URL-REGEX,^https?:\/\/.+\/pull-flv-(.*)\.douyincdn\.com\/stage\/.+\.flv,REJECT
-URL-REGEX,^https?:\/\/h5\.sinaimg\.cn\/upload\/.+\/NavigationBar_Video_Icon_Live_Normal\.png$,REJECT
-URL-REGEX,^https?:\/\/.+\.sinaimg\.cn\/.+\/(.*)?(fish|redicon|redpacket)(.*)?\.(png|jpg|jpeg|gif)$,REJECT
-URL-REGEX,^https?:\/\/.+\.sinaimg\.cn\/.+\/lipin_dongtu\.gif$,REJECT
-# URL-REGEX,^https?:\/\/h5\.sinaimg\.cn\/upload\/1071\/1468\/.+\/.+\.gif$,REJECT
-URL-REGEX,^https?:\/\/h5\.sinaimg\.cn\/m\/taskcenter,REJECT
-URL-REGEX,^https?:\/\/h5\.sinaimg\.cn\/m\/taskcenter\/js\/vendor\.+\.js$,REJECT
-URL-REGEX,^https?:\/\/h5\.sinaimg\.cn\/m\/taskcenter\/js\/app\.+\.js$,REJECT
-URL-REGEX,^https?:\/\/h5\.sinaimg\.cn\/m\/taskcenter\/js\/0\.+\.js$,REJECT
-URL-REGEX,^https?:\/\/h5\.sinaimg\.cn\/m\/taskcenter\/js\/index\.lazy\.+\.js$,REJECT
-URL-REGEX,^https?:\/\/h5\.sinaimg\.cn\/m\/taskcenter\/js\/app\.+\.js$,REJECT
-URL-REGEX,^https?:\/\/h5\.sinaimg\.cn\/m\/taskcenter\/js\/vendor\.+\.js$,REJECT
-URL-REGEX,^https?:\/\/captcha\.weibo\.com\/static\/js\/jigsawLock\.min\.js$,REJECT
-URL-REGEX,^https?:\/\/wx[0-9]\.sinaimg\.cn\/large\/.+\.gif$,REJECT
-
-
 [Script]
 # > 微博个人信息
 http-response ^https?:\/\/api\.weibo\.cn\/2\/profile\?gsid= script-path=https://hub.nan.ge/Script/Weibo/Profile.js, requires-body=true, timeout=10, tag=主页
