@@ -13,7 +13,7 @@ http-response ^https?:\/\/new\.vip\.weibo\.cn\/aj\/vipcenter\/home script-path=h
 http-response ^https?:\/\/api\.weibo\.cn\/2\/(direct_messages\/user_list|messageflow\/notice)\?gsid= script-path=https://hub.nan.ge/Script/Weibo/Message.js, requires-body=true, timeout=10, tag=消息列表
 
 # > 微博去广告
-http-response ^https?://m?api\.weibo\.c(n|om)/2/(profile/(me|statuses)|searchall|statuses/(unread_hot_timeline|extend|video_mixtimeline)|video/(community_tab|remind_info|tiny_stream_video_list)|checkin/show|container/get_item|search/container_discover),requires-body=1,max-size=0,script-path=https://hub.qste.com/Script/Weibo/Weibo.js, requires-body=true, timeout=10, tag=扩展
+http-response ^https?://m?api\.weibo\.c(n|om)/2/(profile/(me|statuses)|searchall|statuses/(unread_hot_timeline|extend|video_mixtimeline)|video/(community_tab|remind_info|tiny_stream_video_list)|checkin/show|container/get_item|search/container_discover) script-path=https://hub.qste.com/Script/Weibo/Weibo.js, requires-body=true, timeout=10, tag=扩展
 
 http-response ^https?://(sdk|wb)app\.uve\.weibo\.com(/interface/sdk/sdkad.php|/wbapplua/wbpullad.lua) script-path=https://hub.nan.ge/Script/Weibo/Launch.js, requires-body=true, timeout=10, tag=开屏
 
