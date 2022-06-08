@@ -21,6 +21,49 @@ URL-REGEX,^https?:\/\/h5\.sinaimg\.cn\/m\/taskcenter\/js\/vendor\.+\.js$,REJECT
 URL-REGEX,^https?:\/\/captcha\.weibo\.com\/static\/js\/jigsawLock\.min\.js$,REJECT
 URL-REGEX,^https?:\/\/wx[0-9]\.sinaimg\.cn\/large\/.+\.gif$,REJECT
 
+[Map Local]
+# > 微博
+^https?:\/\/h5\.sinaimg\.cn\/upload\/.+\/fhy_dongtu\.gif$ data="https://hub.qste.com/Mock/Weibo/hy_dongtu.gif"
+^https?:\/\/h5\.sinaimg\.cn\/upload\/.+\/bianjijiantou\.png$ data="https://hub.qste.com/Mock/Weibo/jiantougaocheng.png"
+^https?:\/\/h5\.sinaimg\.cn\/upload\/.+\/Vip\.png$ data="https://hub.qste.com/Mock/Weibo/avatar_vip_golden.png"
+^https?:\/\/h5\.sinaimg\.cn\/upload\/.+\/vip[0-9]_default\.png$ data="https://hub.qste.com/Mock/Weibo/feed_icon_100vip_7_default.png"
+
+# > 微博积分弹窗
+^https?:\/\/luck\.sc\.weibo\.com\/aj\/Action\/indexInfo$ data="https://hub.qste.com/Mock/Blank/Blank_Dict.json"
+
+# > 微博推荐
+^https?:\/\/api\.weibo\.cn\/2\/statuses\/unread_hot_timeline\?gsid= data="https://hub.qste.com/Mock/Blank/Blank_Dict.json"
+
+# > 微博发现
+^https?:\/\/api\.weibo\.cn\/2\/search\/container_discover\?gsid= data="https://hub.qste.com/Mock/Blank/Blank_Dict.json"
+
+# > 微博网络检测
+^https?:\/\/api\.weibo\.cn\/2\/carrier\/get\/info data="https://hub.qste.com/Mock/Weibo/carrier.json"
+
+# > 微博订单
+^https?:\/\/shop\.sc\.weibo\.com\/aj\/h5\/order\/prolist data="https://hub.qste.com/Mock/Blank/Blank_Dict.json"
+
+# > 微博视频推荐
+^https?:\/\/(m?api)\.weibo\.(cn|com)\/2\/video\/redpacket data="https://hub.qste.com/Mock/Blank/Blank_Dict.json"
+^https?:\/\/(m?api)\.weibo\.(cn|com)\/2\/video\/community_tab data="https://hub.qste.com/Mock/Blank/Blank_Dict.json"
+^https?:\/\/(m?api)\.weibo\.(cn|com)\/2\/!\/multimedia\/playback\/batch_get data="https://hub.qste.com/Mock/Blank/Blank_Dict.json"
+^https?:\/\/(m?api)\.weibo\.(cn|com)\/2\/!\/multimedia\/video\/comments\/get_comments_order_by_hot data="https://hub.qste.com/Mock/Blank/Blank_Dict.json"
+^https?:\/\/(m?api)\.weibo\.(cn|com)\/2\/video\/tiny_stream_channel_list data="https://hub.qste.com/Mock/Blank/Blank_Dict.json"
+^https?:\/\/(m?api)\.weibo\.(cn|com)\/2\/video\/tiny_stream_video_list data="https://hub.qste.com/Mock/Blank/Blank_Dict.json"
+
+# > 微博其它
+^https?:\/\/api\.weibo\.cn\/2\/!\/multimedia\/video\/red_package\/grow_follower\/active_uids data="https://hub.qste.com/Mock/Blank/Blank_Dict.json"
+^https?:\/\/api\.weibo\.cn\/2\/client\/tabbar data="https://hub.qste.com/Mock/Blank/Blank_Dict.json"
+^https?:\/\/api\.weibo\.cn\/2\/push\/daily data="https://hub.qste.com/Mock/Blank/Blank_Dict.json"
+^https?:\/\/api\.weibo\.cn\/2\/page\/get_fragment data="https://hub.qste.com/Mock/Blank/Blank_Dict.json"
+^https?:\/\/api\.weibo\.cn\/2\/push\/active data="https://hub.qste.com/Mock/Blank/Blank_Dict.json"
+^https?:\/\/m\.weibo\.cn\/c\/checkin data="https://hub.qste.com/Mock/Blank/Blank_Dict.json"
+^https?:\/\/api\.weibo\.cn\/2\/video\/machine data="https://hub.qste.com/Mock/Blank/Blank_Dict.json"
+^https?:\/\/fastimage\.uve\.weibo\.com\/interface\/sdk\/getad\.php$ data="https://hub.qste.com/Mock/Weibo/fastimage.json"
+^https?:\/\/sdkapp\.uve\.weibo\.com\/interface\/sdk\/actionpro\.php data="https://hub.qste.com/Mock/Blank/Blank_Dict.json"
+^https?:\/\/sdkclick\.uve\.weibo\.com\/interface\/sdk\/sdkclick\.php data="https://hub.qste.com/Mock/Blank/Blank_Dict.json"
+^https?:\/\/sdkapp\.uve\.weibo\.com\/interface\/sdk\/sdkconfig\.php data="https://hub.qste.com/Mock/Blank/Blank_Dict.json"
+
 
 
 [Script]
@@ -32,13 +75,6 @@ http-response ^https?:\/\/api\.weibo\.cn\/2\/users\/(show|relation) script-path=
 http-response ^https?:\/\/new\.vip\.weibo\.cn\/aj\/vipcenter\/home script-path=https://hub.nan.ge/Script/Weibo/VIPCenter.js, requires-body=true, timeout=10, tag=会员中心
 
 http-response ^https?:\/\/api\.weibo\.cn\/2\/(direct_messages\/user_list|messageflow\/notice)\?gsid= script-path=https://hub.nan.ge/Script/Weibo/Message.js, requires-body=true, timeout=10, tag=消息列表
-
-
-
-
-http-response ^https?:\/\/(www.)?(example)\.com script-path=https://example.com/loon.js,timeout=10,requires-body = true,tag = responseScript,enable=true
-
-
 
 # > 微博去广告
 http-response ^https?://m?api\.weibo\.c(n|om)/2/(profile/(me|statuses)|searchall|statuses/(unread_hot_timeline|extend|video_mixtimeline)|video/(community_tab|remind_info|tiny_stream_video_list)|checkin/show|container/get_item) script-path=https://hub.nan.ge/Script/Weibo/Weibo.js, requires-body=true, timeout=10, tag=扩展
