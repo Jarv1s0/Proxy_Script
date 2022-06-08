@@ -2,7 +2,7 @@
 #!desc=重写和广告屏蔽
 #!icon=https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Reject.png
 # 建议使用的 Loon 版本大于 2.1.19(382)
-# 2022年05月12日 03:00 UTC/GMT +8
+# 2022年06月8日 03:00 UTC/GMT +8
 
 [Rule]
 #百度移动广告联盟，可能误杀
