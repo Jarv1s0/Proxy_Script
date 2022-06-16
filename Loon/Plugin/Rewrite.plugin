@@ -7,6 +7,55 @@
 [MITM]
 hostname = appconf.mail.163.com,analytics.163.com,mbd.baidu.com,m.ads.8le8le.com,iadmusicmat.music.com,ma-adx.ctrip.com,m.ctrip.com,api.m.jd.com,mp.weixin.qq.com,mi.gdt.qq.com,mobads.baidu.com, gw.alicdn.com, heic.alicdn.com, api.gotokeep.com, m*.amap.com,optimus-ads.amap.com,render-oss-cdn.amap.com, ap*.smzdm.com, flowplus.meituan.net, api.pinduoduo.com, api.xiachufang.com, weixin110.qq.com, *.google.com.hk ,*.g.cn,*.google.cn ,*.google.co.jp, www.xiaohongshu.com， gab.122.gov.cn, testflight.apple.com
 
+[Rule]
+#百度移动广告联盟，可能误杀
+DOMAIN-SUFFIX,mobads.baidu.com,REJECT
+
+#腾讯广告联盟，可能误杀
+DOMAIN-SUFFIX,mi.gdt.qq.com,REJECT
+DOMAIN-SUFFIX,jcollection.shuqireader.com,REJECT
+DOMAIN-SUFFIX,stats.jpush.cn,REJECT
+DOMAIN-SUFFIX,sdk.kaijiawan.com,REJECT
+
+#高德地图
+DOMAIN,optimus-ads.amap.com,REJECT
+DOMAIN,optimus-ads.amap.com.w.alikunlun.com,REJECT
+URL-REGEX,^https?+:\/\/m\d\.amap\.com\/ws\/valueadded\/alimama\/splash_screen\/,REJECT
+
+#抖音
+DOMAIN-SUFFIX,amemv.com,DIRECT
+
+#qq群公告小程序
+DOMAIN,cdn.ark.qq.com,DIRECT
+
+#下厨房
+DOMAIN,ulogs.umengcloud.com,REJECT
+DOMAIN,ulogs.umeng.com,REJECT
+DOMAIN,sdk.e.qq.com,REJECT
+DOMAIN,mi.gdt.qq.com,REJECT
+DOMAIN,open.e.kuaishou.com,REJECT
+DOMAIN,api-access.pangolin-sdk-toutiao.com,REJECT
+DOMAIN,sdk.open.talk.getui.net,REJECT
+DOMAIN,sdk.open.talk.getui.com,REJECT
+DOMAIN,errlog.umeng.com,REJECT
+DOMAIN,tnc3-aliec2.snssdk.com,REJECT
+DOMAIN,sf3-fe-tos.pglstatp-toutiao.com,REJECT
+DOMAIN,qzs.gdtimg.com,REJECT
+#央视频开头广告
+URL-REGEX,^https?:\/\/adstore-(.*).file.myqcloud.com\?,REJECT
+DOMAIN-SUFFIX,adstore-1252524079.file.myqcloud.com,REJECT
+#央视频开屏广告
+URL-REGEX,^https?:\/\/adstore-index-(.*).file.myqcloud.com\?,REJECT
+DOMAIN-SUFFIX,adstore-index-1252524079.file.myqcloud.com,REJECT
+#京东，去启动广告
+URL-REGEX,^https?:\/\/api\.m\.jd\.com\/client\.action\?functionId=start$,REJECT-TINYGIF
+# > 微信
+URL-REGEX,^https?:\/\/resstatic\.servicewechat\.com\/weapp\/release_,REJECT
+URL-REGEX,^https?:\/\/wxsnsdythumb\.wxs\.qq\.com\/.+\/snscosdownload\/SZ\/reserved,REJECT
+URL-REGEX,^https?:\/\/dlied(.*).cdntips.net,REJECT
+URL-REGEX,^https?+:\/\/mp\.weixin\.qq\.com\/mp\/(?>ad_|advertisement|getappmsgad),REJECT
+
+
 [Rewrite]
 # Redirect Google Search Service
 ^https?:\/\/(www.)?(g|google)\.cn https://www.google.com 302
@@ -34,8 +83,9 @@ hostname = appconf.mail.163.com,analytics.163.com,mbd.baidu.com,m.ads.8le8le.com
 # > AMap - amap-aos-info-nogw.amap.com,m*.amap.com,optimus-ads.amap.com,render-oss-cdn.amap.com
 ^https?:\/\/amap\-aos\-info\-nogw\.amap\.com\/ws\/aos\/alimama\/ - reject-200
 ^https?:\/\/m\d\.amap\.com\/ws\/valueadded\/alimama\/splash_screen\/ - reject-200
-^https?:\/\/optimus-ads\.amap\.com\/uploadimg\/ - reject-200
 ^https?:\/\/render-oss-cdn\.amap\.com\/render\/studio-dev\/image\/ - reject-200
+^http:\/\/ems\.youku\.com\/imp\? - reject
+^http:\/\/optimus-ads\.amap\.com\/uploadimg\/.+ - reject
 
 # > NetEase CloudMusic - interface*.music.163.com
 ^https?:\/\/interface(\d)?.music.163.com\/eapi\/ad\/ - reject-200
@@ -78,36 +128,6 @@ hostname = appconf.mail.163.com,analytics.163.com,mbd.baidu.com,m.ads.8le8le.com
 
 # > 下厨房
 ^https?:\/\/api\.xiachufang\.com\/v\d\/ad/ - reject-200
-
-[Rule]
-#百度移动广告联盟，可能误杀
-DOMAIN-SUFFIX,mobads.baidu.com,REJECT
-
-#腾讯广告联盟，可能误杀
-DOMAIN-SUFFIX,mi.gdt.qq.com,REJECT
-DOMAIN-SUFFIX,jcollection.shuqireader.com,REJECT
-DOMAIN-SUFFIX,stats.jpush.cn,REJECT
-DOMAIN-SUFFIX,sdk.kaijiawan.com,REJECT
-
-#抖音
-DOMAIN-SUFFIX,amemv.com,DIRECT
-
-#qq群公告小程序
-DOMAIN,cdn.ark.qq.com,DIRECT
-
-#下厨房
-DOMAIN,ulogs.umengcloud.com,REJECT
-DOMAIN,ulogs.umeng.com,REJECT
-DOMAIN,sdk.e.qq.com,REJECT
-DOMAIN,mi.gdt.qq.com,REJECT
-DOMAIN,open.e.kuaishou.com,REJECT
-DOMAIN,api-access.pangolin-sdk-toutiao.com,REJECT
-DOMAIN,sdk.open.talk.getui.net,REJECT
-DOMAIN,sdk.open.talk.getui.com,REJECT
-DOMAIN,errlog.umeng.com,REJECT
-DOMAIN,tnc3-aliec2.snssdk.com,REJECT
-DOMAIN,sf3-fe-tos.pglstatp-toutiao.com,REJECT
-DOMAIN,qzs.gdtimg.com,REJECT
 
 [Script]
 # TF 下载
