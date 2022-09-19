@@ -80,12 +80,13 @@ URL-REGEX,^https?+:\/\/mp\.weixin\.qq\.com\/mp\/(?>ad_|advertisement|getappmsgad
 ^https?:\/\/api\.gotokeep\.com\/ads - reject-200
 ^https?:\/\/api\.gotokeep\.com\/op-engine-webapp\/v\d\/ad - reject-200
 
-# > AMap - amap-aos-info-nogw.amap.com,m*.amap.com,optimus-ads.amap.com,render-oss-cdn.amap.com
-^https?:\/\/amap\-aos\-info\-nogw\.amap\.com\/ws\/aos\/alimama\/ - reject-200
-^https?:\/\/m\d\.amap\.com\/ws\/valueadded\/alimama\/splash_screen\/ - reject-200
-^https?:\/\/render-oss-cdn\.amap\.com\/render\/studio-dev\/image\/ - reject-200
-^http:\/\/ems\.youku\.com\/imp\? - reject
-^http:\/\/optimus-ads\.amap\.com\/uploadimg\/.+ - reject
+# > AMap - amap-aos-info-nogw.amap.com,m*.amap.com,optimus-ads.amap.com,render-oss-cdn.amap.com,sns.amap.com
+^https?:\/\/amap\-aos\-info\-nogw\.amap\.com\/ws\/aos\/alimama\/ reject-200
+^https?:\/\/m\d\.amap\.com\/ws\/message\/notice\/list\? reject-200
+^https?:\/\/m\d\.amap\.com\/ws\/valueadded\/alimama\/splash_screen\? reject-200
+^https?:\/\/optimus-ads\.amap\.com\/uploadimg\/ reject-200
+^https?:\/\/render-oss-cdn\.amap\.com\/render\/studio-dev\/image\/ reject-200
+^https?:\/\/sns\.amap\.com\/ws\/msgbox\/pull? reject-200
 
 # > NetEase CloudMusic - interface*.music.163.com
 ^https?:\/\/interface(\d)?.music.163.com\/eapi\/ad\/ - reject-200
