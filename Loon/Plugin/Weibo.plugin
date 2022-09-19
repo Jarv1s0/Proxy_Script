@@ -1,10 +1,10 @@
 #!name=微博去广告
-#!desc=微博官方APP净化
-#!icon=https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Weibo.png
-#参考https://github.com/xOS/Config/blob/Her/Module/General/Weibo.sgmodule
-#参考https://github.com/Tartarus2014/For-own-use/blob/master/Loon/Plugin/WeiboAds.plugin
+#!desc=过滤微博广告及去除各部分推广模块
+#!icon=https://raw.githubusercontent.com/deezertidal/private/main/icons/weiboad.png
+#!author = zmqcherish
+
 [MITM]
-hostname = api.weibo.cn, mapi.weibo.com, *.uve.weibo.com, new.vip.weibo.cn
+hostname = api.weibo.cn, mapi.weibo.com, *.uve.weibo.com
 [Script]
 # 微博去广告以及去除各部分推广模块 - cherish
 http-response ^https?://m?api\.weibo\.c(n|om)/2/(cardlist|searchall|page|messageflow|statuses/(unread_)?friends(/|_)timeline|groups/timeline|statuses/(unread_hot_timeline|extend|video_mixtimeline|unread_topic_timeline)|profile/(me|statuses)|video/(community_tab|remind_info|tiny_stream_video_list)|checkin/show|\!/live/media_homelist|comments/build_comments|container/get_item|search/(finder|container_timeline|container_discover)) requires-body=1,script-path=https://raw.githubusercontent.com/zmqcherish/proxy-script/main/weibo_main.js
