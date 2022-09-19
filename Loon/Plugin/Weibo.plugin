@@ -1,7 +1,8 @@
 #!name=微博去广告
 #!desc=过滤微博广告及去除各部分推广模块
 #!icon=https://raw.githubusercontent.com/deezertidal/private/main/icons/weiboad.png
-#!author = JARVIS
+#!homepage=https://github.com/zmqcherish/proxy-script
+#!author =zmqcherish
 
 [MITM]
 hostname = api.weibo.cn, mapi.weibo.com, *.uve.weibo.com
