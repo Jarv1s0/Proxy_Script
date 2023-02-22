@@ -3,7 +3,7 @@
 #!openUrl = 
 #!author = RuCu6 zmqcherish Cuttlefish
 #!homepage = https://gitlab.com/lodepuly/vpn_tool/-/tree/main/Tool/Loon/Plugin
-#!icon = https://gitlab.com/lodepuly/iconlibrary/-/raw/master/App_icon/80px/Weibo.png
+#!icon = https://raw.githubusercontent.com/deezertidal/private/main/icons/weiboad.png
 
 [Rewrite]
 ^https:\/\/api\.weibo\.cn\/2\/(ug\/checkin\/list|push\/daily)\? reject-dict
