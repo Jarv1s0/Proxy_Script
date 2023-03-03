@@ -1,4 +1,5 @@
 # 解锁4K画质及1080P高码率 //app.bilibili.com
+[Script]
 http-response ^https:\/\/app\.bilibili\.com\/x\/v2\/account\/myinfo\? script-path = https://gitlab.com/lodepuly/vpn_tool/-/raw/main/Resource/Script/Bilibili/Bilibili_remove_ads.js, requires-body = true, tag = 画质解锁
 
 [MITM]
