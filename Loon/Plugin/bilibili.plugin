@@ -1,6 +1,12 @@
-# 解锁4K画质及1080P高码率 //app.bilibili.com
-[Script]
-http-response ^https:\/\/app\.bilibili\.com\/x\/v2\/account\/myinfo\? script-path = https://gitlab.com/lodepuly/vpn_tool/-/raw/main/Resource/Script/Bilibili/Bilibili_remove_ads.js, requires-body = true, tag = 画质解锁
+#!name = Bilibili去广告
+#!desc = 过滤Bilibili广告，精简多余功能。
+#!openUrl = 
+#!author = RuCu6 app2smile kokoryh ddgksf2013
+#!homepage = https://gitlab.com/lodepuly/vpn_tool/-/tree/main/Tool/Loon/Plugin
+#!icon = https://gitlab.com/lodepuly/iconlibrary/-/raw/master/App_icon/80px/Bilibili.png
 
+[Script]
+# 解锁4K画质及1080P高码率 //app.bilibili.com
+http-response ^https:\/\/app\.bilibili\.com\/x\/v2\/account\/myinfo\? script-path = https://gitlab.com/lodepuly/vpn_tool/-/raw/main/Resource/Script/Bilibili/Bilibili_remove_ads.js, requires-body = true, tag = 画质解锁
 [MITM]
 hostname = app.bilibili.com
