@@ -1,9 +1,8 @@
-#!name = Bilibili去广告
-#!desc = 过滤Bilibili广告，精简多余功能。
+#!name = Bilibili
+#!desc = 解锁4K画质及1080P高码率
 #!openUrl = 
-#!author = RuCu6 app2smile kokoryh ddgksf2013
-#!homepage = https://gitlab.com/lodepuly/vpn_tool/-/tree/main/Tool/Loon/Plugin
-#!icon = https://gitlab.com/lodepuly/iconlibrary/-/raw/master/App_icon/80px/Bilibili.png
+#!author = 
+#!icon = https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/bilibili.png
 
 [Script]
 # 解锁4K画质及1080P高码率 //app.bilibili.com
