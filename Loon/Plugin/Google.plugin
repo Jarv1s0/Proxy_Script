@@ -1,0 +1,14 @@
+#!name=Google for Rewrite
+#!desc=Google复写
+#!openUrl=
+#!author=
+#!icon=https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Google_Search.png
+
+[Rewrite]
+# Redirect Google Search Service
+^https?:\/\/(www.)?(g|google)\.cn https://www.google.com 302
+^https?:\/\/(ditu|maps)\.google\.cn https://maps.google.com 302
+^https?:\/\/translate\.google\.cn https://translate.google.com 302
+
+[MITM]
+hostname = *.google.cn
