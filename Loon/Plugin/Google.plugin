@@ -11,4 +11,4 @@
 ^https?:\/\/translate\.google\.cn https://translate.google.com 302
 
 [MITM]
-hostname=*.google.com
+hostname=*.google.cn
