@@ -1,9 +1,10 @@
 #!name = 解锁
-#!desc = 
-#!openUrl = https://github.com/chxm1023/Script_X
+#!desc = chxm1023
+#!openUrl = 
 #!author = Jarvis
-#!homepage = https://t.me/chxm1023
-#!icon=https://github.com/Koolson/Qure/blob/master/IconSet/Color/Advertising.png
+#!homepage = https://gitlab.com/lodepuly/vpn_tool/-/tree/master/Tool/Loon/Plugin
+#!icon = https://gitlab.com/lodepuly/iconlibrary/-/raw/main/App_icon/120px/1.1.1.1.png
+
 
 [URL Rewrite]
 # 彩云天气广告
