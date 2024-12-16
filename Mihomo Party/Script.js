@@ -46,12 +46,6 @@ function overwriteRules (params) {
         "RULE-SET,lan_non_ip,DIRECT"
     ];
 
-    const allNonipRules = [
-        ...adNonipRules,
-        ...customRules,
-        ...nonipRules
-    ];
-
     const ipRules = [
         "RULE-SET,reject_ip,REJECT",
         "RULE-SET,telegram_ip,Telegram",
@@ -64,7 +58,9 @@ function overwriteRules (params) {
 
     const rules = [
         // 非ip类规则
-        ...allNonipRules,
+        ...adNonipRules,
+        ...customRules,
+        ...nonipRules
         // ip类规则
         ...ipRules
     ];
