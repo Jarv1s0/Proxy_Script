@@ -10,7 +10,7 @@ function main (params) {
     overwriteTunnel (params);
     overwriteNameserverPolicy (params);
     overwriteHosts (params);
-    return params;
+    return params; 
 }
 
 // 覆写规则
