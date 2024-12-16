@@ -63,6 +63,12 @@ function overwriteRules (params) {
         ...ruleSets.ipRules
     ];
 
+    const baseRuleConfig = {
+    interval: 43200,
+    format: "text",
+    proxy: "节点选择"
+    };
+    
     const ruleProviders = {
         // 去广告
         reject_non_ip_no_drop: {
@@ -70,45 +76,35 @@ function overwriteRules (params) {
             behavior: "classical",
             url: "https://ruleset.skk.moe/Clash/non_ip/reject-no-drop.txt",
             path: "./rule_set/sukkaw_ruleset/reject_non_ip_no_drop.txt",
-            interval: 43200,
-            format: "text",
-            proxy: "节点选择"
+            ...baseRuleConfig
         },
         reject_non_ip_drop: {
             type: "http",
             behavior: "classical",
             url: "https://ruleset.skk.moe/Clash/non_ip/reject-drop.txt",
             path: "./rule_set/sukkaw_ruleset/reject_non_ip_drop.txt",
-            interval: 43200,
-            format: "text",
-            proxy: "节点选择"
+            ...baseRuleConfig
         },
         reject_non_ip: {
             type: "http",
             behavior: "classical",
             url: "https://ruleset.skk.moe/Clash/non_ip/reject.txt",
             path: "./rule_set/sukkaw_ruleset/reject_non_ip.txt",
-            interval: 43200,
-            format: "text",
-            proxy: "节点选择"
+            ...baseRuleConfig
         },
         reject_domainset: {
             type: "http",
             behavior: "domain",
             url: "https://ruleset.skk.moe/Clash/domainset/reject.txt",
             path: "./rule_set/sukkaw_ruleset/reject_domainset.txt",
-            interval: 43200,
-            format: "text",
-            proxy: "节点选择"
+            ...baseRuleConfig
         },
         reject_ip: {
             type: "http",
             behavior: "classical",
             url: "https://ruleset.skk.moe/Clash/ip/reject.txt",
             path: "./rule_set/sukkaw_ruleset/reject_ip.txt",
-            interval: 43200,
-            format: "text",
-            proxy: "节点选择"
+            ...baseRuleConfig
         },
         // 静态cdn
         cdn_domainset: {
@@ -116,18 +112,14 @@ function overwriteRules (params) {
             behavior: "domain",
             url: "https://ruleset.skk.moe/Clash/domainset/cdn.txt",
             path: "./rule_set/sukkaw_ruleset/cdn_domainset.txt",
-            interval: 43200,
-            format: "text",
-            proxy: "节点选择"
+            ...baseRuleConfig
         },
         cdn_non_ip: {
             type: "http",
             behavior: "domain",
             url: "https://ruleset.skk.moe/Clash/non_ip/cdn.txt",
             path: "./rule_set/sukkaw_ruleset/cdn_non_ip.txt",
-            interval: 43200,
-            format: "text",
-            proxy: "节点选择"
+            ...baseRuleConfig
         },
         // 流媒体
         stream_non_ip: {
@@ -135,18 +127,14 @@ function overwriteRules (params) {
             behavior: "classical",
             url: "https://ruleset.skk.moe/Clash/non_ip/stream.txt",
             path: "./rule_set/sukkaw_ruleset/stream_non_ip.txt",
-            interval: 43200,
-            format: "text",
-            proxy: "节点选择"
+            ...baseRuleConfig
         },
         stream_ip: {
             type: "http",
             behavior: "classical",
             url: "https://ruleset.skk.moe/Clash/ip/stream.txt",
             path: "./rule_set/sukkaw_ruleset/stream_ip.txt",
-            interval: 43200,
-            format: "text",
-            proxy: "节点选择"
+            ...baseRuleConfig
         },
         // AIGC
         ai_non_ip: {
@@ -154,9 +142,7 @@ function overwriteRules (params) {
             behavior: "classical",
             url: "https://ruleset.skk.moe/Clash/non_ip/ai.txt",
             path: "./rule_set/sukkaw_ruleset/ai_non_ip.txt",
-            interval: 43200,
-            format: "text",
-            proxy: "节点选择"
+            ...baseRuleConfig
         },
         // telegram
         telegram_non_ip: {
@@ -164,18 +150,14 @@ function overwriteRules (params) {
             behavior: "classical",
             url: "https://ruleset.skk.moe/Clash/non_ip/telegram.txt",
             path: "./rule_set/sukkaw_ruleset/telegram_non_ip.txt",
-            interval: 43200,
-            format: "text",
-            proxy: "节点选择"
+            ...baseRuleConfig
         },
         telegram_ip: {
             type: "http",
             behavior: "classical",
             url: "https://ruleset.skk.moe/Clash/ip/telegram.txt",
             path: "./rule_set/sukkaw_ruleset/telegram_ip.txt",
-            interval: 43200,
-            format: "text",
-            proxy: "节点选择"
+            ...baseRuleConfig
         },
         // apple
         apple_cdn: {
@@ -183,27 +165,21 @@ function overwriteRules (params) {
             behavior: "domain",
             url: "https://ruleset.skk.moe/Clash/domainset/apple_cdn.txt",
             path: "./rule_set/sukkaw_ruleset/apple_cdn.txt",
-            interval: 43200,
-            format: "text",
-            proxy: "节点选择"
+            ...baseRuleConfig
         },
         apple_services: {
             type: "http",
             behavior: "classical",
             url: "https://ruleset.skk.moe/Clash/non_ip/apple_services.txt",
             path: "./rule_set/sukkaw_ruleset/apple_services.txt",
-            interval: 43200,
-            format: "text",
-            proxy: "节点选择"
+            ...baseRuleConfig
         },
         apple_cn_non_ip: {
             type: "http",
             behavior: "classical",
             url: "https://ruleset.skk.moe/Clash/non_ip/apple_cn.txt",
             path: "./rule_set/sukkaw_ruleset/apple_cn_non_ip.txt",
-            interval: 43200,
-            format: "text",
-            proxy: "节点选择"
+            ...baseRuleConfig
         },
         // microsoft
         microsoft_cdn_non_ip: {
@@ -211,18 +187,14 @@ function overwriteRules (params) {
             behavior: "classical",
             url: "https://ruleset.skk.moe/Clash/non_ip/microsoft_cdn.txt",
             path: "./rule_set/sukkaw_ruleset/microsoft_cdn_non_ip.txt",
-            interval: 43200,
-            format: "text",
-            proxy: "节点选择"
+            ...baseRuleConfig
         },
         microsoft_non_ip: {
             type: "http",
             behavior: "classical",
             url: "https://ruleset.skk.moe/Clash/non_ip/microsoft.txt",
             path: "./rule_set/sukkaw_ruleset/microsoft_non_ip.txt",
-            interval: 43200,
-            format: "text",
-            proxy: "节点选择"
+            ...baseRuleConfig
         },
         // 软件更新、操作系统等大文件下载
         download_domainset: {
@@ -230,18 +202,14 @@ function overwriteRules (params) {
             behavior: "domain",
             url: "https://ruleset.skk.moe/Clash/domainset/download.txt",
             path: "./rule_set/sukkaw_ruleset/download_domainset.txt",
-            interval: 43200,
-            format: "text",
-            proxy: "节点选择"
+            ...baseRuleConfig
         },
         download_non_ip: {
             type: "http",
             behavior: "domain",
             url: "https://ruleset.skk.moe/Clash/non_ip/download.txt",
             path: "./rule_set/sukkaw_ruleset/download_non_ip.txt",
-            interval: 43200,
-            format: "text",
-            proxy: "节点选择"
+            ...baseRuleConfig
         },
         // 内网域名和局域网 IP
         lan_non_ip: {
@@ -249,63 +217,49 @@ function overwriteRules (params) {
             behavior: "classical",
             url: "https://ruleset.skk.moe/Clash/non_ip/lan.txt",
             path: "./rule_set/sukkaw_ruleset/lan_non_ip.txt",
-            interval: 43200,
-            format: "text",
-            proxy: "节点选择"
+            ...baseRuleConfig
         },
         lan_ip: {
             type: "http",
             behavior: "classical",
             url: "https://ruleset.skk.moe/Clash/ip/lan.txt",
             path: "./rule_set/sukkaw_ruleset/lan_ip.txt",
-            interval: 43200,
-            format: "text",
-            proxy: "节点选择"
+            ...baseRuleConfig
         },
         domestic_non_ip: {
             type: "http",
             behavior: "classical",
             url: "https://ruleset.skk.moe/Clash/non_ip/domestic.txt",
             path: "./rule_set/sukkaw_ruleset/domestic_non_ip.txt",
-            interval: 43200,
-            format: "text",
-            proxy: "节点选择"
+            ...baseRuleConfig
         },
         direct_non_ip: {
             type: "http",
             behavior: "classical",
             url: "https://ruleset.skk.moe/Clash/non_ip/direct.txt",
             path: "./rule_set/sukkaw_ruleset/direct_non_ip.txt",
-            interval: 43200,
-            format: "text",
-            proxy: "节点选择"
+            ...baseRuleConfig
         },
         global_non_ip: {
             type: "http",
             behavior: "classical",
             url: "https://ruleset.skk.moe/Clash/non_ip/global.txt",
             path: "./rule_set/sukkaw_ruleset/global_non_ip.txt",
-            interval: 43200,
-            format: "text",
-            proxy: "节点选择"
+            ...baseRuleConfig
         },
         domestic_ip: {
             type: "http",
             behavior: "classical",
             url: "https://ruleset.skk.moe/Clash/ip/domestic.txt",
             path: "./rule_set/sukkaw_ruleset/domestic_ip.txt",
-            interval: 43200,
-            format: "text",
-            proxy: "节点选择"
+            ...baseRuleConfig
         },
         china_ip: {
             type: "http",
             behavior: "ipcidr",
             url: "https://ruleset.skk.moe/Clash/ip/china_ip.txt",
             path: "./rule_set/sukkaw_ruleset/china_ip.txt",
-            interval: 43200,
-            format: "text",
-            proxy: "节点选择"
+            ...baseRuleConfig
         }
     };
     
