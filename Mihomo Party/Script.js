@@ -25,6 +25,7 @@ function overwriteRules (params) {
         ],
         customRules: [
         // 在此添加自定义规则，优先级次于ad
+        // "DOMAIN,baidu.com,DIRECT",
         ],
         nonipRules: [
         "RULE-SET,cdn_domainset,节点选择",
