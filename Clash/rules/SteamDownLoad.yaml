@@ -1,4 +1,5 @@
-#steam直连下载
+# NAME: Steam国内下载
+payload:
   - DOMAIN-SUFFIX,steamcontent.com
   - DOMAIN,*.steamcontent.com
   - DOMAIN,fastly.cdn.steampipe.steamcontent.com
