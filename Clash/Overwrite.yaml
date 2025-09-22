@@ -193,7 +193,7 @@ rule-providers:
   Lan: { <<: *ClassicalYaml, url: https://testingcf.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Lan/Lan_No_Resolve.yaml }
   Microsoft: { <<: *ClassicalYaml, url: https://testingcf.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Microsoft/Microsoft.yaml }
   OpenAI: { <<: *ClassicalYaml, url: https://testingcf.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/OpenAI/OpenAI.yaml }
-  SteamDownLoad: { <<: *ClassicalYaml, url: https://raw.githubusercontent.com/Jarv1s0/Proxy_Script/refs/heads/master/Clash/rules/SteamDownLoad.yaml }
+  SteamDownLoad: { <<: *ClassicalYaml, url: https://raw.githubusercontent.com/Jarv1s0/Proxy_Script/master/Clash/rules/SteamDownLoad.yaml }
   Steam: { <<: *ClassicalYaml, url: https://testingcf.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Steam/Steam.yaml }
   Twitter: { <<: *ClassicalYaml, url: https://testingcf.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Twitter/Twitter.yaml }
   Telegram: { <<: *ClassicalYaml, url: https://testingcf.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Telegram/Telegram.yaml }
