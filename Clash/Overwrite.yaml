@@ -1,0 +1,231 @@
+# 订阅锚点，排除了一些节点，例如 包含剩余，官网，到期，也可以在exclude-filter添加你需要排除的节点
+#Providers: &Providers { exclude-filter: "Expire|到期|剩余|Traffic", type: http, interval: 86400, health-check: { enable: true, url: https://www.gstatic.com/generate_204, interval: 300 } }
+# 官方配置文档: https://wiki.metacubex.one/config/proxy-providers/
+#proxy-providers:
+#  p1:
+#    <<: *Providers
+#    url: https://al121.cc/#/register?code=R7vdKxbE
+#    path: ./proxy_provider/p1.yaml
+#    override:
+#      additional-prefix: 'p1 | '  # 订阅节点前缀，方便区分该节点属于哪个订阅链接 例如`p1 | 香港🇭🇰
+
+#  p2:
+#    <<: *Providers
+#    url: https://al121.cc/#/register?code=R7vdKxbE
+#    path: ./proxy_provider/p2.yaml
+#    override:
+#      additional-prefix: 'p2 | '
+# 通用配置
+mode: rule
+ipv6: false
+mixed-port: 7890
+allow-lan: true
+bind-address: 0.0.0.0
+log-level: error
+unified-delay: true
+find-process-mode: strict
+global-client-fingerprint: chrome
+# 规则选择缓存
+profile:
+  store-selected: true
+  store-fake-ip: true
+tcp-concurrent: true
+disable-keep-alive: true
+
+#DNS配置
+dns:
+  enable: true
+  ipv6: false
+  prefer-h3: true
+  use-hosts: false
+  use-system-hosts: false
+  respect-rules: true
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  fake-ip-filter:
+    - "+.lan"
+    - "+.local"
+    - "+.msftconnecttest.com"
+    - "+.msftncsi.com"
+    - "localhost.ptlogin2.qq.com"
+    - "localhost.sec.qq.com"
+    - "localhost.work.weixin.qq.com"
+    - "market.xiaomi.com"
+    - "*.xiaomi.com"
+    - "*.mi.com"
+    - "*.miui.com"
+    - "*.xiaomi.net"
+    - "*.mi.net"
+    - "*.miui.net"
+    - "*.pcbeta.com"
+  default-nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+  nameserver:
+    - https://1.1.1.1/dns-query
+    - https://dns.google.com/dns-query
+  proxy-server-nameserver:
+    - https://doh.pub/dns-query
+  direct-nameserver:
+    - https://doh.pub/dns-query
+    - https://dns.alidns.com/dns-query
+  fallback: [] 
+
+# GEO配置
+geodata-mode: true
+geo-auto-update: true
+geo-update-interval: 24
+geodata-loader: memconservative
+geox-url:
+  geoip: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geoip.dat"
+  geosite: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geosite.dat"
+  mmdb: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/country.mmdb"
+  asn: "https://github.com/xishang0128/geoip/releases/download/latest/GeoLite2-ASN.mmdb"
+
+# 时间同步
+ntp:
+  enable: true
+  write-to-system: false
+  server: ntp1.aliyun.com
+  port: 123
+  interval: 30
+
+# 入站
+tun:
+  enable: true
+  stack: mixed
+  auto-route: true
+  auto-redirect: false
+  auto-detect-interface: true
+  dns-hijack:
+    - any:53
+    - tcp://any:53
+  route-exclude-address: []
+  mtu: 1500
+
+# 嗅探
+sniffer:
+  enable: false
+  force-dns-mapping: true
+  parse-pure-ip: true
+  override-destination: false
+  sniff:
+    TLS:
+      ports:
+        - 443
+        - 8443
+    HTTP:
+      ports:
+        - 80
+        - 8080-8880
+      override-destination: true
+    QUIC:
+      ports:
+        - 443
+        - 8443
+  force-domain: []
+  skip-domain:
+    - +.oray.com
+    - "Mijia Cloud"
+    - "+.push.apple.com"
+
+# 面板设置
+external-controller: 127.0.0.1:9090
+secret: ""
+external-ui: "./ui"
+external-ui-name: zashboard
+external-ui-url: "https://github.com/Zephyruso/zashboard/archive/refs/heads/gh-pages.zip"
+
+# 代理组锚点，是为了减少重复配置
+SelectALL: &SelectALL { type: select, proxies: [ Fallback, DIRECT]}
+SelectProxy: &SelectProxy { type: select, proxies: [香港, 台湾, 日本, 新加坡, 美国, 澳门, 韩国, 英国, 德国, 法国, 澳洲, 巴西, 其他, DIRECT] }
+SelectDirect: &SelectDirect { type: select, proxies: [DIRECT,  香港, 台湾, 日本, 新加坡, 美国, 澳门, 韩国, 英国, 德国, 法国, 澳洲, 巴西, 其他] }
+Fallback: &Fallback { type: fallback, proxies: [ 香港, 新加坡, 台湾, 日本, 韩国, 美国, 英国, 德国, 法国]}
+# hidden: true 是为了隐藏地区分组，有需要显示出来的佬友可以删除
+UrlTest: &UrlTest { type: url-test, interval: 300, tolerance: 200, url: 'https://www.gstatic.com/generate_204', hidden: true, include-all: true }
+
+# 代理组
+proxy-groups:
+  - { name: Proxy, <<: *SelectALL, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Rocket.png }
+  - { name: Fallback, <<: *Fallback, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Auto.png }
+  - { name: Google, <<: *SelectProxy, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Google_Search.png } 
+  - { name: YouTube, <<: *SelectProxy, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/YouTube.png}
+  - { name: Apple, <<: *SelectDirect, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Apple.png }
+  - { name: Microsoft, <<: *SelectDirect, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Microsoft.png }
+  - { name: SteamDownLoad, <<: *SelectDirect, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Steam.png }
+  - { name: Steam, <<: *SelectProxy, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Steam.png }
+  - { name: OpenAI, <<: *SelectProxy, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/ChatGPT.png }
+  - { name: Gemini, <<: *SelectProxy, icon: https://cdn.jsdelivr.net/gh/guaishouxiaoqi/icons@master/Color/Gemini.png }
+  - { name: Github, <<: *SelectProxy, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/GitHub.png }
+  - { name: Telegram, <<: *SelectProxy, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Telegram.png }
+  - { name: Twitter, <<: *SelectProxy, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Twitter.png }
+  # 这里只匹配了一些常用地区的分组
+  - { name: 香港, <<: *UrlTest, filter: 🇭🇰|香港|港|HK|hongkong|hong kong, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Hong_Kong.png }
+  - { name: 澳门, <<: *UrlTest, filter: 🇲🇴|澳门|门|MO|macao, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Macao.png }
+  - { name: 台湾, <<: *UrlTest, filter: 🇹🇼|台湾|台|TW|taiwan|taipei, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Taiwan.png }
+  - { name: 日本, <<: *UrlTest, filter: 🇯🇵|日本|JP|japan|tokyo|osaka, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Japan.png }
+  - { name: 韩国, <<: *UrlTest, filter: 🇰🇷|韩国|韩|KR|korea|seoul, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Korea.png }
+  - { name: 美国, <<: *UrlTest, filter: 🇺🇸|美国|美|US|united states|america|los angeles|san jose|silicon valley, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/United_States.png }
+  - { name: 英国, <<: *UrlTest, filter: 🇬🇧|英国|英|UK|united kingdom|london, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/United_Kingdom.png }
+  - { name: 德国, <<: *UrlTest, filter: 🇩🇪|德国|德|DE|germany|frankfurt, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Germany.png }
+  - { name: 法国, <<: *UrlTest, filter: 🇫🇷|法国|法|FR|france|paris, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/France.png }
+  - { name: 新加坡, <<: *UrlTest, filter: 🇸🇬|新加坡|新|SG|singapore, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Singapore.png }
+  - { name: 澳洲, <<: *UrlTest, filter: 🇦🇺|澳大利亚|AU|australia|sydney, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Australia.png }
+  - { name: 巴西, <<: *UrlTest, filter: 🇧🇷|巴西|brazil, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Brazil.png }
+  # 除了常用的地区，其他地区都放这里
+  - { name: 其他, <<: *UrlTest, filter: '(?i)^(?!.*(香港|台湾|日本|韩国|新加坡|美国|英国|德国|法国|印度|泰国|越南|印尼|澳大利亚|巴西|港|台|日|韩|新|美|英|德|法|印|泰|越|尼|澳|巴|hk|tw|jp|kr|sg|us|uk|de|fr|in|th|vn|id|au|br)).*', icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Global.png }
+
+# 规则锚点，是为了减少重复配置
+rule-anchor:
+  DomainYaml: &DomainYaml { behavior: domain, interval: 86400, proxy: Proxy, type: http }
+  ClassicalYaml: &ClassicalYaml { behavior: classical, interval: 86400, proxy: Proxy, type: http }
+
+# 官方配置文档: https://wiki.metacubex.one/config/rule-providers/
+rule-providers:
+  AWAvenueAds: { <<: *DomainYaml, url: https://raw.githubusercontent.com/TG-Twilight/AWAvenue-Ads-Rule/main/Filters/AWAvenue-Ads-Rule-Clash.yaml}
+  Apple: { <<: *ClassicalYaml, url: https://testingcf.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Apple/Apple_Classical.yaml}
+  China: { <<: *ClassicalYaml, url: https://testingcf.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/China/China_Classical_No_Resolve.yaml }
+  ChinaIPs: { <<: *ClassicalYaml, url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/ChinaIPs/ChinaIPs_Classical_No_IPv6_No_Resolve.yaml } 
+  Gemini: { <<: *ClassicalYaml, url: https://testingcf.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Gemini/Gemini.yaml }
+  Github: { <<: *ClassicalYaml, url: https://testingcf.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/GitHub/GitHub.yaml }
+  Google: { <<: *ClassicalYaml, url: https://testingcf.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Google/Google.yaml }
+  Lan: { <<: *ClassicalYaml, url: https://testingcf.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Lan/Lan_No_Resolve.yaml }
+  Microsoft: { <<: *ClassicalYaml, url: https://testingcf.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Microsoft/Microsoft.yaml }
+  OpenAI: { <<: *ClassicalYaml, url: https://testingcf.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/OpenAI/OpenAI.yaml }
+  SteamDownLoad: { <<: *ClassicalYaml, url: https://raw.githubusercontent.com/Jarv1s0/Proxy_Script/refs/heads/master/Clash/rules/steamCN.yaml }
+  Steam: { <<: *ClassicalYaml, url: https://testingcf.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Steam/Steam.yaml }
+  Twitter: { <<: *ClassicalYaml, url: https://testingcf.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Twitter/Twitter.yaml }
+  Telegram: { <<: *ClassicalYaml, url: https://testingcf.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Telegram/Telegram.yaml }
+  YouTube: { <<: *ClassicalYaml, url: https://testingcf.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/YouTube/YouTube.yaml }
+  DNSLeak: { <<: *ClassicalYaml, url: https://testingcf.jsdelivr.net/gh/wanswu/my-backup@master/clash/rule/DNSLeak.yaml }
+
+# 官方配置文档: https://wiki.metacubex.one/config/rules/
+rules:
+  # 额外添加的规则，佬友也可以自己添加，规则优先级为由上到下
+  # 介绍一下如何配置
+  # 匹配规则,分组,规则 例如下面这个
+  # [域名匹配],[linux.do],[DIRECT]
+  - DOMAIN-SUFFIX,grok.com,香港
+  - DOMAIN-SUFFIX,windows.net,香港
+  - DOMAIN-SUFFIX,linux.do,DIRECT
+  - DOMAIN-SUFFIX,portal101.cn,DIRECT
+  - DOMAIN-SUFFIX,javasec.org,DIRECT
+  # [进程匹配],[进程名称],[规则]
+  - PROCESS-NAME,prl_naptd,Proxy
+  # [规则匹配],[规则集],[规则],[不解析]  这里不使用GEOIP,private，是因为我测试下来感觉使用GEO会让clash内存变高所以就没使用了
+  - RULE-SET,AWAvenueAds,REJECT
+  - RULE-SET,SteamDownLoad,SteamDownLoad
+  - RULE-SET,Lan,DIRECT,no-resolve
+  - RULE-SET,DNSLeak,Proxy
+  - RULE-SET,China,DIRECT,no-resolve
+  - RULE-SET,Telegram,Telegram
+  - RULE-SET,Google,Google
+  - RULE-SET,Github,Github
+  - RULE-SET,YouTube,YouTube
+  - RULE-SET,Microsoft,Microsoft
+  - RULE-SET,OpenAI,OpenAI
+  - RULE-SET,Twitter,Twitter
+  - RULE-SET,Gemini,Gemini
+  - RULE-SET,Steam,Steam
+  - RULE-SET,ChinaIPs,DIRECT,no-resolve 
+  - MATCH,Proxy
