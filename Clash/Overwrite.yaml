@@ -141,7 +141,7 @@ SelectALL: &SelectALL { type: select, proxies: [ Fallback, DIRECT]}
 SelectProxy: &SelectProxy { type: select, proxies: [香港, 台湾, 日本, 新加坡, 美国, 澳门, 韩国, 英国, 德国, 法国, 澳洲, 巴西, 其他, DIRECT] }
 SelectDirect: &SelectDirect { type: select, proxies: [DIRECT,  香港, 台湾, 日本, 新加坡, 美国, 澳门, 韩国, 英国, 德国, 法国, 澳洲, 巴西, 其他] }
 Fallback: &Fallback { type: fallback, proxies: [ 香港, 新加坡, 台湾, 日本, 韩国, 美国, 英国, 德国, 法国]}
-# hidden: true 是为了隐藏地区分组，有需要显示出来的佬友可以删除
+# hidden: true 是为了隐藏地区分组
 Others: &Others { type: select, include-all: true }
 UrlTest: &UrlTest { type: url-test, interval: 300, tolerance: 200, url: 'https://www.gstatic.com/generate_204', hidden: true, include-all: true }
 
@@ -202,7 +202,6 @@ rule-providers:
 
 # 官方配置文档: https://wiki.metacubex.one/config/rules/
 rules:
-  # 额外添加的规则，佬友也可以自己添加，规则优先级为由上到下
   # 介绍一下如何配置
   # 匹配规则,分组,规则 例如下面这个
   # [域名匹配],[linux.do],[DIRECT]
@@ -213,7 +212,7 @@ rules:
   - DOMAIN-SUFFIX,javasec.org,DIRECT
   # [进程匹配],[进程名称],[规则]
   - PROCESS-NAME,prl_naptd,Proxy
-  # [规则匹配],[规则集],[规则],[不解析]  这里不使用GEOIP,private，是因为我测试下来感觉使用GEO会让clash内存变高所以就没使用了
+  # [规则匹配],[规则集],[规则],[不解析]，这里不使用GEOIP,private，是因为感觉使用GEO会让clash内存变高
   - RULE-SET,AWAvenueAds,REJECT
   - RULE-SET,SteamDownLoad,SteamDownLoad
   - RULE-SET,Lan,DIRECT,no-resolve
