@@ -208,6 +208,7 @@ rules:
   # [域名匹配],[linux.do],[DIRECT]
   - DOMAIN-SUFFIX,grok.com,香港
   - DOMAIN-SUFFIX,windows.net,香港
+  - DOMAIN-SUFFIX,edu.cn,DIRECT
   - DOMAIN-SUFFIX,linux.do,DIRECT
   - DOMAIN-SUFFIX,portal101.cn,DIRECT
   - DOMAIN-SUFFIX,javasec.org,DIRECT
