@@ -6,7 +6,7 @@ p: &p {type: http, interval: 86400, health-check: {enable: true, url: https://ww
 proxy-providers:
   provider1:
     <<: *p
-    url: "https://d41d8cd98f-1ytapi02.1ytsub.com/api/v1/client/subscribe?token=dadfb11fa377017d67d7c8f2c5436f59"
+    url: ""
     path: ./proxy_providers/provider1.yaml
 
 mixed-port: 7890
