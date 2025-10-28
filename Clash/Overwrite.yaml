@@ -193,7 +193,6 @@ rule-providers:
   Lan: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Lan/Lan_No_Resolve.yaml }
   Microsoft: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Microsoft/Microsoft.yaml }
   OpenAI: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/OpenAI/OpenAI.yaml }
-  SteamCN: { <<: *ClassicalYaml, url: https://rule.kelee.one/Clash/SteamCN.yaml }
   SteamDownLoad: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/SteamCN/SteamCN.yaml }
   Steam: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Steam/Steam.yaml }
   Twitter: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Twitter/Twitter.yaml }
@@ -217,7 +216,6 @@ rules:
   - PROCESS-NAME,prl_naptd,Proxy
   # [规则匹配],[规则集],[规则],[不解析]  这里不使用GEOIP,private，是因为我测试下来感觉使用GEO会让clash内存变高所以就没使用了
   - RULE-SET,AWAvenueAds,REJECT
-  - RULE-SET,SteamCN,SteamDownLoad
   - RULE-SET,SteamDownLoad,SteamDownLoad
   - RULE-SET,Lan,DIRECT,no-resolve
   - RULE-SET,DNSLeak,Proxy
