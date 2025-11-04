@@ -1,17 +1,18 @@
 # 订阅锚点，排除了一些节点，例如 包含剩余，官网，到期，也可以在exclude-filter添加你需要排除的节点
 #Providers: &Providers { exclude-filter: "Expire|到期|剩余|Traffic", type: http, interval: 86400, health-check: { enable: true, url: https://www.gstatic.com/generate_204, interval: 300 } }
 # 官方配置文档: https://wiki.metacubex.one/config/proxy-providers/
+# 在下方的url填入订阅链接即可
 #proxy-providers:
 #  p1:
 #    <<: *Providers
-#    url: https://al121.cc/#/register?code=R7vdKxbE
+#    url: xxx
 #    path: ./proxy_provider/p1.yaml
 #    override:
 #      additional-prefix: 'p1 | '  # 订阅节点前缀，方便区分该节点属于哪个订阅链接 例如`p1 | 香港🇭🇰
 
 #  p2:
 #    <<: *Providers
-#    url: https://al121.cc/#/register?code=R7vdKxbE
+#    url: xxx
 #    path: ./proxy_provider/p2.yaml
 #    override:
 #      additional-prefix: 'p2 | '
@@ -21,7 +22,7 @@ ipv6: false
 mixed-port: 7890
 allow-lan: true
 bind-address: 0.0.0.0
-log-level: error
+log-level: info
 unified-delay: true
 find-process-mode: strict
 global-client-fingerprint: chrome
@@ -35,6 +36,7 @@ disable-keep-alive: true
 #DNS配置
 dns:
   enable: true
+  listen: 0.0.0.0:1053
   ipv6: false
   prefer-h3: true
   use-hosts: false
@@ -74,7 +76,7 @@ dns:
 # GEO配置
 geodata-mode: true
 geo-auto-update: true
-geo-update-interval: 24
+geo-update-interval: 48
 geodata-loader: memconservative
 geox-url:
   geoip: "https://cdn.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geoip.dat"
@@ -105,7 +107,7 @@ tun:
 
 # 嗅探
 sniffer:
-  enable: false
+  enable: true
   force-dns-mapping: true
   parse-pure-ip: true
   override-destination: false
@@ -117,8 +119,8 @@ sniffer:
     HTTP:
       ports:
         - 80
-        - 8080-8880
-      override-destination: true
+        - 443
+      override-destination: false
     QUIC:
       ports:
         - 443
@@ -220,7 +222,6 @@ rules:
   - RULE-SET,Lan,DIRECT,no-resolve
   - RULE-SET,DNSLeak,Proxy
   - RULE-SET,China,DIRECT,no-resolve
-  - RULE-SET,Telegram,Telegram
   - RULE-SET,Google,Google
   - RULE-SET,Github,Github
   - RULE-SET,YouTube,YouTube
@@ -229,5 +230,8 @@ rules:
   - RULE-SET,Twitter,Twitter
   - RULE-SET,Gemini,Gemini
   - RULE-SET,Steam,Steam
-  - RULE-SET,ChinaIPs,DIRECT,no-resolve 
+  - RULE-SET,Telegram,Telegram
+  - RULE-SET,ChinaIPs,DIRECT,no-resolve
+  - GEOIP,CN,DIRECT
+  - GEOSITE,cn,DIRECT 
   - MATCH,Proxy
