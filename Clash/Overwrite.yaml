@@ -140,9 +140,9 @@ external-ui-url: "https://github.com/Zephyruso/zashboard/archive/refs/heads/gh-p
 
 # 代理组锚点，是为了减少重复配置
 SelectALL: &SelectALL { type: select, proxies: [ Fallback, DIRECT]}
-SelectProxy: &SelectProxy { type: select, proxies: [香港, 台湾, 日本, 新加坡, 美国, 澳门, 韩国, 英国, 德国, 法国, 澳洲, 巴西, 其他, DIRECT] }
-SelectDirect: &SelectDirect { type: select, proxies: [DIRECT,  香港, 台湾, 日本, 新加坡, 美国, 澳门, 韩国, 英国, 德国, 法国, 澳洲, 巴西, 其他] }
-Fallback: &Fallback { type: fallback, proxies: [ 香港, 新加坡, 台湾, 日本, 韩国, 美国, 英国, 德国, 法国]}
+SelectProxy: &SelectProxy { type: select, proxies: [香港, 台湾, 日本, 新加坡, 美国, 韩国, 其他, DIRECT] }
+SelectDirect: &SelectDirect { type: select, proxies: [DIRECT,  香港, 台湾, 日本, 新加坡, 美国, 韩国, 其他] }
+Fallback: &Fallback { type: fallback, proxies: [ 香港, 新加坡, 台湾, 日本, 韩国, 美国, 其他]}
 # hidden: true 是为了隐藏地区分组，有需要显示出来的佬友可以删除
 Others: &Others { type: select, include-all: true }
 UrlTest: &UrlTest { type: url-test, interval: 300, tolerance: 200, url: 'https://www.gstatic.com/generate_204', hidden: false, include-all: true }
@@ -164,19 +164,13 @@ proxy-groups:
   - { name: Twitter, <<: *SelectProxy, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Twitter.png }
   # 这里只匹配了一些常用地区的分组
   - { name: 香港, <<: *UrlTest, filter: 🇭🇰|香港|港|HK|hongkong|hong kong, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Hong_Kong.png }
-  - { name: 澳门, <<: *UrlTest, filter: 🇲🇴|澳门|门|MO|macao, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Macao.png }
   - { name: 台湾, <<: *UrlTest, filter: 🇹🇼|台湾|台|TW|taiwan|taipei, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Taiwan.png }
   - { name: 日本, <<: *UrlTest, filter: 🇯🇵|日本|JP|japan|tokyo|osaka, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Japan.png }
   - { name: 韩国, <<: *UrlTest, filter: 🇰🇷|韩国|韩|KR|korea|seoul, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Korea.png }
   - { name: 美国, <<: *UrlTest, filter: 🇺🇸|美国|美|US|united states|america|los angeles|san jose|silicon valley, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/United_States.png }
-  - { name: 英国, <<: *UrlTest, filter: 🇬🇧|英国|英|UK|united kingdom|london, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/United_Kingdom.png }
-  - { name: 德国, <<: *UrlTest, filter: 🇩🇪|德国|德|DE|germany|frankfurt, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Germany.png }
-  - { name: 法国, <<: *UrlTest, filter: 🇫🇷|法国|法|FR|france|paris, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/France.png }
   - { name: 新加坡, <<: *UrlTest, filter: 🇸🇬|新加坡|新|SG|singapore, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Singapore.png }
-  - { name: 澳洲, <<: *UrlTest, filter: 🇦🇺|澳大利亚|AU|australia|sydney, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Australia.png }
-  - { name: 巴西, <<: *UrlTest, filter: 🇧🇷|巴西|brazil, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Brazil.png }
   # 除了常用的地区，其他地区都放这里
-  - { name: 其他, <<: *Others, filter: '(?i)^(?!.*(香港|台湾|日本|韩国|新加坡|美国|英国|德国|法国|印尼|澳大利亚|巴西|港|台|日|韩|新|美|英|德|法|澳|巴|hk|tw|jp|kr|sg|us|uk|de|fr|in|th|vn|id|au|br|Expire|到期|剩余|Traffic)).*', icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Global.png }
+  - { name: 其他, <<: *Others, filter: '(?i)^(?!.*(香港|台湾|日本|韩国|新加坡|美国|港|台|日|韩|新|美|hk|tw|jp|kr|sg|us|Expire|到期|剩余|Traffic)).*', icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Global.png }
 
 # 规则锚点，是为了减少重复配置
 rule-anchor:
@@ -208,8 +202,8 @@ rules:
   # 介绍一下如何配置
   # 匹配规则,分组,规则 例如下面这个
   # [域名匹配],[linux.do],[DIRECT]
-  - DOMAIN-SUFFIX,grok.com,香港
-  - DOMAIN-SUFFIX,windows.net,香港
+  - DOMAIN-SUFFIX,grok.com,Proxy
+  - DOMAIN-SUFFIX,windows.net,Proxy
   - DOMAIN-SUFFIX,edu.cn,DIRECT
   - DOMAIN-SUFFIX,linux.do,DIRECT
   - DOMAIN-SUFFIX,portal101.cn,DIRECT
