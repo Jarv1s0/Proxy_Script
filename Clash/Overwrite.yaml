@@ -52,19 +52,14 @@ dns:
     - "localhost.ptlogin2.qq.com"
     - "localhost.sec.qq.com"
     - "localhost.work.weixin.qq.com"
-    - "market.xiaomi.com"
-    - "*.xiaomi.com"
     - "*.mi.com"
     - "*.miui.com"
-    - "*.xiaomi.net"
-    - "*.mi.net"
-    - "*.miui.net"
-    - "*.pcbeta.com"
+    - "*.xiaomi.com"
   default-nameserver:
     - 223.5.5.5
     - 119.29.29.29
   nameserver:
-    - https://1.1.1.1/dns-query
+    - https://doh.opendns.com/dns-query
     - https://dns.google.com/dns-query
   proxy-server-nameserver:
     - https://doh.pub/dns-query
@@ -202,6 +197,7 @@ rules:
   # 介绍一下如何配置
   # 匹配规则,分组,规则 例如下面这个
   # [域名匹配],[linux.do],[DIRECT]
+  - RULE-SET,AWAvenueAds,REJECT
   - DOMAIN-SUFFIX,grok.com,Proxy
   - DOMAIN-SUFFIX,windows.net,Proxy
   - DOMAIN-SUFFIX,edu.cn,DIRECT
@@ -211,7 +207,6 @@ rules:
   # [进程匹配],[进程名称],[规则]
   - PROCESS-NAME,prl_naptd,Proxy
   # [规则匹配],[规则集],[规则],[不解析]  这里不使用GEOIP,private，是因为我测试下来感觉使用GEO会让clash内存变高所以就没使用了
-  - RULE-SET,AWAvenueAds,REJECT
   - RULE-SET,SteamDownLoad,SteamDownLoad
   - RULE-SET,Lan,DIRECT,no-resolve
   - RULE-SET,DNSLeak,Proxy
@@ -226,6 +221,4 @@ rules:
   - RULE-SET,Steam,Steam
   - RULE-SET,Telegram,Telegram
   - RULE-SET,ChinaIPs,DIRECT,no-resolve
-  - GEOIP,CN,DIRECT
-  - GEOSITE,cn,DIRECT 
   - MATCH,Proxy
