@@ -153,7 +153,7 @@ proxy-groups:
   - { name: Microsoft, <<: *SelectDirect, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Microsoft.png }
   - { name: Github, <<: *SelectProxy, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/GitHub.png }
   - { name: Telegram, <<: *SelectProxy, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Telegram.png }
-  - { name: Twitter, <<: *SelectProxy, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Twitter.png }
+  - { name: X, <<: *SelectProxy, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/X.png }
   # 这里只匹配了一些常用地区的分组
   - { name: 香港, <<: *UrlTest, filter: 🇭🇰|香港|港|HK|hongkong|hong kong, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Hong_Kong.png }
   - { name: 台湾, <<: *UrlTest, filter: 🇹🇼|台湾|台|TW|taiwan|taipei, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Taiwan.png }
@@ -183,7 +183,7 @@ rule-providers:
   OpenAI: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/OpenAI/OpenAI.yaml }
   SteamDownLoad: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/SteamCN/SteamCN.yaml }
   Steam: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Steam/Steam.yaml }
-  Twitter: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Twitter/Twitter.yaml }
+  X: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Twitter/Twitter.yaml }
   Telegram: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Telegram/Telegram.yaml }
   YouTube: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/YouTube/YouTube.yaml }
   DNSLeak: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/wanswu/my-backup@master/clash/rule/DNSLeak.yaml }
@@ -213,7 +213,7 @@ rules:
   - RULE-SET,YouTube,YouTube
   - RULE-SET,Microsoft,Microsoft
   - RULE-SET,OpenAI,OpenAI
-  - RULE-SET,Twitter,Twitter
+  - RULE-SET,X,X
   - RULE-SET,Gemini,Gemini
   - RULE-SET,Steam,Steam
   - RULE-SET,Telegram,Telegram
