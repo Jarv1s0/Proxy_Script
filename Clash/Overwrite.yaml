@@ -194,7 +194,7 @@ rules:
   # 额外添加的规则，佬友也可以自己添加，规则优先级为由上到下
   - RULE-SET,AWAvenueAds,REJECT
   # [规则匹配],[规则集],[规则],[不解析]  这里不使用GEOIP,private，是因为我测试下来感觉使用GEO会让clash内存变高所以就没使用了
-  - RULE-SET,ChinaCustom,直连,no-resolve
+  - RULE-SET,ChinaCustom,DIRECT,no-resolve
   - RULE-SET,SteamDownLoad,SteamDownLoad
   - RULE-SET,Lan,DIRECT,no-resolve
   - RULE-SET,DNSLeak,Proxy
