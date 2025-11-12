@@ -197,7 +197,7 @@ rules:
   - RULE-SET,ChinaCustom,DIRECT,no-resolve
   - RULE-SET,SteamDownLoad,SteamDownLoad
   - RULE-SET,Lan,DIRECT,no-resolve
-  - RULE-SET,DNSLeak,Proxy
+  - RULE-SET,DNSLeak,DIRECT
   - RULE-SET,China,DIRECT,no-resolve
   - RULE-SET,Global,Proxy
   - RULE-SET,Google,Google
