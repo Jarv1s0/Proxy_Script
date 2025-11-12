@@ -141,8 +141,8 @@ UrlTest: &UrlTest { type: url-test, interval: 300, tolerance: 200, url: 'https:/
 
 # 代理组
 proxy-groups:
-  - { name: Proxy, <<: *SelectALL, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Rocket.png }
-  - { name: Fallback, <<: *Fallback, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Auto.png }
+  - { name: Proxy, <<: *Fallback, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Rocket.png }
+#  - { name: Fallback, <<: *Fallback, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Auto.png }
   - { name: Google, <<: *SelectProxy, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Google_Search.png } 
   - { name: YouTube, <<: *SelectProxy, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/YouTube.png}
   - { name: OpenAI, <<: *SelectProxy, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/ChatGPT.png }
@@ -174,7 +174,8 @@ rule-providers:
   AWAvenueAds: { <<: *DomainYaml, url: https://raw.githubusercontent.com/TG-Twilight/AWAvenue-Ads-Rule/main/Filters/AWAvenue-Ads-Rule-Clash.yaml}
   Apple: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Apple/Apple_Classical.yaml}
   China: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/China/China_Classical_No_Resolve.yaml }
-  ChinaIPs: { <<: *ClassicalYaml, url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/ChinaIPs/ChinaIPs_Classical_No_IPv6_No_Resolve.yaml } 
+  ChinaIPs: { <<: *ClassicalYaml, url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/ChinaIPs/ChinaIPs_Classical_No_IPv6_No_Resolve.yaml }
+  ChinaCustom: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/wanswu/my-backup@master/clash/rule/ChinaCustom.yaml } 
   Gemini: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Gemini/Gemini.yaml }
   Github: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/GitHub/GitHub.yaml }
   Google: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Google/Google.yaml }
@@ -191,19 +192,9 @@ rule-providers:
 # 官方配置文档: https://wiki.metacubex.one/config/rules/
 rules:
   # 额外添加的规则，佬友也可以自己添加，规则优先级为由上到下
-  # 介绍一下如何配置
-  # 匹配规则,分组,规则 例如下面这个
-  # [域名匹配],[linux.do],[DIRECT]
   - RULE-SET,AWAvenueAds,REJECT
-  - DOMAIN-SUFFIX,grok.com,Proxy
-  - DOMAIN-SUFFIX,windows.net,Proxy
-  - DOMAIN-SUFFIX,edu.cn,DIRECT
-  - DOMAIN-SUFFIX,linux.do,DIRECT
-  - DOMAIN-SUFFIX,portal101.cn,DIRECT
-  - DOMAIN-SUFFIX,javasec.org,DIRECT
-  # [进程匹配],[进程名称],[规则]
-  - PROCESS-NAME,prl_naptd,Proxy
   # [规则匹配],[规则集],[规则],[不解析]  这里不使用GEOIP,private，是因为我测试下来感觉使用GEO会让clash内存变高所以就没使用了
+  - RULE-SET,ChinaCustom,直连,no-resolve
   - RULE-SET,SteamDownLoad,SteamDownLoad
   - RULE-SET,Lan,DIRECT,no-resolve
   - RULE-SET,DNSLeak,Proxy
