@@ -64,6 +64,7 @@ dns:
   direct-nameserver:           #规则匹配到直连时使用的DNS，既然是可以直连的，当然要用国内DNS
     - https://dns.alidns.com/dns-query
     - https://doh.pub/dns-query
+#  respect-rules: true      #让连接DNS服务器时能够遵循规则，也就是通过代理节点连接到上面设置的国外DNS，因为直连可能连接不上
   fallback: [] 
 
 # GEO配置
