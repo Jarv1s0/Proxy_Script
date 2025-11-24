@@ -62,11 +62,6 @@ dns:
     - https://doh.pub/dns-query
   direct-nameserver:
     - https://doh.pub/dns-query
-<<<<<<< HEAD
-#  respect-rules: true      #让连接DNS服务器时能够遵循规则，也就是通过代理节点连接到上面设置的国外DNS，因为直连可能连接不上
-=======
-    - https://dns.alidns.com/dns-query
->>>>>>> parent of 8c84a3b (Update Overwrite.yaml)
   fallback: [] 
 
 # GEO配置
@@ -201,7 +196,7 @@ rules:
   - RULE-SET,ChinaCustom,DIRECT,no-resolve
   - RULE-SET,SteamDownLoad,SteamDownLoad
   - RULE-SET,Lan,DIRECT,no-resolve
-  - RULE-SET,DNSLeak,Proxy
+  - RULE-SET,DNSLeak,DIRECT
   - RULE-SET,China,DIRECT,no-resolve
   - RULE-SET,Global,Proxy
   - RULE-SET,Google,Google
