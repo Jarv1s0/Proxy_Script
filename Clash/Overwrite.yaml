@@ -45,13 +45,27 @@ dns:
   enhanced-mode: fake-ip
   fake-ip-range: 198.18.0.1/16
   fake-ip-filter:
-    - "+.lan"
-    - "+.local"
-    - "+.msftconnecttest.com"
-    - "+.msftncsi.com"
-    - "*.mi.com"
-    - "*.miui.com"
-    - "*.xiaomi.com"
+fake-ip-filter:
+fake-ip-filter:
+  # 基础内网域名
+  - "+.lan"
+  - "+.local"
+  - "+.localdomain"
+  - "+.internal"
+  - "home.arpa"
+  - "+.bogon"
+  - "+.m2m"
+  - "+.bogon"
+  # 系统检测服务
+  - "+.msftconnecttest.com"
+  - "+.msftncsi.com"
+  - "dns.msftncsi.com"
+  - "captive.apple.com"
+  # 小米生态
+  - "*.mi.com"
+  - "*.miui.com"
+  - "*.xiaomi.com"
+
   default-nameserver:
     - 223.5.5.5
     - 119.29.29.29
