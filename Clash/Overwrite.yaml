@@ -154,12 +154,12 @@ UrlTest: &UrlTest { type: url-test, interval: 300, tolerance: 200, url: 'https:/
 # 代理组
 proxy-groups:
   - { name: Proxy, <<: *Fallback, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Rocket.png }
-  - { name: Google, <<: *SelectProxy, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Google_Search.png } 
   - { name: YouTube, <<: *SelectProxy, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/YouTube.png}
   - { name: OpenAI, <<: *SelectProxy, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/ChatGPT.png }
   - { name: Gemini, <<: *SelectProxy, icon: https://cdn.jsdelivr.net/gh/guaishouxiaoqi/icons@master/Color/Gemini.png }
   - { name: Steam, <<: *SelectProxy, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Steam.png }
   - { name: SteamDownLoad, <<: *SelectDirect, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Steam.png }
+  - { name: Google, <<: *SelectProxy, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Google_Search.png } 
   - { name: Apple, <<: *SelectDirect, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Apple.png }
   - { name: Microsoft, <<: *SelectDirect, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Microsoft.png }
   - { name: Github, <<: *SelectProxy, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/GitHub.png }
@@ -188,18 +188,18 @@ rule-providers:
   ChinaIPs: { <<: *ClassicalYaml, url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/ChinaIPs/ChinaIPs_Classical_No_IPv6_No_Resolve.yaml }
   ChinaCustom: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/wanswu/my-backup@master/clash/rule/ChinaCustom.yaml } 
   Gemini: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Gemini/Gemini.yaml }
+  OpenAI: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/OpenAI/OpenAI.yaml }
+  YouTube: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/YouTube/YouTube.yaml }
+  SteamDownLoad: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/SteamCN/SteamCN.yaml }
+  Steam: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Steam/Steam.yaml }
+  X: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Twitter/Twitter.yaml }
   Github: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/GitHub/GitHub.yaml }
   Google: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Google/Google.yaml }
   Global: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/wanswu/my-backup@master/clash/rule/Global.yaml }
   Hijacking: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Hijacking/Hijacking.yaml }
   Lan: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Lan/Lan_No_Resolve.yaml }
   Microsoft: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Microsoft/Microsoft.yaml }
-  OpenAI: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/OpenAI/OpenAI.yaml }
-  SteamDownLoad: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/SteamCN/SteamCN.yaml }
-  Steam: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Steam/Steam.yaml }
-  X: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Twitter/Twitter.yaml }
   Telegram: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Telegram/Telegram.yaml }
-  YouTube: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/YouTube/YouTube.yaml }
   DNSLeak: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/wanswu/my-backup@master/clash/rule/DNSLeak.yaml }
 
 # 官方配置文档: https://wiki.metacubex.one/config/rules/
