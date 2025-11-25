@@ -212,15 +212,15 @@ rules:
   - RULE-SET,Lan,DIRECT,no-resolve
   - RULE-SET,DNSLeak,DIRECT
   - RULE-SET,China,DIRECT,no-resolve
-  - RULE-SET,Global,Proxy
+  - RULE-SET,YouTube,YouTube
+  - RULE-SET,Gemini,Gemini
+  - RULE-SET,OpenAI,OpenAI
   - RULE-SET,Google,Google
   - RULE-SET,Github,Github
-  - RULE-SET,YouTube,YouTube
   - RULE-SET,Microsoft,Microsoft
-  - RULE-SET,OpenAI,OpenAI
   - RULE-SET,X,X
-  - RULE-SET,Gemini,Gemini
   - RULE-SET,Steam,Steam
+  - RULE-SET,Global,Proxy
   - RULE-SET,Hijacking,DIRECT
   - RULE-SET,Telegram,Telegram
   - RULE-SET,ChinaIPs,DIRECT,no-resolve
