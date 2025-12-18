@@ -171,7 +171,7 @@ proxy-groups:
   - { name: 日本, <<: *UrlTest, filter: 🇯🇵|日本|JP|japan|tokyo|osaka, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Japan.png }
   - { name: 韩国, <<: *UrlTest, filter: 🇰🇷|韩国|韩|KR|korea|seoul, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Korea.png }
   - { name: 美国, <<: *UrlTest, filter: 🇺🇸|美国|美|US|united states|america|los angeles|san jose|silicon valley, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/United_States.png }
-  - { name: 新加坡, <<: *UrlTest, filter: 🇸🇬|新加坡|新|SG|singapore, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Singapore.png }
+  - { name: 新加坡, <<: *UrlTest, filter: 🇸🇬|新加坡|SG|singapore, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Singapore.png }
   # 除了常用的地区，其他地区都放这里
   - { name: 其他, <<: *Others, filter: '(?i)^(?!.*(香港|台湾|日本|韩国|新加坡|美国|港|台|日|韩|新|美|hk|tw|jp|kr|sg|us|Expire|到期|剩余|Traffic)).*', icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Global.png }
 
