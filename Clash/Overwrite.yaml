@@ -80,7 +80,8 @@ sniffer:
   skip-domain:
     - "Mijia Cloud"
     - "+.push.apple.com"
-
+    - "+.oray.com"
+    - "+.sunlogin.net"
 ### Tunnel配置
 tun:
   enable: true
