@@ -1,5 +1,12 @@
-# yyhhyyyyyy的Mihomo单节点配置
-# Date：2025-06-04
+### 订阅基础配置 [每天更新一次订阅节点，每 300 秒一次健康检查]
+NodeParam: &NodeParam {type: http, interval: 86400, health-check: {enable: true, url: 'http://connectivitycheck.platform.hicloud.com/generate_204', interval: 300}}
+
+# 订阅合集
+proxy-providers:
+  Node:
+    url: '替换订阅链接'
+    <<: *NodeParam
+    path: './proxy_provider/providers.yaml'
 
 ### 全局配置
 mixed-port: 7897
@@ -12,12 +19,6 @@ unified-delay: true
 tcp-concurrent: true
 global-client-fingerprint: chrome
 
-### 如果使用的是裸核，需要将下面的注释去掉，方便ui界面的使用
-# external-controller: 0.0.0.0:9988
-# external-ui: ui
-# external-ui-url: 'https://mirror.ghproxy.com/https://github.com/Zephyruso/zashboard/releases/latest/download/dist.zip'
-# secret: "yyhhyyyyyy"
-
 profile:
   store-selected: true
   store-fake-ip: true
@@ -29,7 +30,6 @@ dns:
   ipv6: false
   enhanced-mode: fake-ip
   fake-ip-range: 198.18.0.1/16
-  # fake-ip-filter start
   fake-ip-filter:
     - +.m2m
     - injections.adguard.org
@@ -59,7 +59,6 @@ dns:
     - 127-*-*-*.nip.io
     - "*.127.*.*.*.nip.io"
     - "*-127-*-*-*.nip.io"
-  # fake-ip-filter end
   nameserver:
     - https://223.5.5.5/dns-query
     - https://doh.pub/dns-query
@@ -123,77 +122,83 @@ external-ui: "./ui"
 external-ui-name: zashboard
 external-ui-url: "https://github.com/Zephyruso/zashboard/archive/refs/heads/gh-pages.zip"
 
-# 代理组锚点，是为了减少重复配置
-SelectProxy: &SelectProxy { type: select, proxies: [香港, 台湾, 日本, 新加坡, 美国, 韩国, 其他, DIRECT] }
-SelectDirect: &SelectDirect { type: select, proxies: [DIRECT,  香港, 台湾, 日本, 新加坡, 美国, 韩国, 其他] }
-Fallback: &Fallback { type: fallback, proxies: [ 香港, 新加坡, 台湾, 日本, 韩国, 美国, 其他]}
-# hidden: true 是为了隐藏地区分组，有需要显示出来的佬友可以删除
-Others: &Others { type: select, include-all: true }
-UrlTest: &UrlTest { type: url-test, interval: 300, tolerance: 200, url: 'https://www.gstatic.com/generate_204', hidden: false, include-all: true }
+# hidden: true 是为了隐藏地区分组，有需要显示出来的可以删除
+UrlTest: &UrlTest { type: url-test, interval: 300, tolerance: 200, url: 'https://www.gstatic.com/generate_204', hidden: true, include-all: true }
 
 # 代理组
 proxy-groups:
-  - { name: Proxy, <<: *Fallback, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Rocket.png }
-  - { name: YouTube, <<: *SelectProxy, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/YouTube.png}
-  - { name: OpenAI, <<: *SelectProxy, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/ChatGPT.png }
-  - { name: Gemini, <<: *SelectProxy, icon: https://cdn.jsdelivr.net/gh/guaishouxiaoqi/icons@master/Color/Gemini.png }
-  - { name: Steam, <<: *SelectProxy, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Steam.png }
-  - { name: SteamCN, <<: *SelectDirect, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Steam.png }
-  - { name: Google, <<: *SelectProxy, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Google_Search.png } 
-  - { name: Apple, <<: *SelectDirect, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Apple.png }
-  - { name: Microsoft, <<: *SelectDirect, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Microsoft.png }
-  - { name: Github, <<: *SelectProxy, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/GitHub.png }
-  - { name: Telegram, <<: *SelectProxy, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Telegram.png }
-  # 这里只匹配了一些常用地区的分组
+  - { name: Proxy, type: select, proxies: [香港, 台湾, 日本, 新加坡, 美国, 韩国, 其他, DIRECT], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Rocket.png }
+  - { name: YouTube, type: select, proxies: [香港, 台湾, 日本, 新加坡, 美国, 韩国], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/YouTube.png }
+  - { name: OpenAI, type: select, proxies: [美国, 新加坡, 台湾, 日本, 韩国], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/ChatGPT.png }
+  - { name: Gemini, type: select, proxies: [美国, 新加坡, 台湾, 日本, 韩国], icon: https://cdn.jsdelivr.net/gh/guaishouxiaoqi/icons@master/Color/Gemini.png }
+  - { name: Steam, type: select, proxies: [香港, 台湾, 日本, 新加坡, 美国, 韩国, DIRECT], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Steam.png }
+  - { name: SteamCN, type: select, proxies: [DIRECT, 香港, 台湾, 日本, 新加坡, 美国, 韩国], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Steam.png }
+  - { name: Google, type: select, proxies: [香港, 台湾, 日本, 新加坡, 美国, 韩国], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Google_Search.png } 
+  - { name: Apple, type: select, proxies: [DIRECT, 香港, 台湾, 日本, 新加坡, 美国, 韩国], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Apple.png }
+  - { name: Microsoft, type: select, proxies: [DIRECT, 香港, 台湾, 日本, 新加坡, 美国, 韩国], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Microsoft.png }
+  - { name: Github, type: select, proxies: [香港, 台湾, 日本, 新加坡, 美国, 韩国], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/GitHub.png }
+  - { name: Telegram, type: select, proxies: [香港, 台湾, 日本, 新加坡, 美国, 韩国], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Telegram.png }
+  # 匹配一些常用地区的分组
   - { name: 香港, <<: *UrlTest, filter: 🇭🇰|香港|港|HK|hongkong|hong kong, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Hong_Kong.png }
   - { name: 台湾, <<: *UrlTest, filter: 🇹🇼|台湾|台|TW|taiwan|taipei, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Taiwan.png }
   - { name: 日本, <<: *UrlTest, filter: 🇯🇵|日本|JP|japan|tokyo|osaka, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Japan.png }
   - { name: 韩国, <<: *UrlTest, filter: 🇰🇷|韩国|韩|KR|korea|seoul, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Korea.png }
   - { name: 美国, <<: *UrlTest, filter: 🇺🇸|美国|美|US|united states|america|los angeles|san jose|silicon valley, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/United_States.png }
   - { name: 新加坡, <<: *UrlTest, filter: 🇸🇬|新加坡|SG|singapore, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Singapore.png }
-  # 除了常用的地区，其他地区都放这里
-  - { name: 其他, <<: *Others, filter: '(?i)^(?!.*(香港|台湾|日本|韩国|新加坡|美国|港|台|日|韩|新|美|hk|tw|jp|kr|sg|us|Expire|到期|剩余|Traffic)).*', icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Global.png }
+  - { name: 其他, type: select, include-all: true, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Global.png }
 
-# 规则锚点，是为了减少重复配置
+# 规则锚点
 rule-anchor:
-  DomainYaml: &DomainYaml { behavior: domain, interval: 86400, proxy: Proxy, type: http }
-  ClassicalYaml: &ClassicalYaml { behavior: classical, interval: 86400, proxy: Proxy, type: http }
+  DomainYaml: &DomainYaml { type: http, behavior: domain, format: yaml, interval: 86400, proxy: Proxy }
+  ClassicalYaml: &ClassicalYaml { type: http, behavior: classical, format: yaml, interval: 86400, proxy: Proxy }
 
-# 官方配置文档: https://wiki.metacubex.one/config/rule-providers/
+# 规则集配置
 rule-providers:
-  AWAvenueAds: { <<: *DomainYaml, url: https://raw.githubusercontent.com/TG-Twilight/AWAvenue-Ads-Rule/main/Filters/AWAvenue-Ads-Rule-Clash.yaml}
-  Apple: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Apple/Apple_Classical.yaml}
-  China: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/China/China_Classical_No_Resolve.yaml }
-  ChinaIPs: { <<: *ClassicalYaml, url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/ChinaIPs/ChinaIPs_Classical_No_IPv6_No_Resolve.yaml }
-  Gemini: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Gemini/Gemini.yaml }
-  OpenAI: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/OpenAI/OpenAI.yaml }
-  YouTube: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/YouTube/YouTube.yaml }
-  SteamCN: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/SteamCN/SteamCN.yaml }
-  Steam: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Steam/Steam.yaml }
-  Github: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/GitHub/GitHub.yaml }
-  Google: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Google/Google.yaml }
-  Global: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/wanswu/my-backup@master/clash/rule/Global.yaml }
-  Lan: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Lan/Lan_No_Resolve.yaml }
-  Microsoft: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Microsoft/Microsoft.yaml }
-  Telegram: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Telegram/Telegram.yaml }
+  AWAvenueAds: { <<: *DomainYaml, url: "https://raw.githubusercontent.com/TG-Twilight/AWAvenue-Ads-Rule/main/Filters/AWAvenue-Ads-Rule-Clash.yaml" }
+  Apple: { <<: *ClassicalYaml, url: "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Apple/Apple_Classical.yaml" }
+  China: { <<: *ClassicalYaml, url: "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/China/China_Classical_No_Resolve.yaml" }
+  ChinaIPs: { <<: *ClassicalYaml, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/ChinaIPs/ChinaIPs_Classical_No_IPv6_No_Resolve.yaml" }
+  Gemini: { <<: *ClassicalYaml, url: "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Gemini/Gemini.yaml" }
+  OpenAI: { <<: *ClassicalYaml, url: "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/OpenAI/OpenAI.yaml" }
+  YouTube: { <<: *ClassicalYaml, url: "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/YouTube/YouTube.yaml" }
+  SteamCN: { <<: *ClassicalYaml, url: "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/SteamCN/SteamCN.yaml" }
+  Steam: { <<: *ClassicalYaml, url: "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Steam/Steam.yaml" }
+  Github: { <<: *ClassicalYaml, url: "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/GitHub/GitHub.yaml" }
+  Google: { <<: *ClassicalYaml, url: "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Google/Google.yaml" }
+  Global: { <<: *ClassicalYaml, url: "https://cdn.jsdelivr.net/gh/wanswu/my-backup@master/clash/rule/Global.yaml" }
+  Lan: { <<: *ClassicalYaml, url: "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Lan/Lan_No_Resolve.yaml" }
+  Microsoft: { <<: *ClassicalYaml, url: "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Microsoft/Microsoft.yaml" }
+  Telegram: { <<: *ClassicalYaml, url: "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Telegram/Telegram.yaml" }
 
 
-# 官方配置文档: https://wiki.metacubex.one/config/rules/
 rules:
-  # 额外添加的规则，佬友也可以自己添加，规则优先级为由上到下
+  # 1. 优先处理特定域名关键字 (DomainSet/Keyword)
   - DOMAIN-KEYWORD,1ytsub,DIRECT 
+
+  # 2. 广告拦截 (Non-IP / DomainSet)
   - RULE-SET,AWAvenueAds,REJECT
-  - RULE-SET,SteamCN,SteamCN
-  - RULE-SET,Lan,DIRECT,no-resolve
-  - RULE-SET,China,DIRECT,no-resolve
+
+  # 3. 业务逻辑分流 (Non-IP / Classical) - 确保这些在 IP 规则之前，避免触发不必要的 DNS 解析
   - RULE-SET,YouTube,YouTube
   - RULE-SET,Gemini,Gemini
   - RULE-SET,OpenAI,OpenAI
   - RULE-SET,Google,Google
   - RULE-SET,Github,Github
-  - RULE-SET,Microsoft,Microsoft
+  - RULE-SET,Telegram,Telegram
   - RULE-SET,Steam,Steam
   - RULE-SET,Global,Proxy
-  - RULE-SET,Telegram,Telegram
+
+  # 4. 基础服务分流 (Non-IP / Classical)
+  - RULE-SET,SteamCN,SteamCN
+  - RULE-SET,Microsoft,Microsoft
+  - RULE-SET,Apple,Apple
+  - RULE-SET,Lan,DIRECT,no-resolve
+
+  # 5. 中国流量分流 (可能包含域名和 IP，建议放在最后一部分)
+  - RULE-SET,China,DIRECT,no-resolve
+
+  # 6. 纯 IP 分流 (IP-CIDR / GeoIP) - 必须放在最后，作为最后的过滤层
   - RULE-SET,ChinaIPs,DIRECT,no-resolve
+
+  # 7. 漏网之鱼 (Final Match)
   - MATCH,Proxy
