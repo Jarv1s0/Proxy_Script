@@ -1,82 +1,101 @@
-# 订阅锚点，排除了一些节点，例如 包含剩余，官网，到期，也可以在exclude-filter添加你需要排除的节点
-#Providers: &Providers { exclude-filter: "Expire|到期|剩余|Traffic", type: http, interval: 86400, health-check: { enable: true, url: https://www.gstatic.com/generate_204, interval: 300 } }
-# 官方配置文档: https://wiki.metacubex.one/config/proxy-providers/
-# 在下方的url填入订阅链接即可
-#proxy-providers:
-#  p1:
-#    <<: *Providers
-#    url: xxx
-#    path: ./proxy_provider/p1.yaml
-#    override:
-#      additional-prefix: 'p1 | '  # 订阅节点前缀，方便区分该节点属于哪个订阅链接 例如`p1 | 香港🇭🇰
+# yyhhyyyyyy的Mihomo单节点配置
+# Date：2025-06-04
 
-#  p2:
-#    <<: *Providers
-#    url: xxx
-#    path: ./proxy_provider/p2.yaml
-#    override:
-#      additional-prefix: 'p2 | '
-# 通用配置
-mode: rule
-ipv6: false
-mixed-port: 7890
+### 全局配置
+mixed-port: 7897
 allow-lan: true
-bind-address: 0.0.0.0
-log-level: info
-unified-delay: true
+mode: rule
+log-level: warning
+ipv6: false
 find-process-mode: strict
+unified-delay: true
+tcp-concurrent: true
 global-client-fingerprint: chrome
-# 规则选择缓存
+
+### 如果使用的是裸核，需要将下面的注释去掉，方便ui界面的使用
+# external-controller: 0.0.0.0:9988
+# external-ui: ui
+# external-ui-url: 'https://mirror.ghproxy.com/https://github.com/Zephyruso/zashboard/releases/latest/download/dist.zip'
+# secret: "yyhhyyyyyy"
+
 profile:
   store-selected: true
   store-fake-ip: true
-tcp-concurrent: true
-disable-keep-alive: true
 
-#DNS配置
+### DNS配置
 dns:
   enable: true
-  listen: 0.0.0.0:1053
+  prefer-h3: true
   ipv6: false
-  prefer-h3: false
-  use-hosts: false
-  use-system-hosts: false
-  respect-rules: true
   enhanced-mode: fake-ip
   fake-ip-range: 198.18.0.1/16
+  # fake-ip-filter start
   fake-ip-filter:
-  # 基础内网域名
-  - "+.lan"
-  - "+.local"
-  - "+.localdomain"
-  - "+.internal"
-  - "home.arpa"
-  - "+.bogon"
-  - "+.m2m"
-  - "+.bogon"
-  # 系统检测服务
-  - "+.msftconnecttest.com"
-  - "+.msftncsi.com"
-  - "dns.msftncsi.com"
-  - "captive.apple.com"
-  # 小米生态
-  - "*.mi.com"
-  - "*.miui.com"
-  - "*.xiaomi.com"
-
-  default-nameserver:
-    - 223.5.5.5
-    - 119.29.29.29
+    - +.m2m
+    - injections.adguard.org
+    - local.adguard.org
+    - +.bogon
+    - +.local
+    - +.lan
+    - +.internal
+    - +.localdomain
+    - home.arpa
+    - 127.0.0.1.sslip.io
+    - 127.atlas.skk.moe
+    - dns.msftncsi.com
+    - "*.srv.nintendo.net"
+    - "*.stun.playstation.net"
+    - xbox.*.microsoft.com
+    - "*.xboxlive.com"
+    - "*.turn.twilio.com"
+    - "*.stun.twilio.com"
+    - stun.syncthing.net
+    - stun.*
+    - 127.*.*.*.sslip.io
+    - 127-*-*-*.sslip.io
+    - "*.127.*.*.*.sslip.io"
+    - "*-127-*-*-*.sslip.io"
+    - 127.*.*.*.nip.io
+    - 127-*-*-*.nip.io
+    - "*.127.*.*.*.nip.io"
+    - "*-127-*-*-*.nip.io"
+  # fake-ip-filter end
   nameserver:
-    - https://1.1.1.1/dns-query
-    - https://8.8.8.8/dns-query
+    - https://223.5.5.5/dns-query
+    - https://doh.pub/dns-query
   proxy-server-nameserver:
     - https://223.5.5.5/dns-query
     - https://doh.pub/dns-query
-  direct-nameserver:
-    - https://223.5.5.5/dns-query
-    - https://doh.pub/dns-query
-  fallback: [] 
+
+### 域名嗅探
+sniffer:
+  enable: true
+  sniff:
+    HTTP:
+      ports: [80, 8080-8880]
+      override-destination: true
+    TLS:
+      ports: [443, 8443]
+    QUIC:
+      ports: [443, 8443]
+  skip-domain:
+    - "Mijia Cloud"
+    - "+.push.apple.com"
+
+### Tunnel配置
+tun:
+  enable: true
+  stack: system
+  device: Ethernet99
+  auto-route: true
+  auto-detect-interface: true
+  dns-hijack:
+    - any:53
+    - tcp://any:53
+  strict-route: true
+  mtu: 1500
+  # 如果有使用zerotier或者headscale等，需要自己配置排除自己的网段
+  # route-exclude-address: ["192.168.110.0/24"]
 
 # GEO配置
 geodata-mode: true
@@ -96,45 +115,6 @@ ntp:
   server: ntp1.aliyun.com
   port: 123
   interval: 30
-
-# 入站
-tun:
-  enable: true
-  stack: mixed
-  auto-route: true
-  auto-redirect: false
-  auto-detect-interface: true
-  dns-hijack:
-    - any:53
-    - tcp://any:53
-  route-exclude-address: []
-  mtu: 1500
-
-# 嗅探
-sniffer:
-  enable: true
-  force-dns-mapping: true
-  parse-pure-ip: true
-  override-destination: false
-  sniff:
-    TLS:
-      ports:
-        - 443
-        - 8443
-    HTTP:
-      ports:
-        - 80
-        - 443
-      override-destination: false
-    QUIC:
-      ports:
-        - 443
-        - 8443
-  force-domain: []
-  skip-domain:
-    - +.oray.com
-    - "Mijia Cloud"
-    - "+.push.apple.com"
 
 # 面板设置
 external-controller: 127.0.0.1:9090
