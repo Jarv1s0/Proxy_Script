@@ -138,13 +138,12 @@ proxy-groups:
   - { name: OpenAI, <<: *SelectProxy, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/ChatGPT.png }
   - { name: Gemini, <<: *SelectProxy, icon: https://cdn.jsdelivr.net/gh/guaishouxiaoqi/icons@master/Color/Gemini.png }
   - { name: Steam, <<: *SelectProxy, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Steam.png }
-  - { name: SteamDownLoad, <<: *SelectDirect, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Steam.png }
+  - { name: SteamCN, <<: *SelectDirect, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Steam.png }
   - { name: Google, <<: *SelectProxy, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Google_Search.png } 
   - { name: Apple, <<: *SelectDirect, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Apple.png }
   - { name: Microsoft, <<: *SelectDirect, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Microsoft.png }
   - { name: Github, <<: *SelectProxy, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/GitHub.png }
   - { name: Telegram, <<: *SelectProxy, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Telegram.png }
-  - { name: X, <<: *SelectProxy, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/X.png }
   # 这里只匹配了一些常用地区的分组
   - { name: 香港, <<: *UrlTest, filter: 🇭🇰|香港|港|HK|hongkong|hong kong, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Hong_Kong.png }
   - { name: 台湾, <<: *UrlTest, filter: 🇹🇼|台湾|台|TW|taiwan|taipei, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Taiwan.png }
@@ -166,32 +165,26 @@ rule-providers:
   Apple: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Apple/Apple_Classical.yaml}
   China: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/China/China_Classical_No_Resolve.yaml }
   ChinaIPs: { <<: *ClassicalYaml, url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/ChinaIPs/ChinaIPs_Classical_No_IPv6_No_Resolve.yaml }
-  ChinaCustom: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/wanswu/my-backup@master/clash/rule/ChinaCustom.yaml } 
   Gemini: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Gemini/Gemini.yaml }
   OpenAI: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/OpenAI/OpenAI.yaml }
   YouTube: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/YouTube/YouTube.yaml }
-  SteamDownLoad: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/SteamCN/SteamCN.yaml }
+  SteamCN: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/SteamCN/SteamCN.yaml }
   Steam: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Steam/Steam.yaml }
-  X: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Twitter/Twitter.yaml }
   Github: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/GitHub/GitHub.yaml }
   Google: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Google/Google.yaml }
   Global: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/wanswu/my-backup@master/clash/rule/Global.yaml }
-  Hijacking: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Hijacking/Hijacking.yaml }
   Lan: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Lan/Lan_No_Resolve.yaml }
   Microsoft: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Microsoft/Microsoft.yaml }
   Telegram: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Telegram/Telegram.yaml }
-  DNSLeak: { <<: *ClassicalYaml, url: https://cdn.jsdelivr.net/gh/wanswu/my-backup@master/clash/rule/DNSLeak.yaml }
+
 
 # 官方配置文档: https://wiki.metacubex.one/config/rules/
 rules:
   # 额外添加的规则，佬友也可以自己添加，规则优先级为由上到下
   - DOMAIN-KEYWORD,1ytsub,DIRECT 
   - RULE-SET,AWAvenueAds,REJECT
-  # [规则匹配],[规则集],[规则],[不解析]  这里不使用GEOIP,private，是因为我测试下来感觉使用GEO会让clash内存变高所以就没使用了
-  - RULE-SET,ChinaCustom,DIRECT,no-resolve
-  - RULE-SET,SteamDownLoad,SteamDownLoad
+  - RULE-SET,SteamCN,SteamCN
   - RULE-SET,Lan,DIRECT,no-resolve
-  - RULE-SET,DNSLeak,DIRECT
   - RULE-SET,China,DIRECT,no-resolve
   - RULE-SET,YouTube,YouTube
   - RULE-SET,Gemini,Gemini
@@ -199,10 +192,8 @@ rules:
   - RULE-SET,Google,Google
   - RULE-SET,Github,Github
   - RULE-SET,Microsoft,Microsoft
-  - RULE-SET,X,X
   - RULE-SET,Steam,Steam
   - RULE-SET,Global,Proxy
-  - RULE-SET,Hijacking,DIRECT
   - RULE-SET,Telegram,Telegram
   - RULE-SET,ChinaIPs,DIRECT,no-resolve
   - MATCH,Proxy
