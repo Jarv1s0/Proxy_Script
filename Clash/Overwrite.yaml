@@ -185,7 +185,7 @@ rule-providers:
 rules:
   # 1. 优先处理特定域名关键字 (DomainSet/Keyword)
   - DOMAIN-KEYWORD,1ytsub,DIRECT 
-
+  - PROCESS-NAME,dota2.exe,DIRECT
   # 2. 广告拦截 (Non-IP / DomainSet)
   - RULE-SET,AWAvenueAds,REJECT
 
