@@ -188,7 +188,7 @@ rules:
   - PROCESS-NAME,dota2.exe,DIRECT
   # 2. 广告拦截 (Non-IP / DomainSet)
   - RULE-SET,AWAvenueAds,REJECT
-
+  - PROCESS-NAME,language_server_windows_x64.exe,Gemini # Antigravity
   # 3. 业务逻辑分流 (Non-IP / Classical) - 确保这些在 IP 规则之前，避免触发不必要的 DNS 解析
   - RULE-SET,YouTube,YouTube
   - RULE-SET,Gemini,Gemini
