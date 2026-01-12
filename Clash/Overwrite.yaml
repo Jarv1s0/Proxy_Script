@@ -2,11 +2,11 @@
 NodeParam: &NodeParam {type: http, interval: 86400, health-check: {enable: true, url: 'http://connectivitycheck.platform.hicloud.com/generate_204', interval: 300}}
 
 # 订阅合集
-proxy-providers:
-  Node:
-    url: '替换订阅链接'
-    <<: *NodeParam
-    path: './proxy_provider/providers.yaml'
+#proxy-providers:
+#  Node:
+#    url: '替换订阅链接'
+#    <<: *NodeParam
+#    path: './proxy_provider/providers.yaml'
 
 # 通用配置
 mode: rule
