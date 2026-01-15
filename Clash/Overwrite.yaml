@@ -75,11 +75,6 @@ geodata-mode: true
 geo-auto-update: true
 geo-update-interval: 48
 geodata-loader: memconservative
-geox-url:
-  geoip: "https://cdn.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geoip.dat"
-  geosite: "https://cdn.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geosite.dat"
-  mmdb: "https://cdn.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/country.mmdb"
-  asn: "https://github.com/xishang0128/geoip/releases/download/latest/GeoLite2-ASN.mmdb"
 
 # 时间同步
 ntp:
@@ -107,7 +102,7 @@ sniffer:
   enable: true
   force-dns-mapping: true
   parse-pure-ip: true
-  override-destination: false
+  override-destination: true
   sniff:
     TLS:
       ports:
@@ -142,8 +137,8 @@ UrlTest: &UrlTest { type: url-test, interval: 300, tolerance: 200, url: 'https:/
 proxy-groups:
   - { name: Proxy, type: select, proxies: [香港, 台湾, 日本, 新加坡, 美国, 韩国, ALL, DIRECT], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Rocket.png }
   - { name: YouTube, type: select, proxies: [香港, 台湾, 日本, 新加坡, 美国, 韩国], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/YouTube.png }
-  - { name: OpenAI, type: select, proxies: [美国, 新加坡, 台湾, 日本, 韩国], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/ChatGPT.png }
-  - { name: Gemini, type: select, proxies: [美国, 新加坡, 台湾, 日本, 韩国], icon: https://cdn.jsdelivr.net/gh/guaishouxiaoqi/icons@master/Color/Gemini.png }
+  - { name: AI, type: select, proxies: [美国, 新加坡, 台湾, 日本, 韩国], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/AI.png }
+  #- { name: Gemini, type: select, proxies: [美国, 新加坡, 台湾, 日本, 韩国], icon: https://cdn.jsdelivr.net/gh/guaishouxiaoqi/icons@master/Color/Gemini.png }
   - { name: Steam, type: select, proxies: [香港, 台湾, 日本, 新加坡, 美国, 韩国, DIRECT], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Steam.png }
   - { name: SteamCN, type: select, proxies: [DIRECT, 香港, 台湾, 日本, 新加坡, 美国, 韩国], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Steam.png }
   - { name: Google, type: select, proxies: [香港, 台湾, 日本, 新加坡, 美国, 韩国], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Google_Search.png } 
@@ -162,17 +157,17 @@ proxy-groups:
 
 # 规则锚点
 rule-anchor:
-  DomainYaml: &DomainYaml { type: http, behavior: domain, format: yaml, interval: 86400, proxy: Proxy }
-  ClassicalYaml: &ClassicalYaml { type: http, behavior: classical, format: yaml, interval: 86400, proxy: Proxy }
-
+  DomainYaml: &DomainYaml { type: http, behavior: domain, format: yaml, interval: 43200, proxy: Proxy }
+  ClassicalYaml: &ClassicalYaml { type: http, behavior: classical, format: yaml, interval: 43200, proxy: Proxy }
+  ClassicalText: &ClassicalText {type: http, behavior: classical, format: text, interval: 43200, proxy: Proxy}
+  RuleSet_ipcidr: &RuleSet_ipcidr {type: http, behavior: ipcidr, interval: 43200, format: text, proxy: Proxy}
 # 规则集配置
 rule-providers:
   AWAvenueAds: { <<: *DomainYaml, url: "https://raw.githubusercontent.com/TG-Twilight/AWAvenue-Ads-Rule/main/Filters/AWAvenue-Ads-Rule-Clash.yaml" }
   Apple: { <<: *ClassicalYaml, url: "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Apple/Apple_Classical.yaml" }
   China: { <<: *ClassicalYaml, url: "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/China/China_Classical_No_Resolve.yaml" }
-  ChinaIPs: { <<: *ClassicalYaml, url: "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/ChinaIPs/ChinaIPs_Classical_No_IPv6_No_Resolve.yaml" }
-  Gemini: { <<: *ClassicalYaml, url: "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Gemini/Gemini.yaml" }
-  OpenAI: { <<: *ClassicalYaml, url: "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/OpenAI/OpenAI.yaml" }
+  ChinaIPs: { <<: *RuleSet_ipcidr, url: "https://ruleset.skk.moe/Clash/ip/china_ip.txt" }
+  AI: { <<: *ClassicalText, url: "https://ruleset.skk.moe/Clash/non_ip/ai.txt" }
   YouTube: { <<: *ClassicalYaml, url: "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/YouTube/YouTube.yaml" }
   SteamCN: { <<: *ClassicalYaml, url: "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/SteamCN/SteamCN.yaml" }
   Steam: { <<: *ClassicalYaml, url: "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Steam/Steam.yaml" }
@@ -181,18 +176,19 @@ rule-providers:
   Lan: { <<: *ClassicalYaml, url: "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Lan/Lan_No_Resolve.yaml" }
   Microsoft: { <<: *ClassicalYaml, url: "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Microsoft/Microsoft.yaml" }
   Telegram: { <<: *ClassicalYaml, url: "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Telegram/Telegram.yaml" }
-  Global: { <<: *ClassicalYaml, url: "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Global/Global_Classical.yaml" }
+  Global: { <<: *ClassicalText, url: "https://ruleset.skk.moe/Clash/non_ip/global.txt" }
 rules:
   # 1. 优先处理特定域名关键字 (DomainSet/Keyword)
   - DOMAIN-KEYWORD,1ytsub,DIRECT 
   - PROCESS-NAME,dota2.exe,DIRECT
+  - PROCESS-NAME,language_server_windows_x64.exe,AI # Antigravity
+  - PROCESS-NAME,Antigravity.exe,AI # Antigravity 
   # 2. 广告拦截 (Non-IP / DomainSet)
   - RULE-SET,AWAvenueAds,REJECT
-  - PROCESS-NAME,language_server_windows_x64.exe,Gemini # Antigravity
+
   # 3. 业务逻辑分流 (Non-IP / Classical) - 确保这些在 IP 规则之前，避免触发不必要的 DNS 解析
+  - RULE-SET,AI,AI
   - RULE-SET,YouTube,YouTube
-  - RULE-SET,Gemini,Gemini
-  - RULE-SET,OpenAI,OpenAI
   - RULE-SET,Google,Google
   - RULE-SET,Github,Github
   - RULE-SET,Telegram,Telegram
