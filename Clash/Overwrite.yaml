@@ -1,13 +1,30 @@
-### 订阅基础配置 [每天更新一次订阅节点，每 300 秒一次健康检查]
-NodeParam: &NodeParam {type: http, interval: 86400, health-check: {enable: true, url: 'http://connectivitycheck.platform.hicloud.com/generate_204', interval: 300}}
+# ==========================================
+# 暂时屏蔽：订阅链接管理与 Proxy Providers
+# ==========================================
 
-# 订阅合集
-#proxy-providers:
-#  Node:
-#    url: '替换订阅链接'
-#    <<: *NodeParam
-#    path: './proxy_provider/providers.yaml'
+# # 定义一个统一的订阅链接管理块
+# SubscriptionLinks:
+#   - &Url_1 "https://example.com/sub/link_1"
+#   - &Url_2 "https://example.com/sub/link_2"
 
+# # 订阅基础配置
+# NodeParam: &NodeParam {type: http, interval: 86400, health-check: {enable: true, url: 'http://connectivitycheck.platform.hicloud.com/generate_204', interval: 300}}
+
+# # 订阅合集
+# proxy-providers:
+#   Node-1:
+#     url: *Url_1  # 直接引用上面定义的锚点
+#     <<: *NodeParam
+#     path: './proxy_provider/providers-1.yaml'
+#     override:
+#       additional-prefix: "[A] "
+#       
+#   Node-2:
+#     url: *Url_2
+#     <<: *NodeParam
+#     path: './proxy_provider/providers-2.yaml'
+#     override:
+#       additional-prefix: "[B] "
 # 通用配置
 mode: rule
 ipv6: false
@@ -130,15 +147,16 @@ external-ui: "./ui"
 external-ui-name: zashboard
 external-ui-url: "https://github.com/Zephyruso/zashboard/archive/refs/heads/gh-pages.zip"
 
-# hidden: true 是为了隐藏地区分组，有需要显示出来的可以删除
+# 锚点定义
 UrlTest: &UrlTest { type: url-test, interval: 300, tolerance: 200, url: 'https://www.gstatic.com/generate_204', hidden: true, include-all: true }
+# Select 锚点，用于手动选择地区节点
+Select: &Select { type: select, hidden: false, include-all: true }
 
 # 代理组
 proxy-groups:
   - { name: Proxy, type: select, proxies: [香港, 台湾, 日本, 新加坡, 美国, 韩国, ALL, DIRECT], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Rocket.png }
   - { name: YouTube, type: select, proxies: [香港, 台湾, 日本, 新加坡, 美国, 韩国], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/YouTube.png }
   - { name: AI, type: select, proxies: [美国, 新加坡, 台湾, 日本, 韩国], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/AI.png }
-  #- { name: Gemini, type: select, proxies: [美国, 新加坡, 台湾, 日本, 韩国], icon: https://cdn.jsdelivr.net/gh/guaishouxiaoqi/icons@master/Color/Gemini.png }
   - { name: Steam, type: select, proxies: [香港, 台湾, 日本, 新加坡, 美国, 韩国, DIRECT], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Steam.png }
   - { name: SteamCN, type: select, proxies: [DIRECT, 香港, 台湾, 日本, 新加坡, 美国, 韩国], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Steam.png }
   - { name: Google, type: select, proxies: [香港, 台湾, 日本, 新加坡, 美国, 韩国], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Google_Search.png } 
@@ -146,12 +164,13 @@ proxy-groups:
   - { name: Microsoft, type: select, proxies: [DIRECT, 香港, 台湾, 日本, 新加坡, 美国, 韩国], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Microsoft.png }
   - { name: Github, type: select, proxies: [香港, 台湾, 日本, 新加坡, 美国, 韩国], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/GitHub.png }
   - { name: Telegram, type: select, proxies: [香港, 台湾, 日本, 新加坡, 美国, 韩国], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Telegram.png }
-  # 匹配一些常用地区的分组
+
+  # 匹配常用地区的分组
+  - { name: 美国, <<: *Select, filter: 🇺🇸|美国|美|US|united states|america|los angeles|san jose|silicon valley, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/United_States.png }
   - { name: 香港, <<: *UrlTest, filter: 🇭🇰|香港|港|HK|hongkong|hong kong, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Hong_Kong.png }
   - { name: 台湾, <<: *UrlTest, filter: 🇹🇼|台湾|台|TW|taiwan|taipei, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Taiwan.png }
   - { name: 日本, <<: *UrlTest, filter: 🇯🇵|日本|JP|japan|tokyo|osaka, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Japan.png }
   - { name: 韩国, <<: *UrlTest, filter: 🇰🇷|韩国|韩|KR|korea|seoul, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Korea.png }
-  - { name: 美国, <<: *UrlTest, filter: 🇺🇸|美国|美|US|united states|america|los angeles|san jose|silicon valley, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/United_States.png }
   - { name: 新加坡, <<: *UrlTest, filter: 🇸🇬|新加坡|SG|singapore, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Singapore.png }
   - { name: ALL, type: select, include-all: true, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Global.png }
 
