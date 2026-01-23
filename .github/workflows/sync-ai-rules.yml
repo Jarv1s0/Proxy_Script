@@ -14,19 +14,27 @@ jobs:
       - name: Process Rules
         run: |
           # 1. 下载原始列表文件
-          curl -sSL "https://raw.githubusercontent.com/szkane/ClashRuleSet/main/Clash/Ruleset/AiDomain.list" -o raw_ai.list
+          curl -sSL "https://raw.githubusercontent.com/szkane/ClashRuleSet/main/Clash/Ruleset/AiDomain.list" -o raw_source.list
 
-          # 2. 构建标准 YAML 格式
-          # 写入头部
-          echo "payload:" > AiDomain.yaml
+          # 2. 构建标准 YAML 格式，文件名为 AI.yaml
+          echo "payload:" > AI.yaml
           
-          # 清洗数据：排除注释行、排除空行、为每行规则添加 YAML 列表前缀 "  - "
-          grep -v '^#' raw_ai.list | grep -v '^[[:space:]]*$' | sed 's/^/  - /' >> AiDomain.yaml
+          # 逻辑说明：
+          # grep -v '^#'：过滤掉注释行
+          # grep -v '^[[:space:]]*$'：过滤掉空行
+          # sed 's/^/  - /'：在行首添加两个空格和一个减号，形成 YAML 列表格式
+          grep -v '^#' raw_source.list | grep -v '^[[:space:]]*$' | sed 's/^/  - /' >> AI.yaml
 
       - name: Deploy to Repo
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add AiDomain.yaml
-          # 仅在有变动时提交
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto sync: $(date +'%Y-%m-%d %H:%M:%S')" && git push)
+          git add AI.yaml
+          
+          # 仅在文件有实际变动时才提交，避免无效记录
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Auto sync AI rules: $(date +'%Y-%m-%d %H:%M:%S')"
+            git push
+          fi
