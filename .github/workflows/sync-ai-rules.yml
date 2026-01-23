@@ -13,22 +13,24 @@ jobs:
 
       - name: Process Rules
         run: |
-          # 创建目录
           mkdir -p Clash/rules
 
           # 1. 获取源代码
           curl -sSL "https://raw.githubusercontent.com/szkane/ClashRuleSet/main/Clash/Ruleset/AiDomain.list" -o raw_source.list
 
-          # 2. 生成标准 YAML (模仿 Blackmatrix7 格式)
-          # 写入头部和 payload 标识
+          # 2. 生成带备注的标准 YAML
           echo "# Updated: $(date -u)" > Clash/rules/AI.yaml
           echo "payload:" >> Clash/rules/AI.yaml
           
-          # 处理逻辑：
-          # - 排除注释 (#) 和空行
-          # - 统一转换为 'RULE-TYPE,content' 格式（带单引号）
-          # - 严格 2 空格缩进
-          grep -v '^#' raw_source.list | grep -v '^[[:space:]]*$' | sed "s/^/  - '/;s/$/'/" >> Clash/rules/AI.yaml
+          # 处理逻辑说明：
+          # - grep -v '^[[:space:]]*$' : 过滤掉纯空行
+          # - sed 逻辑：
+          #   1. s/^[[:space:]]*//; s/[[:space:]]*$// : 去除行首行尾多余空格
+          #   2. /^#/ s/^/  / : 如果是以 # 开头的行，在前面加两个空格（对齐 payload）
+          #   3. t : 如果匹配到了上面的备注行规则并完成了替换，则跳过后续命令
+          #   4. s/^/  - '/; s/$/'/ : 剩下的规则行，前后包裹引号并加上列表符
+          grep -v '^[[:space:]]*$' raw_source.list | \
+          sed "s/^[[:space:]]*//; s/[[:space:]]*$//; /^#/ s/^/  /; t; s/^/  - '/; s/$/'/" >> Clash/rules/AI.yaml
 
       - name: Deploy to Repo
         run: |
@@ -38,6 +40,6 @@ jobs:
           if git diff --staged --quiet; then
             echo "No changes"
           else
-            git commit -m "Sync AI rules to standard Blackmatrix7 format"
+            git commit -m "Sync AI rules with comments to standard format"
             git push
           fi
