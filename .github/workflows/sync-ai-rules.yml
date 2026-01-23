@@ -13,29 +13,31 @@ jobs:
 
       - name: Process Rules
         run: |
-          # 1. 创建目标文件夹
+          # 创建目录
           mkdir -p Clash/rules
 
-          # 2. 下载原始列表文件
+          # 1. 获取源代码
           curl -sSL "https://raw.githubusercontent.com/szkane/ClashRuleSet/main/Clash/Ruleset/AiDomain.list" -o raw_source.list
 
-          # 3. 构建标准 YAML 格式，保存到 Clash/rules/AI.yaml
-          echo "payload:" > Clash/rules/AI.yaml
+          # 2. 生成标准 YAML (模仿 Blackmatrix7 格式)
+          # 写入头部和 payload 标识
+          echo "# Updated: $(date -u)" > Clash/rules/AI.yaml
+          echo "payload:" >> Clash/rules/AI.yaml
           
-          # 清洗逻辑：过滤注释和空行，转换为 YAML 列表项
-          grep -v '^#' raw_source.list | grep -v '^[[:space:]]*$' | sed 's/^/  - /' >> Clash/rules/AI.yaml
+          # 处理逻辑：
+          # - 排除注释 (#) 和空行
+          # - 统一转换为 'RULE-TYPE,content' 格式（带单引号）
+          # - 严格 2 空格缩进
+          grep -v '^#' raw_source.list | grep -v '^[[:space:]]*$' | sed "s/^/  - '/;s/$/'/" >> Clash/rules/AI.yaml
 
       - name: Deploy to Repo
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          
-          # 明确添加该目录下的文件
           git add Clash/rules/AI.yaml
-          
           if git diff --staged --quiet; then
-            echo "No changes to commit"
+            echo "No changes"
           else
-            git commit -m "Auto sync AI rules to Clash/rules/AI.yaml"
+            git commit -m "Sync AI rules to standard Blackmatrix7 format"
             git push
           fi
