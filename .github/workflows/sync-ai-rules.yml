@@ -14,21 +14,20 @@ jobs:
       - name: Process Rules
         run: |
           mkdir -p Clash/rules
-
-          # 1. 获取源代码
+          # 1. 下载源文件
           curl -sSL "https://raw.githubusercontent.com/szkane/ClashRuleSet/main/Clash/Ruleset/AiDomain.list" -o raw_source.list
 
-          # 2. 生成带备注的标准 YAML
+          # 2. 生成符合 Blackmatrix7 标准的 YAML
           echo "# Updated: $(date -u)" > Clash/rules/AI.yaml
           echo "payload:" >> Clash/rules/AI.yaml
           
-          # 处理逻辑说明：
-          # - grep -v '^[[:space:]]*$' : 过滤掉纯空行
+          # 处理逻辑：
+          # - grep -v '^[[:space:]]*$' : 过滤纯空行
           # - sed 逻辑：
-          #   1. s/^[[:space:]]*//; s/[[:space:]]*$// : 去除行首行尾多余空格
-          #   2. /^#/ s/^/  / : 如果是以 # 开头的行，在前面加两个空格（对齐 payload）
-          #   3. t : 如果匹配到了上面的备注行规则并完成了替换，则跳过后续命令
-          #   4. s/^/  - '/; s/$/'/ : 剩下的规则行，前后包裹引号并加上列表符
+          #   1. s/^[[:space:]]*//; s/[[:space:]]*$// : 去除行首尾空格
+          #   2. /^#/ s/^/  / : 备注行缩进 2 空格
+          #   3. t : 如果是备注行则跳过后续命令
+          #   4. s/^/  - '/; s/$/'/ : 规则行前后加引号并缩进
           grep -v '^[[:space:]]*$' raw_source.list | \
           sed "s/^[[:space:]]*//; s/[[:space:]]*$//; /^#/ s/^/  /; t; s/^/  - '/; s/$/'/" >> Clash/rules/AI.yaml
 
