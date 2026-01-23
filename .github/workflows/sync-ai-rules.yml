@@ -1,0 +1,32 @@
+name: Sync AI Rules to Standard YAML
+on:
+  schedule:
+    - cron: '0 2 * * *' # 每天北京时间上午10点执行
+  workflow_dispatch:    # 支持手动点击执行
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Process Rules
+        run: |
+          # 1. 下载原始列表文件
+          curl -sSL "https://raw.githubusercontent.com/szkane/ClashRuleSet/main/Clash/Ruleset/AiDomain.list" -o raw_ai.list
+
+          # 2. 构建标准 YAML 格式
+          # 写入头部
+          echo "payload:" > AiDomain.yaml
+          
+          # 清洗数据：排除注释行、排除空行、为每行规则添加 YAML 列表前缀 "  - "
+          grep -v '^#' raw_ai.list | grep -v '^[[:space:]]*$' | sed 's/^/  - /' >> AiDomain.yaml
+
+      - name: Deploy to Repo
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add AiDomain.yaml
+          # 仅在有变动时提交
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto sync: $(date +'%Y-%m-%d %H:%M:%S')" && git push)
