@@ -1,8 +1,8 @@
 name: Sync AI Rules to Standard YAML
 on:
   schedule:
-    - cron: '0 2 * * *' # 每天北京时间 10:00 执行
-  workflow_dispatch:    # 支持手动触发
+    - cron: '0 2 * * *'
+  workflow_dispatch:
 
 jobs:
   build:
@@ -14,31 +14,27 @@ jobs:
       - name: Process Rules
         run: |
           mkdir -p Clash/rules
-          # 1. 下载源文件
           curl -sSL "https://raw.githubusercontent.com/szkane/ClashRuleSet/main/Clash/Ruleset/AiDomain.list" -o raw_source.list
 
-          # 2. 生成符合 Blackmatrix7 标准的 YAML
+          # 使用 awk 进行精准格式化
+          # 1. 移除首尾空格
+          # 2. 如果是注释行 (#)，缩进 2 格输出
+          # 3. 如果是规则行，包裹单引号并缩进输出
           echo "# Updated: $(date -u)" > Clash/rules/AI.yaml
           echo "payload:" >> Clash/rules/AI.yaml
           
-          # 处理逻辑：
-          # - grep -v '^[[:space:]]*$' : 过滤纯空行
-          # - sed 逻辑：
-          #   1. s/^[[:space:]]*//; s/[[:space:]]*$// : 去除行首尾空格
-          #   2. /^#/ s/^/  / : 备注行缩进 2 空格
-          #   3. t : 如果是备注行则跳过后续命令
-          #   4. s/^/  - '/; s/$/'/ : 规则行前后加引号并缩进
-          grep -v '^[[:space:]]*$' raw_source.list | \
-          sed "s/^[[:space:]]*//; s/[[:space:]]*$//; /^#/ s/^/  /; t; s/^/  - '/; s/$/'/" >> Clash/rules/AI.yaml
+          awk '{
+            gsub(/^[ \t]+|[ \t]+$/, ""); 
+            if ($0 ~ /^#/) {
+              if ($0 != "") print "  " $0
+            } else if ($0 != "") {
+              print "  - \047" $0 "\047"
+            }
+          }' raw_source.list >> Clash/rules/AI.yaml
 
       - name: Deploy to Repo
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add Clash/rules/AI.yaml
-          if git diff --staged --quiet; then
-            echo "No changes"
-          else
-            git commit -m "Sync AI rules with comments to standard format"
-            git push
-          fi
+          git diff --staged --quiet || (git commit -m "Standardize AI rules with quotes and comments" && git push)
