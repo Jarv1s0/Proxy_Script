@@ -101,29 +101,28 @@ filters:
   - &FilterTW '(?i)台|🇹🇼|TW|tai|TPE|TSA|KHH'
   - &FilterEU '(?i)德|法|英|意|荷|瑞|🇪🇺|FRA|CDG|LHR|AMS'
 
-# 代理组
+#代理组
 proxy-groups:
-  # --- 顶层业务分组 (保持原有 proxies 引用关系不变) ---
-  - { name: Proxy, type: select, proxies: [香港, 台湾, 日本, 新加坡, 美国, 韩国, ALL, DIRECT], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Rocket.png }
-  - { name: YouTube, type: select, proxies: [香港, 台湾, 日本, 新加坡, 美国, 韩国], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/YouTube.png }
-  - { name: AI, type: select, proxies: [美国, 新加坡, 台湾, 日本, 韩国], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/AI.png }
-  - { name: Steam, type: select, proxies: [香港, 台湾, 日本, 新加坡, 美国, 韩国, DIRECT], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Steam.png }
-  - { name: SteamCN, type: select, proxies: [DIRECT, 香港, 台湾, 日本, 新加坡, 美国, 韩国], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Steam.png }
-  - { name: Google, type: select, proxies: [香港, 台湾, 日本, 新加坡, 美国, 韩国], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Google_Search.png } 
-  - { name: Apple, type: select, proxies: [DIRECT, 香港, 台湾, 日本, 新加坡, 美国, 韩国], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Apple.png }
-  - { name: Microsoft, type: select, proxies: [DIRECT, 香港, 台湾, 日本, 新加坡, 美国, 韩国], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Microsoft.png }
-  - { name: GitHub, type: select, proxies: [香港, 台湾, 日本, 新加坡, 美国, 韩国], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/GitHub.png }
-  - { name: Telegram, type: select, proxies: [香港, 台湾, 日本, 新加坡, 美国, 韩国], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Telegram.png }
+  # --- 顶层业务分组 ---
+  - { name: Proxy, type: select, proxies: [香港, 台湾, 日本, 新加坡, 美国, 韩国, 欧盟, ALL, DIRECT], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Rocket.png }
+  - { name: YouTube, type: select, proxies: [香港, 台湾, 日本, 新加坡, 美国, 韩国, 欧盟], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/YouTube.png }
+  - { name: AI, type: select, proxies: [美国, 新加坡, 台湾, 日本, 韩国, 欧盟], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/AI.png }
+  - { name: Steam, type: select, proxies: [香港, 台湾, 日本, 新加坡, 美国, 韩国, 欧盟, DIRECT], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Steam.png }
+  - { name: SteamCN, type: select, proxies: [DIRECT, 香港, 台湾, 日本, 新加坡, 美国, 韩国, 欧盟], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Steam.png }
+  - { name: Google, type: select, proxies: [香港, 台湾, 日本, 新加坡, 美国, 韩国, 欧盟], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Google_Search.png } 
+  - { name: Apple, type: select, proxies: [DIRECT, 香港, 台湾, 日本, 新加坡, 美国, 韩国, 欧盟], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Apple.png }
+  - { name: Microsoft, type: select, proxies: [DIRECT, 香港, 台湾, 日本, 新加坡, 美国, 韩国, 欧盟], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Microsoft.png }
+  - { name: GitHub, type: select, proxies: [香港, 台湾, 日本, 新加坡, 美国, 韩国, 欧盟], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/GitHub.png }
+  - { name: Telegram, type: select, proxies: [香港, 台湾, 日本, 新加坡, 美国, 韩国, 欧盟], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Telegram.png }
 
-  # --- 底层地区筛选组 (应用锚点化正则与 exclude-filter) ---
+  # --- 底层地区筛选组 ---
   - { name: 香港, <<: *UrlTest, filter: *FilterHK, exclude-filter: *global_exclude, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Hong_Kong.png }
   - { name: 台湾, <<: *UrlTest, filter: *FilterTW, exclude-filter: *global_exclude, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Taiwan.png }
   - { name: 日本, <<: *UrlTest, filter: *FilterJP, exclude-filter: *global_exclude, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Japan.png }
   - { name: 新加坡, <<: *UrlTest, filter: *FilterSG, exclude-filter: *global_exclude, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Singapore.png }
   - { name: 韩国, <<: *UrlTest, filter: *FilterKR, exclude-filter: *global_exclude, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Korea.png }
   - { name: 美国, <<: *Select, filter: *FilterUS, exclude-filter: *global_exclude, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/United_States.png }
-  - { name: 欧盟, <<: *UrlTest, filter: *FilterEU, exclude-filter: *global_exclude, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/European_Union.png }
-  
+  - { name: 欧盟, <<: *UrlTest, filter: *FilterEU, exclude-filter: *global_exclude, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/European_Union.png } 
   - { name: ALL, type: select, include-all: true, exclude-filter: *global_exclude, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Global.png }
 
 # ==================== 规则集 ====================
