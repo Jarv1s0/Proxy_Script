@@ -1,8 +1,8 @@
 name: Sync AI Rules to Standard YAML
 on:
   schedule:
-    - cron: '0 2 * * *' # 每天北京时间 10:00 执行
-  workflow_dispatch:    # 支持手动触发
+    - cron: '0 2 * * *'
+  workflow_dispatch:
 
 jobs:
   build:
@@ -11,33 +11,44 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Process Rules
+      - name: Process Rules with Python
         run: |
-          # 创建目录
           mkdir -p Clash/rules
+          # 使用 Python 确保字符串包裹和缩进万无一失
+          python3 -c "
+          import urllib.request
+          import datetime
 
-          # 1. 获取源代码
-          curl -sSL "https://raw.githubusercontent.com/szkane/ClashRuleSet/main/Clash/Ruleset/AiDomain.list" -o raw_source.list
-
-          # 2. 生成标准 YAML (模仿 Blackmatrix7 格式)
-          # 写入头部和 payload 标识
-          echo "# Updated: $(date -u)" > Clash/rules/AI.yaml
-          echo "payload:" >> Clash/rules/AI.yaml
-          
-          # 处理逻辑：
-          # - 排除注释 (#) 和空行
-          # - 统一转换为 'RULE-TYPE,content' 格式（带单引号）
-          # - 严格 2 空格缩进
-          grep -v '^#' raw_source.list | grep -v '^[[:space:]]*$' | sed "s/^/  - '/;s/$/'/" >> Clash/rules/AI.yaml
+          source_url = 'https://raw.githubusercontent.com/szkane/ClashRuleSet/main/Clash/Ruleset/AiDomain.list'
+          try:
+              with urllib.request.urlopen(source_url) as response:
+                  lines = response.read().decode('utf-8').splitlines()
+              
+              with open('Clash/rules/AI.yaml', 'w', encoding='utf-8') as f:
+                  # 写入 Blackmatrix7 风格头部
+                  f.write(f'# Updated: {datetime.datetime.now().strftime(\"%Y-%m-%d %H:%M:%S\")}\n')
+                  f.write('payload:\n')
+                  
+                  for line in lines:
+                      line = line.strip()
+                      if not line:
+                          continue
+                      if line.startswith('#'):
+                          # 备注行：缩进 2 格并保留 #
+                          f.write(f'  {line}\n')
+                      else:
+                          # 规则行：缩进 2 格，带列表符，且用单引号包裹
+                          # 例如：  - 'DOMAIN-SUFFIX,openai.com'
+                          f.write(f\"  - '{line}'\n\")
+              print('Successfully generated AI.yaml in standard format.')
+          except Exception as e:
+              print(f'Error: {e}')
+              exit(1)
+          "
 
       - name: Deploy to Repo
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add Clash/rules/AI.yaml
-          if git diff --staged --quiet; then
-            echo "No changes"
-          else
-            git commit -m "Sync AI rules to standard Blackmatrix7 format"
-            git push
-          fi
+          git diff --staged --quiet || (git commit -m "Standardize AI rules: Blackmatrix7 format" && git push)
