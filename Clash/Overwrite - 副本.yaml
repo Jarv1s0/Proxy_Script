@@ -1,0 +1,230 @@
+# ==========================================
+# 暂时屏蔽：订阅链接管理与 Proxy Providers
+# ==========================================
+
+# # 定义一个统一的订阅链接管理块
+# SubscriptionLinks:
+#   - &Url_1 "https://example.com/sub/link_1"
+#   - &Url_2 "https://example.com/sub/link_2"
+
+# # 订阅基础配置
+# NodeParam: &NodeParam {type: http, interval: 86400, health-check: {enable: true, url: 'http://connectivitycheck.platform.hicloud.com/generate_204', interval: 300}}
+
+# # 订阅合集
+# proxy-providers:
+#   Node-1:
+#     url: *Url_1  # 直接引用上面定义的锚点
+#     <<: *NodeParam
+#     path: './proxy_provider/providers-1.yaml'
+#     override:
+#       additional-prefix: "[A] "
+#       
+#   Node-2:
+#     url: *Url_2
+#     <<: *NodeParam
+#     path: './proxy_provider/providers-2.yaml'
+#     override:
+#       additional-prefix: "[B] "
+# 通用配置
+mode: rule
+ipv6: false
+mixed-port: 7890
+allow-lan: true
+bind-address: 0.0.0.0
+log-level: info
+unified-delay: true
+find-process-mode: strict
+global-client-fingerprint: chrome
+# 规则选择缓存
+profile:
+  store-selected: true
+  store-fake-ip: true
+tcp-concurrent: true
+disable-keep-alive: true
+
+#DNS配置
+dns:
+  enable: true
+  listen: 0.0.0.0:1053
+  ipv6: false
+  prefer-h3: false
+  use-hosts: false
+  use-system-hosts: false
+  respect-rules: true
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  fake-ip-filter:
+  # 基础内网域名
+  - "+.lan"
+  - "+.local"
+  - "+.localdomain"
+  - "+.internal"
+  - "home.arpa"
+  - "+.bogon"
+  - "+.m2m"
+  - "+.bogon"
+  # 系统检测服务
+  - "+.msftconnecttest.com"
+  - "+.msftncsi.com"
+  - "dns.msftncsi.com"
+  - "captive.apple.com"
+  # 小米生态
+  - "*.mi.com"
+  - "*.miui.com"
+  - "*.xiaomi.com"
+
+  default-nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+  nameserver:
+    - https://223.5.5.5/dns-query
+    - https://doh.pub/dns-query
+  proxy-server-nameserver:
+    - https://223.5.5.5/dns-query
+    - https://doh.pub/dns-query
+  direct-nameserver:
+    - https://223.5.5.5/dns-query
+    - https://doh.pub/dns-query
+  fallback: [] 
+
+# GEO配置
+geodata-mode: true
+geo-auto-update: true
+geo-update-interval: 48
+geodata-loader: memconservative
+
+# 时间同步
+ntp:
+  enable: true
+  write-to-system: false
+  server: ntp1.aliyun.com
+  port: 123
+  interval: 30
+
+# 入站
+tun:
+  enable: true
+  stack: mixed
+  auto-route: true
+  auto-redirect: false
+  auto-detect-interface: true
+  dns-hijack:
+    - any:53
+    - tcp://any:53
+  route-exclude-address: []
+  mtu: 1500
+
+# 嗅探
+sniffer:
+  enable: true
+  force-dns-mapping: true
+  parse-pure-ip: true
+  override-destination: true
+  sniff:
+    TLS:
+      ports:
+        - 443
+        - 8443
+    HTTP:
+      ports:
+        - 80
+        - 443
+      override-destination: false
+    QUIC:
+      ports:
+        - 443
+        - 8443
+  force-domain: []
+  skip-domain:
+    - +.oray.com
+    - "Mijia Cloud"
+    - "+.push.apple.com"
+
+# 面板设置
+external-controller: 127.0.0.1:9090
+secret: ""
+external-ui: "./ui"
+external-ui-name: zashboard
+external-ui-url: "https://github.com/Zephyruso/zashboard/archive/refs/heads/gh-pages.zip"
+
+# 锚点定义
+UrlTest: &UrlTest { type: url-test, interval: 300, tolerance: 200, url: 'https://www.gstatic.com/generate_204', hidden: true, include-all: true }
+# Select 锚点，用于手动选择地区节点
+Select: &Select { type: select, hidden: false, include-all: true }
+
+# 代理组
+proxy-groups:
+  - { name: Proxy, type: select, proxies: [香港, 台湾, 日本, 新加坡, 美国, 韩国, ALL, DIRECT], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Rocket.png }
+  - { name: YouTube, type: select, proxies: [香港, 台湾, 日本, 新加坡, 美国, 韩国], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/YouTube.png }
+  - { name: AI, type: select, proxies: [美国, 新加坡, 台湾, 日本, 韩国], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/AI.png }
+  - { name: Steam, type: select, proxies: [香港, 台湾, 日本, 新加坡, 美国, 韩国, DIRECT], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Steam.png }
+  - { name: SteamCN, type: select, proxies: [DIRECT, 香港, 台湾, 日本, 新加坡, 美国, 韩国], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Steam.png }
+  - { name: Google, type: select, proxies: [香港, 台湾, 日本, 新加坡, 美国, 韩国], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Google_Search.png } 
+  - { name: Apple, type: select, proxies: [DIRECT, 香港, 台湾, 日本, 新加坡, 美国, 韩国], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Apple.png }
+  - { name: Microsoft, type: select, proxies: [DIRECT, 香港, 台湾, 日本, 新加坡, 美国, 韩国], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Microsoft.png }
+  - { name: Github, type: select, proxies: [香港, 台湾, 日本, 新加坡, 美国, 韩国], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/GitHub.png }
+  - { name: Telegram, type: select, proxies: [香港, 台湾, 日本, 新加坡, 美国, 韩国], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Telegram.png }
+
+  # 匹配常用地区的分组
+  - { name: 美国, <<: *Select, filter: 🇺🇸|美国|美|US|united states|america|los angeles|san jose|silicon valley, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/United_States.png }
+  - { name: 香港, <<: *UrlTest, filter: 🇭🇰|香港|港|HK|hongkong|hong kong, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Hong_Kong.png }
+  - { name: 台湾, <<: *UrlTest, filter: 🇹🇼|台湾|台|TW|taiwan|taipei, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Taiwan.png }
+  - { name: 日本, <<: *UrlTest, filter: 🇯🇵|日本|JP|japan|tokyo|osaka, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Japan.png }
+  - { name: 韩国, <<: *UrlTest, filter: 🇰🇷|韩国|韩|KR|korea|seoul, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Korea.png }
+  - { name: 新加坡, <<: *UrlTest, filter: 🇸🇬|新加坡|SG|singapore, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Singapore.png }
+  - { name: ALL, type: select, include-all: true, icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Global.png }
+
+# 规则锚点
+rule-anchor:
+  DomainYaml: &DomainYaml { type: http, behavior: domain, format: yaml, interval: 43200, proxy: Proxy }
+  ClassicalYaml: &ClassicalYaml { type: http, behavior: classical, format: yaml, interval: 43200, proxy: Proxy }
+  ClassicalText: &ClassicalText {type: http, behavior: classical, format: text, interval: 43200, proxy: Proxy}
+  RuleSet_ipcidr: &RuleSet_ipcidr {type: http, behavior: ipcidr, interval: 43200, format: text, proxy: Proxy}
+# 规则集配置
+rule-providers:
+  AWAvenueAds: { <<: *DomainYaml, url: "https://raw.githubusercontent.com/TG-Twilight/AWAvenue-Ads-Rule/main/Filters/AWAvenue-Ads-Rule-Clash.yaml" }
+  Apple: { <<: *ClassicalYaml, url: "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Apple/Apple_Classical.yaml" }
+  China: { <<: *ClassicalYaml, url: "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/China/China_Classical_No_Resolve.yaml" }
+  ChinaIPs: { <<: *RuleSet_ipcidr, url: "https://ruleset.skk.moe/Clash/ip/china_ip.txt" }
+  AI: { <<: *ClassicalText, url: "https://ruleset.skk.moe/Clash/non_ip/ai.txt" }
+  YouTube: { <<: *ClassicalYaml, url: "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/YouTube/YouTube.yaml" }
+  SteamCN: { <<: *ClassicalYaml, url: "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/SteamCN/SteamCN.yaml" }
+  Steam: { <<: *ClassicalYaml, url: "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Steam/Steam.yaml" }
+  Github: { <<: *ClassicalYaml, url: "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/GitHub/GitHub.yaml" }
+  Google: { <<: *ClassicalYaml, url: "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Google/Google.yaml" }
+  Lan: { <<: *ClassicalYaml, url: "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Lan/Lan_No_Resolve.yaml" }
+  Microsoft: { <<: *ClassicalYaml, url: "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Microsoft/Microsoft.yaml" }
+  Telegram: { <<: *ClassicalYaml, url: "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Telegram/Telegram.yaml" }
+  Global: { <<: *ClassicalText, url: "https://ruleset.skk.moe/Clash/non_ip/global.txt" }
+rules:
+  # 1. 优先处理特定域名关键字 (DomainSet/Keyword)
+  - DOMAIN-KEYWORD,1ytsub,DIRECT 
+  - PROCESS-NAME,dota2.exe,DIRECT
+  - PROCESS-NAME,language_server_windows_x64.exe,AI # Antigravity
+  - PROCESS-NAME,Antigravity.exe,AI # Antigravity 
+  # 2. 广告拦截 (Non-IP / DomainSet)
+  - RULE-SET,AWAvenueAds,REJECT
+
+  # 3. 业务逻辑分流 (Non-IP / Classical) - 确保这些在 IP 规则之前，避免触发不必要的 DNS 解析
+  - RULE-SET,AI,AI
+  - RULE-SET,YouTube,YouTube
+  - RULE-SET,Google,Google
+  - RULE-SET,Github,Github
+  - RULE-SET,Telegram,Telegram
+  - RULE-SET,Steam,Steam
+  - RULE-SET,Global,Proxy
+
+  # 4. 基础服务分流 (Non-IP / Classical)
+  - RULE-SET,SteamCN,SteamCN
+  - RULE-SET,Microsoft,Microsoft
+  - RULE-SET,Apple,Apple
+  - RULE-SET,Lan,DIRECT,no-resolve
+
+  # 5. 中国流量分流 (可能包含域名和 IP，建议放在最后一部分)
+  - RULE-SET,China,DIRECT,no-resolve
+
+  # 6. 纯 IP 分流 (IP-CIDR / GeoIP) - 必须放在最后，作为最后的过滤层
+  - RULE-SET,ChinaIPs,DIRECT,no-resolve
+
+  # 7. 漏网之鱼 (Final Match)
+  - MATCH,Proxy
