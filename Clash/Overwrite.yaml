@@ -71,7 +71,7 @@ external-ui-url: https://github.com/Zephyruso/zashboard/releases/latest/download
 external-ui-name: zashboard
 external-ui: ui
 external-controller: 127.0.0.1:9090
-secret: yyds666    
+secret: ''  
 
 # 实验性功能
 experimental:
@@ -99,7 +99,7 @@ sniffer:
     
  # ==================== 锚点配置 ====================   
 # 锚点定义
-UrlTest: &UrlTest {type: url-test, interval: 200, lazy: true, url: 'https://www.google.com/generate_204', hidden: true, include-all: true }
+UrlTest: &UrlTest {type: url-test, interval: 200, lazy: true, url: 'https://www.gstatic.com/generate_204', hidden: true, include-all: true }
 Select: &Select { type: select, hidden: false, include-all: true }
 Global_settings: { exclude_regex: &global_exclude "AHK|排除1|排除2|5x|剩余流量|过期|回国|群|官网|客服|订阅|流量" }
 # 地理位置匹配锚点
