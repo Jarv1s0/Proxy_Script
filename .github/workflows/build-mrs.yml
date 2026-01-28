@@ -1,12 +1,12 @@
-name: Build Rules (Final Correction)
+name: Build Steam Rules
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 22 * * *'
+    - cron: "0 22 * * *"
 
 jobs:
-  build:
+  build-and-convert:
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -15,47 +15,54 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      # 1. 准备 Go 环境（转换工具是用 Go 写的）
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
-          go-version: '1.22'
+          go-version: "1.22"
 
-      - name: Get Converter
+      # 2. 拉取官方专门的转换工具源码 (MetaCubeX 官方出品)
+      - name: Get Converter Tool
         run: |
-          # 仅拉取转换工具源码
           git clone https://github.com/MetaCubeX/meta-rules-converter.git converter
+          cd converter
+          # 现场编译出转换工具，确保它是一个“只会转换”的纯净程序
+          go build -o ../rules-converter .
 
-      - name: Prepare Rules
+      # 3. 准备规则目录并下载 SteamCN
+      - name: Download SteamCN Rule
         run: |
           mkdir -p Clash/rule-set
-          # 下载原始 YAML
           curl -sL -o Clash/SteamCN.yaml https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/SteamCN/SteamCN.yaml
 
+      # 4. 执行转换（关键：不再调用 mihomo convert-ruleset，而是直接用转换器）
       - name: Pure Conversion
         run: |
-          echo "🔄 Using pure converter (No mihomo core)..."
-          cd converter
+          echo "🔄 Converting via dedicated tool..."
           
-          # 【核心修改】：去掉 convert-ruleset 关键字
-          # 转换器原生参数顺序：类型(classical) 格式(yaml) 输入 路径
-          go run . classical yaml ../Clash/SteamCN.yaml ../Clash/rule-set/SteamCN.mrs
+          # 语法：./rules-converter <子命令> <类型> <格式> <源文件> <目标文件>
+          # 这样调用绝对不会触发“Proxy Listening”！
+          ./rules-converter convert-ruleset classical yaml Clash/SteamCN.yaml Clash/rule-set/SteamCN.mrs
           
-          echo "✅ Done."
+          # 同时也处理你 Clash 目录下其他的 yaml 文件
+          for file in Clash/*.yaml; do
+            if [[ "$file" == *"SteamCN.yaml" ]]; then continue; fi
+            name=$(basename "$file" .yaml)
+            ./rules-converter convert-ruleset classical yaml "$file" "Clash/rule-set/$name.mrs"
+          done
 
-      - name: Git Push
+      # 5. 推送 MRS 文件到仓库
+      - name: Push to Repository
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           
-          if [ -f "Clash/rule-set/SteamCN.mrs" ]; then
+          if [ -d "Clash/rule-set" ]; then
             git add -f Clash/rule-set/*.mrs
             if ! git diff --staged --quiet; then
-              git commit -m "chore: auto-build .mrs [skip ci]"
+              git commit -m "chore: auto-convert rulesets [skip ci]"
               git push
             else
-              echo "No changes."
+              echo "No changes to push."
             fi
-          else
-            echo "Error: MRS file not generated."
-            exit 1
           fi
