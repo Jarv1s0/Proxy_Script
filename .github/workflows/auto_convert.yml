@@ -21,6 +21,12 @@ jobs:
         with:
           python-version: '3.10'
 
+      - name: Install dependencies
+        run: |
+          cd Auto-MRS-Convert/scripts
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
       - name: Run Conversion Script
         run: |
           cd Auto-MRS-Convert/scripts
