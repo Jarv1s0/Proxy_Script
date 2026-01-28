@@ -1,4 +1,4 @@
-name: Build Rules (Go Edition)
+name: Build Rules (Final Correction)
 
 on:
   workflow_dispatch:
@@ -15,56 +15,47 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      # 1. 配置 Go 环境 (照搬大佬仓库的配置)
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
           go-version: '1.22'
 
-      # 2. 拉取转换工具源码 (只拉取转换器，不拉取整个内核)
-      - name: Checkout Converter
-        uses: actions/checkout@v4
-        with:
-          repository: MetaCubeX/meta-rules-converter
-          path: converter
+      - name: Get Converter
+        run: |
+          # 仅拉取转换工具源码
+          git clone https://github.com/MetaCubeX/meta-rules-converter.git converter
 
-      # 3. 准备目录 & 下载 SteamCN 规则
-      - name: Prepare Data
+      - name: Prepare Rules
         run: |
           mkdir -p Clash/rule-set
-          echo "⬇️ Downloading SteamCN..."
+          # 下载原始 YAML
           curl -sL -o Clash/SteamCN.yaml https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/SteamCN/SteamCN.yaml
 
-      # 4. 编译并运行转换 (这是核心！)
-      # 直接运行 Go 代码，没有中间商赚差价，绝对不会死锁
-      - name: Convert Rules
+      - name: Pure Conversion
         run: |
-          echo "🔄 Compiling and Converting..."
+          echo "🔄 Using pure converter (No mihomo core)..."
           cd converter
           
-          # 语法: go run . convert-ruleset <类型> <源文件> <目标文件>
-          # 注意路径：因为进到了 converter 目录，所以要用 ../ 回到上级
-          go run . convert-ruleset classical ../Clash/SteamCN.yaml ../Clash/rule-set/SteamCN.mrs
+          # 【核心修改】：去掉 convert-ruleset 关键字
+          # 转换器原生参数顺序：类型(classical) 格式(yaml) 输入 路径
+          go run . classical yaml ../Clash/SteamCN.yaml ../Clash/rule-set/SteamCN.mrs
           
-          echo "✅ Conversion Done!"
+          echo "✅ Done."
 
-      # 5. 提交结果
       - name: Git Push
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           
-          # 检查文件是否存在
           if [ -f "Clash/rule-set/SteamCN.mrs" ]; then
             git add -f Clash/rule-set/*.mrs
             if ! git diff --staged --quiet; then
-              git commit -m "chore: update SteamCN.mrs [skip ci]"
+              git commit -m "chore: auto-build .mrs [skip ci]"
               git push
-              echo "✅ 推送成功"
             else
-              echo "💤 无变化"
+              echo "No changes."
             fi
           else
-            echo "❌ 转换失败，文件未生成"
+            echo "Error: MRS file not generated."
             exit 1
           fi
