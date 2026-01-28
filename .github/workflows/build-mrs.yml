@@ -1,9 +1,9 @@
-name: Build Rules (Shell Edition)
+name: Build Rules (Docker Edition)
 
 on:
-  workflow_dispatch: # 手动触发
+  workflow_dispatch:
   schedule:
-    - cron: '0 22 * * *' # 每天早晨6点自动更新 (UTC 22:00)
+    - cron: '0 22 * * *'
 
 jobs:
   build:
@@ -15,47 +15,40 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Prepare Environment
+      - name: Prepare Directory & Download Rules
         run: |
-          # 1. 创建目录
           mkdir -p Clash/rule-set
           
-          # 2. 下载 Mihomo 内核 (使用 v1.17 稳定版)
-          echo "⬇️ Downloading Mihomo..."
-          wget -q -O mihomo.gz https://github.com/MetaCubeX/mihomo/releases/download/v1.17.0/mihomo-linux-amd64-v1.17.0.gz
-          gunzip mihomo.gz
-          chmod +x mihomo
-          
-          # 3. 下载 SteamCN 规则 (直接下载到 Clash 目录)
+          # 直接用系统自带工具下载规则，不依赖 Python
           echo "⬇️ Downloading SteamCN..."
-          wget -q -O Clash/SteamCN.yaml https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/SteamCN/SteamCN.yaml
+          curl -sL -o Clash/SteamCN.yaml https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/SteamCN/SteamCN.yaml
           
-          # 检查文件头，防止 404
-          head -n 5 Clash/SteamCN.yaml
+          # 验证文件是否下载成功
+          ls -lh Clash/SteamCN.yaml
 
-      - name: Convert Rules
+      - name: Convert via Docker
         run: |
-          echo "🔄 Converting..."
+          echo "🐳 Starting Docker container to convert rules..."
           
-          # 直接在 Shell 里调用，绝对不会死锁
-          # 语法: ./mihomo convert-ruleset <类型> <源> <目标>
-          
-          # 1. 转换 SteamCN (使用 classical 混合模式)
-          ./mihomo convert-ruleset classical Clash/SteamCN.yaml Clash/rule-set/SteamCN.mrs
-          
-          # 2. (可选) 扫描 Clash 目录下其他本地 yaml 文件并转换
-          for file in Clash/*.yaml; do
-            # 跳过 SteamCN (因为上面已经转过了)
-            if [ "$file" == "Clash/SteamCN.yaml" ]; then continue; fi
-            
-            filename=$(basename "$file" .yaml)
-            echo "Processing $filename ..."
-            ./mihomo convert-ruleset classical "$file" "Clash/rule-set/$filename.mrs"
-          done
+          # 使用官方 Mihomo 镜像，挂载当前目录到容器内
+          # 这样无论宿主机环境如何，容器内一定是标准的
+          docker run --rm \
+            -v ${{ github.workspace }}:/workspace \
+            -w /workspace \
+            metacubex/mihomo:latest \
+            convert-ruleset classical Clash/SteamCN.yaml Clash/rule-set/SteamCN.mrs
 
-      - name: Check Artifacts
+          echo "✅ Conversion finished."
+
+      - name: Check Outputs
         run: |
-          ls -lh Clash/rule-set/
+          if [ -f "Clash/rule-set/SteamCN.mrs" ]; then
+            echo "🎉 File generated successfully:"
+            ls -lh Clash/rule-set/SteamCN.mrs
+          else
+            echo "❌ File not found!"
+            exit 1
+          fi
 
       - name: Git Push
         run: |
@@ -65,9 +58,9 @@ jobs:
           git add -f Clash/rule-set/*.mrs
           
           if ! git diff --staged --quiet; then
-            git commit -m "chore: update rules $(date +'%Y-%m-%d') [skip ci]"
+            git commit -m "chore: update rules via Docker [skip ci]"
             git push
-            echo "✅ Push success"
+            echo "✅ Changes pushed"
           else
-            echo "💤 No changes"
+            echo "💤 No changes detected"
           fi
