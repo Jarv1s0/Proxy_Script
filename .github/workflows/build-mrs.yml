@@ -1,9 +1,9 @@
-name: Build SteamCN MRS (Pure Tool)
+name: Build SteamCN Only
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 22 * * *" # 每天 UTC 22:00 自动运行
+    - cron: "0 22 * * *" # 每天北京时间凌晨6点
 
 jobs:
   build:
@@ -15,53 +15,43 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      # 1. 准备 Go 环境
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
           go-version: '1.22'
 
-      # 2. 准备目录
-      - name: Prepare Directory
-        run: mkdir -p Clash/rule-set
-
-      # 3. 下载 SteamCN 原始规则
-      - name: Download SteamCN
+      - name: Prepare Workspace
         run: |
+          mkdir -p Clash/rule-set
+          # 下载原始规则
           curl -sL -o Clash/SteamCN.yaml https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/SteamCN/SteamCN.yaml
+          
+          # 【关键清洗】模仿 OOM-WG：剔除 YAML 所有的格式标记，只留纯域名/IP
+          # 这样转换器处理起来最稳，绝不会出错
+          sed -i 's/payload://g; s/- //g; s/ //g; /^\s*$/d; /^#/d' Clash/SteamCN.yaml
 
-      # 4. 现场编译“纯净转换器” (不含代理引擎)
-      # 这一步会从源码构建一个只负责转换、不会监听任何端口的小工具
-      - name: Build and Run Converter
+      - name: Build Converter & Convert
         run: |
-          # 克隆官方转换工具源码
-          git clone --depth 1 https://github.com/MetaCubeX/meta-rules-converter.git converter-source
-          cd converter-source
+          # 1. 直接拉取官方转换器源码 (非内核)
+          git clone --depth 1 https://github.com/MetaCubeX/meta-rules-converter.git converter-tool
+          cd converter-tool
           
-          echo "🔨 正在编译纯净转换工具..."
-          go build -o ../pure-converter .
-          cd ..
+          # 2. 现场运行转换 (classical 模式最稳)
+          # 原生工具不使用 'convert-ruleset' 关键字，直接传参
+          go run . classical yaml ../Clash/SteamCN.yaml ../Clash/rule-set/SteamCN.mrs
           
-          echo "🔄 正在执行转换 (SteamCN)..."
-          # 语法：./pure-converter <类型> <格式> <源文件> <目标文件>
-          # 这个工具没有 'convert-ruleset' 关键字，也没有代理逻辑
-          ./pure-converter classical yaml Clash/SteamCN.yaml Clash/rule-set/SteamCN.mrs
-          
-          echo "✅ 转换完成，清理源码..."
-          rm -rf converter-source pure-converter
+          echo "✅ SteamCN.mrs 转换完成"
 
-      # 5. 提交生成的 MRS 文件
       - name: Git Push
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           
+          # 强制只添加这一个生成的 mrs 文件
           if [ -f "Clash/rule-set/SteamCN.mrs" ]; then
             git add Clash/rule-set/SteamCN.mrs
-            # 只有当文件确实有变化时才提交
-            git diff --staged --quiet || (git commit -m "update: SteamCN.mrs [skip ci]" && git push)
-            echo "🚀 任务圆满完成！"
+            git diff --staged --quiet || (git commit -m "chore: update SteamCN mrs" && git push)
           else
-            echo "🚨 错误：MRS 文件未能生成！"
+            echo "❌ 失败：MRS文件未生成"
             exit 1
           fi
