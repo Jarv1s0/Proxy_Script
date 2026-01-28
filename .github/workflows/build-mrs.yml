@@ -1,9 +1,9 @@
-name: Build Rules (Pure Converter)
+name: Build SteamCN MRS
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 22 * * *'
+    - cron: "0 22 * * *" # 每天 UTC 22:00 运行
 
 jobs:
   build:
@@ -20,45 +20,33 @@ jobs:
         with:
           go-version: '1.22'
 
-      # 1. 直接拉取官方专门的转换器源码（注意：这不是内核，没有代理功能）
-      - name: Get Official Converter
-        run: |
-          git clone https://github.com/MetaCubeX/meta-rules-converter.git converter
+      - name: Get Pure Converter
+        # 仅拉取官方转换工具源码，不含内核代理逻辑
+        run: git clone --depth 1 https://github.com/MetaCubeX/meta-rules-converter.git converter
 
-      # 2. 准备规则
       - name: Prepare Rules
+        # 确保目录存在并下载最新的 SteamCN 规则
         run: |
           mkdir -p Clash/rule-set
           curl -sL -o Clash/SteamCN.yaml https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/SteamCN/SteamCN.yaml
 
-      # 3. 现场编译并转换 (使用转换器的原生语法)
-      # 这个工具运行完会立即退出，绝对不会开启任何端口
-      - name: Convert
+      - name: Convert SteamCN Only
+        # 只处理 SteamCN，强制使用 classical 混合模式以保证 100% 兼容
         run: |
-          echo "🔄 Converting via standalone tool..."
           cd converter
-          # 转换器语法：go run . [类型] [格式] [输入路径] [输出路径]
           go run . classical yaml ../Clash/SteamCN.yaml ../Clash/rule-set/SteamCN.mrs
-          
-          # 处理你 Clash 目录下的其他 yaml
-          for file in ../Clash/*.yaml; do
-            if [[ "$file" == *"SteamCN.yaml" ]]; then continue; fi
-            name=$(basename "$file" .yaml)
-            go run . classical yaml "$file" "../Clash/rule-set/$name.mrs"
-          done
 
-      # 4. 提交更新
-      - name: Push Changes
+      - name: Git Push
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           
-          if [ -d "Clash/rule-set" ]; then
-            git add -f Clash/rule-set/*.mrs
-            if ! git diff --staged --quiet; then
-              git commit -m "chore: auto-build .mrs rules [skip ci]"
-              git push
-            else
-              echo "No changes."
-            fi
+          # 仅将生成的 mrs 文件推送到远程仓库
+          if [ -f "Clash/rule-set/SteamCN.mrs" ]; then
+            git add Clash/rule-set/SteamCN.mrs
+            git diff --staged --quiet || (git commit -m "update: SteamCN.mrs [skip ci]" && git push)
+            echo "✅ Build and Push completed."
+          else
+            echo "❌ Error: MRS file not found."
+            exit 1
           fi
