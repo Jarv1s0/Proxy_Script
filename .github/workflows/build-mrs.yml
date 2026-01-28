@@ -30,7 +30,7 @@ jobs:
 
       - name: Run Conversion Script
         # 注意这里路径的变化
-        run: python Clash/scripts/convert.py
+        run: python -u Clash/scripts/convert.py
 
       - name: Commit and Push Changes
         run: |
