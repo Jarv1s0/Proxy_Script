@@ -1,4 +1,4 @@
-# Updated: 2026-01-23 10:29:24
+# Updated: 2026-01-28 03:26:51
 payload:
   # 3rd part AI router
   - 'DOMAIN-SUFFIX,cerebras.ai'
@@ -171,7 +171,14 @@ payload:
   - 'DOMAIN-SUFFIX,ytimg.com'
   - 'IP-CIDR,74.125.0.0/16,no-resolve'
   - 'IP-CIDR,173.194.0.0/16,no-resolve'
-  - 'DOMAIN-SUFFIX,antigravity-unleash.goog:'
+  # Antigravity
+  - 'DOMAIN-SUFFIX,antigravity-unleash.goog'
+  - 'DOMAIN-SUFFIX,antigravity.google'
+  - 'DOMAIN-KEYWORD,antigravity'
+  - 'PROCESS-NAME,Antigravity Helper'
+  - 'PROCESS-NAME,Antigravity Helper (Renderer)'
+  - 'PROCESS-NAME,Antigravity Helper (GPU)'
+  - 'PROCESS-NAME,Antigravity Helper (Plugin)'
   # Google drive
   - 'PROCESS-NAME,Google Drive'
   # 内容：GoogleCN
