@@ -18,7 +18,8 @@ UPSTREAM_RULES = [
     }
 ]
 
-MIHOMO_URL = "https://github.com/MetaCubeX/mihomo/releases/download/v1.18.1/mihomo-linux-amd64-v1.18.1.gz"
+# 使用 v1.17.0 稳定版，防止 v1.18.1 启动服务导致死锁
+MIHOMO_URL = "https://github.com/MetaCubeX/mihomo/releases/download/v1.17.0/mihomo-linux-amd64-v1.17.0.gz"
 BINARY_NAME = os.path.join(SCRIPT_DIR, "mihomo")
 
 def download_mihomo():
