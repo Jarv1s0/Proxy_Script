@@ -1,9 +1,9 @@
-name: Build SteamCN MRS
+name: Build SteamCN MRS (Pure Tool)
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 22 * * *" # 每天 UTC 22:00 运行
+    - cron: "0 22 * * *" # 每天 UTC 22:00 自动运行
 
 jobs:
   build:
@@ -15,38 +15,53 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      # 1. 准备 Go 环境
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
           go-version: '1.22'
 
-      - name: Get Pure Converter
-        # 仅拉取官方转换工具源码，不含内核代理逻辑
-        run: git clone --depth 1 https://github.com/MetaCubeX/meta-rules-converter.git converter
+      # 2. 准备目录
+      - name: Prepare Directory
+        run: mkdir -p Clash/rule-set
 
-      - name: Prepare Rules
-        # 确保目录存在并下载最新的 SteamCN 规则
+      # 3. 下载 SteamCN 原始规则
+      - name: Download SteamCN
         run: |
-          mkdir -p Clash/rule-set
           curl -sL -o Clash/SteamCN.yaml https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/SteamCN/SteamCN.yaml
 
-      - name: Convert SteamCN Only
-        # 只处理 SteamCN，强制使用 classical 混合模式以保证 100% 兼容
+      # 4. 现场编译“纯净转换器” (不含代理引擎)
+      # 这一步会从源码构建一个只负责转换、不会监听任何端口的小工具
+      - name: Build and Run Converter
         run: |
-          cd converter
-          go run . classical yaml ../Clash/SteamCN.yaml ../Clash/rule-set/SteamCN.mrs
+          # 克隆官方转换工具源码
+          git clone --depth 1 https://github.com/MetaCubeX/meta-rules-converter.git converter-source
+          cd converter-source
+          
+          echo "🔨 正在编译纯净转换工具..."
+          go build -o ../pure-converter .
+          cd ..
+          
+          echo "🔄 正在执行转换 (SteamCN)..."
+          # 语法：./pure-converter <类型> <格式> <源文件> <目标文件>
+          # 这个工具没有 'convert-ruleset' 关键字，也没有代理逻辑
+          ./pure-converter classical yaml Clash/SteamCN.yaml Clash/rule-set/SteamCN.mrs
+          
+          echo "✅ 转换完成，清理源码..."
+          rm -rf converter-source pure-converter
 
+      # 5. 提交生成的 MRS 文件
       - name: Git Push
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           
-          # 仅将生成的 mrs 文件推送到远程仓库
           if [ -f "Clash/rule-set/SteamCN.mrs" ]; then
             git add Clash/rule-set/SteamCN.mrs
+            # 只有当文件确实有变化时才提交
             git diff --staged --quiet || (git commit -m "update: SteamCN.mrs [skip ci]" && git push)
-            echo "✅ Build and Push completed."
+            echo "🚀 任务圆满完成！"
           else
-            echo "❌ Error: MRS file not found."
+            echo "🚨 错误：MRS 文件未能生成！"
             exit 1
           fi
