@@ -1,54 +1,73 @@
-name: Build Mihomo Rule Sets
+name: Build Rules (Shell Edition)
 
 on:
-  push:
-    paths:
-      - 'Clash/**'        # 只要 Clash 文件夹下有变动就触发
-      - '!Clash/rule-set/**' # (可选) 忽略输出目录的变动，防止循环触发
-  workflow_dispatch:
+  workflow_dispatch: # 手动触发
   schedule:
-    - cron: '0 20 * * *'
-
-permissions:
-  contents: write
+    - cron: '0 22 * * *' # 每天早晨6点自动更新 (UTC 22:00)
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    
+    permissions:
+      contents: write
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.10'
+      - name: Prepare Environment
+        run: |
+          # 1. 创建目录
+          mkdir -p Clash/rule-set
+          
+          # 2. 下载 Mihomo 内核 (使用 v1.17 稳定版)
+          echo "⬇️ Downloading Mihomo..."
+          wget -q -O mihomo.gz https://github.com/MetaCubeX/mihomo/releases/download/v1.17.0/mihomo-linux-amd64-v1.17.0.gz
+          gunzip mihomo.gz
+          chmod +x mihomo
+          
+          # 3. 下载 SteamCN 规则 (直接下载到 Clash 目录)
+          echo "⬇️ Downloading SteamCN..."
+          wget -q -O Clash/SteamCN.yaml https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/SteamCN/SteamCN.yaml
+          
+          # 检查文件头，防止 404
+          head -n 5 Clash/SteamCN.yaml
 
-      - name: Install Dependencies
-        run: pip install requests
+      - name: Convert Rules
+        run: |
+          echo "🔄 Converting..."
+          
+          # 直接在 Shell 里调用，绝对不会死锁
+          # 语法: ./mihomo convert-ruleset <类型> <源> <目标>
+          
+          # 1. 转换 SteamCN (使用 classical 混合模式)
+          ./mihomo convert-ruleset classical Clash/SteamCN.yaml Clash/rule-set/SteamCN.mrs
+          
+          # 2. (可选) 扫描 Clash 目录下其他本地 yaml 文件并转换
+          for file in Clash/*.yaml; do
+            # 跳过 SteamCN (因为上面已经转过了)
+            if [ "$file" == "Clash/SteamCN.yaml" ]; then continue; fi
+            
+            filename=$(basename "$file" .yaml)
+            echo "Processing $filename ..."
+            ./mihomo convert-ruleset classical "$file" "Clash/rule-set/$filename.mrs"
+          done
 
-      - name: Run Conversion Script
-        # 注意这里路径的变化
-        run: python -u Clash/scripts/convert.py
+      - name: Check Artifacts
+        run: |
+          ls -lh Clash/rule-set/
 
-      - name: Commit and Push Changes
+      - name: Git Push
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           
-          # 检查输出目录是否存在
-          if [ -d "Clash/rule-set" ]; then
-            # 强制添加生成的 mrs 文件
-            git add -f Clash/rule-set/*.mrs
-            
-            if ! git diff --cached --quiet; then
-              git commit -m "chore: auto-build .mrs files [skip ci]"
-              git push
-              echo "✅ 已推送更新"
-            else
-              echo "💤 无变化"
-            fi
+          git add -f Clash/rule-set/*.mrs
+          
+          if ! git diff --staged --quiet; then
+            git commit -m "chore: update rules $(date +'%Y-%m-%d') [skip ci]"
+            git push
+            echo "✅ Push success"
           else
-            echo "⚠️ 未找到输出目录"
+            echo "💤 No changes"
           fi
