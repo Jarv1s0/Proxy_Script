@@ -1,0 +1,54 @@
+name: Build Mihomo Rule Sets
+
+on:
+  push:
+    paths:
+      - 'Clash/**'        # 只要 Clash 文件夹下有变动就触发
+      - '!Clash/rule-set/**' # (可选) 忽略输出目录的变动，防止循环触发
+  workflow_dispatch:
+  schedule:
+    - cron: '0 20 * * *'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install Dependencies
+        run: pip install requests
+
+      - name: Run Conversion Script
+        # 注意这里路径的变化
+        run: python Clash/scripts/convert.py
+
+      - name: Commit and Push Changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          
+          # 检查输出目录是否存在
+          if [ -d "Clash/rule-set" ]; then
+            # 强制添加生成的 mrs 文件
+            git add -f Clash/rule-set/*.mrs
+            
+            if ! git diff --cached --quiet; then
+              git commit -m "chore: auto-build .mrs files [skip ci]"
+              git push
+              echo "✅ 已推送更新"
+            else
+              echo "💤 无变化"
+            fi
+          else
+            echo "⚠️ 未找到输出目录"
+          fi
