@@ -10,7 +10,7 @@ SOURCE_DIR = "Clash"
 OUTPUT_DIR = "Clash/rule-set"     
 SCRIPT_DIR = "Clash/scripts"      
 
-# 远程规则列表
+# 远程规则
 UPSTREAM_RULES = [
     {
         "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/SteamCN/SteamCN.yaml",
@@ -18,7 +18,6 @@ UPSTREAM_RULES = [
     }
 ]
 
-# 内核地址
 MIHOMO_URL = "https://github.com/MetaCubeX/mihomo/releases/download/v1.18.1/mihomo-linux-amd64-v1.18.1.gz"
 BINARY_NAME = os.path.join(SCRIPT_DIR, "mihomo")
 # ----------------
@@ -41,11 +40,6 @@ def download_mihomo():
         
         st = os.stat(BINARY_NAME)
         os.chmod(BINARY_NAME, st.st_mode | stat.S_IEXEC)
-        
-        # 测试内核是否能运行
-        version_check = subprocess.run([BINARY_NAME, "--version"], capture_output=True, text=True)
-        print(f"✅ 内核就绪: {version_check.stdout.strip()}")
-        
     except Exception as e:
         print(f"❌ 内核准备失败: {e}")
         exit(1)
@@ -77,12 +71,35 @@ def convert_rules():
                 file_name_no_ext = os.path.splitext(file)[0]
                 dst_path = os.path.join(OUTPUT_DIR, f"{file_name_no_ext}.mrs")
                 
-                # --- 关键修改：逻辑优化 ---
-                # 如果文件名含 ip -> ipcidr
-                # 其他情况默认用 classical (混合模式)，这比 domain 更安全，不容易卡死
+                # --- 核心修复 ---
+                # 只有文件名明确包含 'ip' 才用 ipcidr
+                # 其他所有情况（包括 SteamCN）都强制使用 classical (混合模式)
+                # classical 模式可以同时处理域名和IP，不会卡死
                 if "ip" in file_name_no_ext.lower():
                     rule_type = "ipcidr"
                 else:
-                    rule_type = "classical" 
+                    rule_type = "classical"  # <--- 这里改成了 classical
                 
-                print(f"🔄
+                print(f"🔄 编译中 [{rule_type}]: {file} ...", end="", flush=True)
+                
+                try:
+                    # 增加30秒超时限制，防止卡死
+                    subprocess.run(
+                        [BINARY_NAME, "convert-ruleset", rule_type, src_path, dst_path],
+                        check=True,
+                        capture_output=True,
+                        timeout=30 
+                    )
+                    print(" ✅ 成功")
+                except subprocess.TimeoutExpired:
+                    print(" ❌ 超时 (跳过)")
+                except subprocess.CalledProcessError:
+                    print(" ❌ 失败 (格式错误)")
+
+if __name__ == "__main__":
+    download_mihomo()
+    fetch_upstream_rules()
+    convert_rules()
+    if os.path.exists(f"{BINARY_NAME}.gz"): os.remove(f"{BINARY_NAME}.gz")
+    if os.path.exists(BINARY_NAME): os.remove(BINARY_NAME)
+    print("🎉 所有任务完成")
