@@ -193,3 +193,4 @@ rules:
   - RULE-SET,GoogleIP,Google,no-resolve
   - RULE-SET,ProxyIP,Proxy,no-resolve
   - RULE-SET,ChinaIP,DIRECT,no-resolve
+  - MATCH,Proxy
