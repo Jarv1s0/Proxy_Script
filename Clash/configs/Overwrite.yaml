@@ -55,12 +55,8 @@ dns:
     - rule-set:Direct
     - rule-set:Private
     - rule-set:China
-    - +.miwifi.com
-    - +.docker.io
-    - +.market.xiaomi.com
-    - +.push.apple.com
-    - 'stun6.chat.bilibili.com'
-    - 'stun.*.*'
+    - rule-set:fakeip-filter
+
 
 # 管理面板配置
 external-ui-url: https://github.com/Zephyruso/zashboard/releases/latest/download/dist.zip
@@ -115,9 +111,8 @@ proxy-groups:
   - { name: Proxy, type: select, proxies: [香港, 台湾, 日本, 新加坡, 美国, 韩国, 欧盟, ALL, DIRECT], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Rocket.png }
   - { name: YouTube, type: select, proxies: [香港, 台湾, 日本, 新加坡, 美国, 韩国, 欧盟], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/YouTube.png }
   - { name: AI, type: select, proxies: [美国, 新加坡, 台湾, 日本, 韩国, 欧盟], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/AI.png }
-  - { name: Steam, type: select, proxies: [香港, 台湾, 日本, 新加坡, 美国, 韩国, 欧盟, DIRECT], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Steam.png }
+  - { name: Games, type: select, proxies: [香港, 台湾, 日本, 新加坡, 美国, 韩国, 欧盟, DIRECT], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Steam.png }
   - { name: Google, type: select, proxies: [香港, 台湾, 日本, 新加坡, 美国, 韩国, 欧盟], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Google_Search.png } 
-  - { name: Microsoft, type: select, proxies: [DIRECT, 香港, 台湾, 日本, 新加坡, 美国, 韩国, 欧盟], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Microsoft.png }
   - { name: GitHub, type: select, proxies: [香港, 台湾, 日本, 新加坡, 美国, 韩国, 欧盟], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/GitHub.png }
   - { name: Telegram, type: select, proxies: [香港, 台湾, 日本, 新加坡, 美国, 韩国, 欧盟], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Telegram.png }
 
@@ -142,27 +137,28 @@ rule-providers:
   Tracking:       {<<: *BehaviorDN, url: https://github.com/666OS/rules/raw/release/mihomo/domain/Tracking.mrs}
   Advertising:    {<<: *BehaviorDN, url: https://github.com/666OS/rules/raw/release/mihomo/domain/Advertising.mrs} 
   Direct:         {<<: *BehaviorDN, url: https://github.com/666OS/rules/raw/release/mihomo/domain/Direct.mrs}
-  Private:        {<<: *BehaviorDN, url: https://github.com/666OS/rules/raw/release/mihomo/domain/Private.mrs}
+  Private:        {<<: *BehaviorDN, url: https://github.com/DustinWin/ruleset_geodata/releases/download/mihomo-ruleset/private.mrs}
   Download:       {<<: *BehaviorDN, url: https://github.com/666OS/rules/raw/release/mihomo/domain/Download.mrs}
-  AI:             {<<: *BehaviorDN, url: https://github.com/666OS/rules/raw/release/mihomo/domain/AI.mrs} 
+  fakeip-filter:  {<<: *BehaviorDN, url: https://github.com/DustinWin/ruleset_geodata/releases/download/mihomo-ruleset/fakeip-filter.mrs}
+  AI:             {<<: *BehaviorDN, url: https://github.com/DustinWin/ruleset_geodata/releases/download/mihomo-ruleset/ai.mrs} 
   GitHub:         {<<: *BehaviorDN, url: https://github.com/666OS/rules/raw/release/mihomo/domain/GitHub.mrs}    
   Telegram:       {<<: *BehaviorDN, url: https://github.com/666OS/rules/raw/release/mihomo/domain/Telegram.mrs}
-  Games:          {<<: *BehaviorDN, url: https://github.com/666OS/rules/raw/release/mihomo/domain/Games.mrs}
-  YouTube:        {<<: *BehaviorDN, url: https://github.com/666OS/rules/raw/release/mihomo/domain/YouTube.mrs}
-  SteamCN:      {<<: *BehaviorDN, url: https://raw.githubusercontent.com/Jarv1s0/RuleList/refs/heads/main/out/steam.mrs}  
+  GamesCN:        {<<: *BehaviorDN, url: https://github.com/DustinWin/ruleset_geodata/releases/download/mihomo-ruleset/games-cn.mrs} 
+  Games:          {<<: *BehaviorDN, url: https://github.com/DustinWin/ruleset_geodata/releases/download/mihomo-ruleset/games.mrs}
+  YouTube:        {<<: *BehaviorDN, url: https://github.com/DustinWin/ruleset_geodata/releases/download/mihomo-ruleset/youtube.mrs}
   AppleCN:        {<<: *BehaviorDN, url: https://github.com/666OS/rules/raw/release/mihomo/domain/AppleCN.mrs}
   Google:         {<<: *BehaviorDN, url: https://github.com/666OS/rules/raw/release/mihomo/domain/Google.mrs}
-  Microsoft:      {<<: *BehaviorDN, url: https://github.com/666OS/rules/raw/release/mihomo/domain/Microsoft.mrs}  
+  MicrosoftCN:    {<<: *BehaviorDN, url: https://github.com/DustinWin/ruleset_geodata/releases/download/mihomo-ruleset/microsoft-cn.mrs}  
   Proxy:          {<<: *BehaviorDN, url: https://github.com/666OS/rules/raw/release/mihomo/domain/Proxy.mrs}
-  China:          {<<: *BehaviorDN, url: https://github.com/666OS/rules/raw/release/mihomo/domain/China.mrs}
+  China:          {<<: *BehaviorDN, url: https://github.com/DustinWin/ruleset_geodata/releases/download/mihomo-ruleset/cn.mrs}
   # IP规则
   AdvertisingIP:  {<<: *BehaviorIP, url: https://github.com/666OS/rules/raw/release/mihomo/ip/Advertising.mrs}
-  PrivateIP:      {<<: *BehaviorIP, url: https://github.com/666OS/rules/raw/release/mihomo/ip/Private.mrs}
+  PrivateIP:      {<<: *BehaviorIP, url: https://github.com/DustinWin/ruleset_geodata/releases/download/mihomo-ruleset/privateip.mrs}
   AIIP:           {<<: *BehaviorIP, url: https://github.com/666OS/rules/raw/release/mihomo/ip/AI.mrs}
-  TelegramIP:     {<<: *BehaviorIP, url: https://github.com/666OS/rules/raw/release/mihomo/ip/Telegram.mrs}   
+  TelegramIP:     {<<: *BehaviorIP, url: https://github.com/DustinWin/ruleset_geodata/releases/download/mihomo-ruleset/telegramip.mrs}   
   GoogleIP:       {<<: *BehaviorIP, url: https://github.com/666OS/rules/raw/release/mihomo/ip/Google.mrs}  
   ProxyIP:        {<<: *BehaviorIP, url: https://github.com/666OS/rules/raw/release/mihomo/ip/Proxy.mrs} 
-  ChinaIP:        {<<: *BehaviorIP, url: https://raw.githubusercontent.com/Jarv1s0/RuleList/refs/heads/main/out/cnIP.mrs}
+  ChinaIP:        {<<: *BehaviorIP, url: https://github.com/DustinWin/ruleset_geodata/releases/download/mihomo-ruleset/cnip.mrs}
   
 # ==================== 规则路由 ====================  
 rules:
@@ -178,16 +174,17 @@ rules:
   # 域名规则
   - RULE-SET,Private,DIRECT
   - RULE-SET,Direct,DIRECT
-  - RULE-SET,SteamCN,DIRECT
+  - RULE-SET,GamesCN,DIRECT
   - RULE-SET,Download,DIRECT
   - RULE-SET,AppleCN,DIRECT
+  - RULE-SET,MicrosoftCN,DIRECT
   - RULE-SET,AI,AI
   - RULE-SET,GitHub,GitHub
   - RULE-SET,Telegram,Telegram
-  - RULE-SET,Games,Steam
+  - RULE-SET,Games,Games
   - RULE-SET,YouTube,YouTube
   - RULE-SET,Google,Google
-  - RULE-SET,Microsoft,Microsoft
+
   - RULE-SET,Proxy,Proxy
   - RULE-SET,China,DIRECT
   # IP规则
