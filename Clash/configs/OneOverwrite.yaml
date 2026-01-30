@@ -49,15 +49,7 @@ dns:
 
 # ==================== 代理策略组 ====================
 proxy-groups:
-  # 统一出口组：仅筛选美国节点
-  - name: Proxy
-    type: url-test
-    url: 'https://www.google.com/generate_204'
-    interval: 300
-    include-all: true
-    filter: '(?i)美|🇺🇸|\bUS\b|USA|SJC|JFK|LAX|ORD|SFO'
-    icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/United_States.png
-
+- { name: Proxy, type: select, proxies: [ "美国-Texas" ] }
 # ==================== 规则集定义 (全量保留) ====================
 BehaviorDN: &BehaviorDN {type: http, behavior: domain, format: mrs, interval: 86400, proxy: Proxy}
 BehaviorIP: &BehaviorIP {type: http, behavior: ipcidr, format: mrs, interval: 86400, proxy: Proxy}
