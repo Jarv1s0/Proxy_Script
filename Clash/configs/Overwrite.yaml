@@ -109,10 +109,10 @@ filters:
 proxy-groups:
   # --- 顶层业务分组 ---
   - { name: Proxy, type: select, proxies: [香港, 台湾, 日本, 新加坡, 美国, 韩国, 欧盟, ALL, DIRECT], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Rocket.png }
-  - { name: YouTube, type: select, proxies: [香港, 台湾, 日本, 新加坡, 美国, 韩国, 欧盟], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/YouTube.png }
-  - { name: AI, type: select, proxies: [美国, 新加坡, 台湾, 日本, 韩国, 欧盟], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/AI.png }
+  - { name: YouTube, type: select, proxies: [美国, 香港, 台湾, 日本, 新加坡, 美国, 韩国, 欧盟], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/YouTube.png }
+  - { name: AI, type: select, proxies: [美国, 新加坡, 日本, 欧盟], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/AI.png }
   - { name: Games, type: select, proxies: [香港, 台湾, 日本, 新加坡, 美国, 韩国, 欧盟, DIRECT], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Steam.png }
-  - { name: Google, type: select, proxies: [香港, 台湾, 日本, 新加坡, 美国, 韩国, 欧盟], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Google_Search.png } 
+  - { name: Google, type: select, proxies: [美国, 香港, 台湾, 日本, 新加坡, 韩国, 欧盟], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Google_Search.png } 
   - { name: GitHub, type: select, proxies: [香港, 台湾, 日本, 新加坡, 美国, 韩国, 欧盟], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/GitHub.png }
   - { name: Telegram, type: select, proxies: [香港, 台湾, 日本, 新加坡, 美国, 韩国, 欧盟], icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Telegram.png }
 
